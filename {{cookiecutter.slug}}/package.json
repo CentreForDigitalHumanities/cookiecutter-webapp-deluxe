@@ -20,7 +20,7 @@
     "test-front": "yarn gulp unittest",
     "test-back": "yarn back pytest",
     "test-func": "yarn func pytest",
-    "test": "yarn test-back && yarn test-front && test-func",
+    "test": "yarn test-back && yarn test-front && yarn test-func",
     "watch-front": "yarn gulp watch --config ../config.json",
     "start-front": "yarn gulp clean && yarn watch-front",
     "start-back": "yarn django runserver --settings settings --pythonpath ..",
