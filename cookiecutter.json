@@ -1,0 +1,18 @@
+{
+  "project_title": "DigHum Pro",
+  "slug": "{{cookiecutter.project_title | lower | replace('-', '') | replace(' ', '_')}}",
+  "description": "{{cookiecutter.project_title}} will humanize all your digits!",
+  "author": "UU Digital Humanities Lab",
+  "origin": "github:UUDigitalHumanitieslab/{{cookiecutter.slug}}",
+  "database_name": "{{cookiecutter.slug}}",
+  "database_user": "{{cookiecutter.slug}}",
+  "database_password": "{{cookiecutter.slug}}",
+  "localizations": "en:english,fr:french",
+  "psql_command": "psql",
+  "virtualenv": ".env",
+  "virtualenv_command": "virtualenv {{cookiecutter.virtualenv}} --prompt=\"({{cookiecutter.slug}}) \"",
+  "_copy_without_render": [
+    "frontend/src/core",
+    "frontend/gulpfile.ts"
+  ]
+}
