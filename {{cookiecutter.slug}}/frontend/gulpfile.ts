@@ -117,7 +117,7 @@ const browserLibs: LibraryProps[] = [{
         module: 'i18next',
         browser: i18nModule,
         global: 'i18next',
-        cdn: `${unpkgPattern}/i18next.min.js`,
+        cdn: `${cdnjsPattern}/\${filenameMin}`,
     }],
     browserLibsRootedPaths: string[] = [],
     cdnizerConfig = {files: browserLibs.map(lib => {
