@@ -1,3 +1,4 @@
+import os
 import os.path as op
 import sys
 import subprocess
@@ -131,10 +132,12 @@ def main(argv):
 
 def generate_translations():
     print('Generate empty translation files... ', end='', flush=True)
+    target_dir = op.join('frontend', 'src', 'i18n')
+    os.remove(op.join(target_dir, '.placeholder'))
     for code, name in LOCALIZATIONS:
         print('{} '.format(name), end='', flush=True)
         json_name = '{}.json'.format(code)
-        target_path = op.join('frontend', 'src', 'i18n', json_name)
+        target_path = op.join(target_dir, json_name)
         try:
             target_file = open(target_path, 'w')
             target_file.write('{\n    \n}\n')
