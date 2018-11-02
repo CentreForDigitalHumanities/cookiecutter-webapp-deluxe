@@ -151,24 +151,25 @@ exposify.config = browserLibs.reduce((config: ExposeConfig, lib) => {
     return config;
 }, {});
 
-const tsModules = browserify({
+function decoratedBrowserify(options) {
+    return browserify(options)
+        .plugin(tsify, tsOptions)
+        .transform(aliasify, aliasOptions)
+        .transform(exposify, {global: true});
+}
+
+const tsModules = decoratedBrowserify({
     debug: !production,
     entries: [mainScript],
     cache: {},
     packageCache: {},
-}).plugin(tsify, tsOptions).transform(
-    aliasify,
-    aliasOptions,
-).transform(exposify, {global: true});
+});
 
-const tsTestModules = browserify({
+const tsTestModules = decoratedBrowserify({
     entries: unittestEntries,
     cache: {},
     packageCache: {},
-}).plugin(tsify, tsOptions).transform(
-    aliasify,
-    aliasOptions,
-).transform(exposify, {global: true});
+});
 
 function ifProd(stream, otherwise?) {
     return plugins['if'](production, stream, otherwise);
