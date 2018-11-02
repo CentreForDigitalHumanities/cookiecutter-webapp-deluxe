@@ -13,6 +13,7 @@
   "virtualenv_command": "virtualenv {{cookiecutter.virtualenv}} --prompt=\"({{cookiecutter.slug}}) \"",
   "_copy_without_render": [
     "frontend/src/core",
-    "frontend/gulpfile.ts"
+    "frontend/gulpfile.ts",
+    "frontend/src/global/hbsHelpers.ts"
   ]
 }

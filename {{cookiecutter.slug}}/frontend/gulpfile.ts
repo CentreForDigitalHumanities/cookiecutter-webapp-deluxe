@@ -79,7 +79,7 @@ const sourceDir = `src`,
     templateCacheName = 'templates',
     hbsModuleTail = 'dist/handlebars.runtime',
     hbsModule = `handlebars/${hbsModuleTail}`,
-    hbsKnownHelpers = {i18n: true},
+    hbsKnownHelpers = {i18n: true, static: true},
     hbsGlobal = 'Handlebars',
     i18nModuleTail = 'dist/umd/i18next',
     i18nModule = `i18next/${i18nModuleTail}`,
@@ -165,7 +165,10 @@ const tsTestModules = browserify({
     entries: unittestEntries,
     cache: {},
     packageCache: {},
-}).plugin(tsify, tsOptions).transform(exposify, {global: true});
+}).plugin(tsify, tsOptions).transform(
+    aliasify,
+    aliasOptions,
+).transform(exposify, {global: true});
 
 function ifProd(stream, otherwise?) {
     return plugins['if'](production, stream, otherwise);
