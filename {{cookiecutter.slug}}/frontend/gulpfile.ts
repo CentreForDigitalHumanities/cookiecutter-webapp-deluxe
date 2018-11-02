@@ -39,6 +39,8 @@ const SCRIPT = 'script',
     STYLE = 'style',
     TEMPLATE = 'template',
     INDEX = 'index',
+    IMAGE = 'image',
+    COMPLEMENT = 'complement',  // non-script static
     DIST = 'dist',
     SERVE = 'serve',
     WATCH = 'watch',
@@ -52,6 +54,7 @@ const sourceDir = `src`,
     indexConfig = yargs.argv.config || configModuleName,
     indexTemplate = `${sourceDir}/index.hbs`,
     indexOutput = `${buildDir}/index.html`,
+    imageDir = `${sourceDir}/image`,
     mainScript = `${sourceDir}/main.ts`,
     jsBundleName = `index.js`,
     jsSourceMapDest = `${buildDir}/${jsBundleName}.map`,
@@ -247,7 +250,13 @@ gulp.task(INDEX, function(done) {
     });
 });
 
-gulp.task(DIST, gulp.parallel(SCRIPT, STYLE, INDEX));
+gulp.task(IMAGE, function() {
+    return gulp.src(imageDir).pipe(gulp.symlink(buildDir));
+});
+
+gulp.task(COMPLEMENT, gulp.parallel(STYLE, INDEX, IMAGE));
+
+gulp.task(DIST, gulp.parallel(SCRIPT, COMPLEMENT));
 
 gulp.task(SERVE, function() {
     let serverOptions: any = {
@@ -266,7 +275,7 @@ gulp.task(SERVE, function() {
     plugins.connect.server(serverOptions);
 });
 
-gulp.task(WATCH, gulp.series(gulp.parallel(STYLE, TEMPLATE, INDEX), function() {
+gulp.task(WATCH, gulp.series(gulp.parallel(TEMPLATE, COMPLEMENT), function() {
     tsModules.plugin(watchify);
     tsModules.on('update', jsBundle);
     tsModules.on('log', log);
