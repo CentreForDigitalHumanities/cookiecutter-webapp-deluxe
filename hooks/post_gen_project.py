@@ -19,7 +19,6 @@ LOCALIZATIONS = map(
 PSQL_COMMAND = '{{cookiecutter.psql_command}}'
 WINDOWS = (platform.system() == 'Windows')
 VIRTUALENV = '{{cookiecutter.virtualenv}}'
-VIRTUALENV_ABS = op.abspath(VIRTUALENV)
 VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'
 VIRTUALENV_BINDIR = 'Scripts' if WINDOWS else 'bin'
 LOGFILE_NAME = 'bootstrap.log'
@@ -49,15 +48,12 @@ class Command(object):
             kwargs['stderr'] = subprocess.STDOUT
         self.kwargs = kwargs
 
-    def __call__(self, venv=None):
-        command = self.command.copy()
+    def __call__(self):
         log = self.get_log()
-        if venv:
-            command[0] = op.join(venv, VIRTUALENV_BINDIR, command[0])
         print('{}... '.format(self.description), end='', flush=True)
         log.write('$ {}\n\n'.format(self))
         try:
-            exit_code = subprocess.call(command, *self.args, **self.kwargs)
+            exit_code = subprocess.call(self.command, *self.args, **self.kwargs)
             if exit_code != 0:
                 print('failed ({}).'.format(exit_code))
                 return False
@@ -82,16 +78,17 @@ def main(argv):
     venv = create_virtualenv()
     pip_tools = backreq = backpack = clone_req = funcreq = funcpack = False
     if venv:
-        pip_tools = install_pip_tools(VIRTUALENV_ABS)
+        adopt_virtualenv()
+        pip_tools = install_pip_tools()
         if pip_tools:
-            backreq = compile_backend_requirements(VIRTUALENV_ABS)
+            backreq = compile_backend_requirements()
             if backreq:
-                backpack = install_backend_packages(VIRTUALENV_ABS)
+                backpack = install_backend_packages()
                 clone_req = copy_backreq_to_func()
                 if clone_req:
-                    funcreq = compile_functest_requirements(VIRTUALENV_ABS)
+                    funcreq = compile_functest_requirements()
                     if funcreq:
-                        funcpack = install_functest_packages(VIRTUALENV_ABS)
+                        funcpack = install_functest_packages()
     frontpack = install_frontend_packages()
     git = setup_git()
     gitflow = develop = stage = commit = remote = False
@@ -107,20 +104,18 @@ def main(argv):
     db = create_db()
     migrate = superuser = False
     if db and backpack:
-        migrate = run_migrations(VIRTUALENV_ABS)
+        migrate = run_migrations()
         if migrate:
-            superuser = create_superuser(VIRTUALENV_ABS)
+            superuser = create_superuser()
     print('\nAlmost ready to go! Just a couple more commands to run:')
     print(cd_into_project)
     if not venv: print(create_virtualenv)
     print(activate_venv)
     if not pip_tools: print(install_pip_tools)
     if not backreq: print(compile_backend_requirements)
-    if not backpack: print(install_backend_packages)
     if not clone_req: print(copy_backreq_to_func)
     if not funcreq: print(compile_functest_requirements)
-    if not funcpack: print(install_functest_packages)
-    if not frontpack: print(install_frontend_packages)
+    if not (backpack and frontpack and funcpack): print(install_all_packages)
     if not git: print(setup_git)
     if not gitflow and not develop: print(create_develop_branch)
     if not stage: print(git_add)
@@ -152,6 +147,16 @@ def generate_translations():
     return True
 
 
+def adopt_virtualenv():
+    """ Enable the virtualenv for our own subprocesses. """
+    # this is a quick imitation of a local bin/activate script
+    venv_abs = op.abspath(VIRTUALENV)
+    os.environ['VIRTUAL_ENV'] = venv_abs
+    python_bindir = op.join(venv_abs, VIRTUALENV_BINDIR)
+    os.environ['PATH'] = os.pathsep.join([python_bindir, os.environ['PATH']])
+    os.environ.pop('PYTHONHOME', None)
+
+
 cd_into_project = Command('', ['cd', SLUG])
 
 activate_helper = ([] if WINDOWS else ['source'])
@@ -165,23 +170,19 @@ create_virtualenv = Command(
     VIRTUALENV_COMMAND,
 )
 
-# For now, this command includes psyopg2 in order to silence its warning.
-# We can remove psycopg2 again when version 2.8 of psycopg2 is released.
 install_pip_tools = Command(
     'Install pip-tools',
-    ['pip', 'install', 'pip-tools', 'psycopg2', '--no-binary', 'psycopg2'],
+    ['yarn', 'preinstall'],
 )
 
 compile_backend_requirements = Command(
     'Compile the backend requirements',
-    ['pip-compile'],
-    cwd='backend',
+    ['yarn', 'back', 'pip-compile'],
 )
 
 install_backend_packages = Command(
     'Install the backend requirements',
-    ['pip', 'install', '-r', 'requirements.txt'],
-    cwd='backend',
+    ['yarn', 'install-back'],
 )
 
 copy_backreq_to_func = Command(
@@ -191,20 +192,20 @@ copy_backreq_to_func = Command(
 
 compile_functest_requirements = Command(
     'Compile the functional test requirements',
-    ['pip-compile'],
-    cwd='functional-tests',
+    ['yarn', 'func', 'pip-compile'],
 )
 
 install_functest_packages = Command(
     'Install the functional test requirements',
-    ['pip', 'install', '-r', 'requirements.txt'],
-    cwd='functional-tests',
+    ['yarn', 'install-func'],
 )
 
 install_frontend_packages = Command(
     'Install the frontend packages',
     ['yarn', 'fyarn'],
 )
+
+install_all_packages = Command('Install all packages', ['yarn'])
 
 setup_git = Command(
     'Initialize git',
@@ -245,14 +246,12 @@ create_db = Command(
 
 run_migrations = Command(
     'Run the initial migrations',
-    ['python', 'manage.py', 'migrate'],
-    cwd='backend',
+    ['yarn', 'django', 'migrate'],
 )
 
 create_superuser = Command(
     'Create the superuser',
-    ['python', 'manage.py', 'createsuperuser'],
-    cwd='backend',
+    ['yarn', 'django', 'createsuperuser'],
     stdout=None, # share stdout and stderr with this process
     stderr=None,
 )
