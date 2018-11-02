@@ -9,7 +9,7 @@ import re
 SLUG = '{{cookiecutter.slug}}'
 REPO_ORIGIN = '{{cookiecutter.origin}}'
 REPO_ORIGIN = re.sub(r'^(https?|git)://([^/]+)/(.+)$', r'git@\2:\3', REPO_ORIGIN)
-REPO_ORIGIN = re.sub(r'^(github:.+)$', r'git@\1', REPO_ORIGIN)
+REPO_ORIGIN = re.sub(r'^github:(.+)$', r'git@github.com:\1', REPO_ORIGIN)
 if re.fullmatch(r'^.+(?<!\.git)$', REPO_ORIGIN):
     REPO_ORIGIN += '.git'
 LOCALIZATIONS = map(
