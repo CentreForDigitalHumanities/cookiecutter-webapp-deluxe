@@ -1,5 +1,6 @@
 import os
 import os.path as op
+import platform
 import sys
 import subprocess
 import shlex
@@ -16,9 +17,11 @@ LOCALIZATIONS = map(
     '{{cookiecutter.localizations}}'.split(','),
 )
 PSQL_COMMAND = '{{cookiecutter.psql_command}}'
+WINDOWS = (platform.system() == 'Windows')
 VIRTUALENV = '{{cookiecutter.virtualenv}}'
 VIRTUALENV_ABS = op.abspath(VIRTUALENV)
 VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'
+VIRTUALENV_BINDIR = 'Scripts' if WINDOWS else 'bin'
 LOGFILE_NAME = 'bootstrap.log'
 
 
@@ -50,7 +53,7 @@ class Command(object):
         command = self.command.copy()
         log = self.get_log()
         if venv:
-            command[0] = '{}/bin/{}'.format(venv, command[0])
+            command[0] = op.join(venv, VIRTUALENV_BINDIR, command[0])
         print('{}... '.format(self.description), end='', flush=True)
         log.write('$ {}\n\n'.format(self))
         try:
@@ -151,7 +154,11 @@ def generate_translations():
 
 cd_into_project = Command('', ['cd', SLUG])
 
-activate_venv = Command('', ['source', '{}/bin/activate'.format(VIRTUALENV)])
+activate_helper = ([] if WINDOWS else ['source'])
+activate_venv = Command(
+    '',
+    activate_helper + [op.join(VIRTUALENV, VIRTUALENV_BINDIR, 'activate')],
+)
 
 create_virtualenv = Command(
     'Create the virtualenv',
@@ -179,7 +186,7 @@ install_backend_packages = Command(
 
 copy_backreq_to_func = Command(
     'Copy the backend requirements',
-    ['cp', 'backend/requirements.txt', 'functional-tests'],
+    ['cp', op.join('backend', 'requirements.txt'), 'functional-tests'],
 )
 
 compile_functest_requirements = Command(
@@ -233,7 +240,7 @@ add_remote = Command(
 # Fortunately, it is one of the last commands.
 create_db = Command(
     'Create the database',
-    PSQL_COMMAND + ' -f backend/create_db.sql',
+    PSQL_COMMAND + ' -f ' + op.join('backend', 'create_db.sql'),
 )
 
 run_migrations = Command(
