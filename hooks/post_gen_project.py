@@ -149,12 +149,14 @@ def generate_translations():
 
 def adopt_virtualenv():
     """ Enable the virtualenv for our own subprocesses. """
-    # this is a quick imitation of a local bin/activate script
+    # first lines are a quick imitation of a local bin/activate script
     venv_abs = op.abspath(VIRTUALENV)
     os.environ['VIRTUAL_ENV'] = venv_abs
     python_bindir = op.join(venv_abs, VIRTUALENV_BINDIR)
     os.environ['PATH'] = os.pathsep.join([python_bindir, os.environ['PATH']])
     os.environ.pop('PYTHONHOME', None)
+    # next line is a fix for https://bugs.python.org/issue22490
+    os.environ.pop('__PYVENV_LAUNCHER__', None)
 
 
 cd_into_project = Command('', ['cd', SLUG])
