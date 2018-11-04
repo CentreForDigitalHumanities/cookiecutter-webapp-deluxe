@@ -62,6 +62,7 @@ class Command(object):
 
 
 def main(argv):
+    already_in_project, cd_into_project = prepare_cwd()
     venv, create_virtualenv, activate_venv = prepare_virtualenv()
     pip_tools = backpack = funcpack = False
     if venv:
@@ -82,6 +83,7 @@ def main(argv):
         gitflow = setup_gitflow()
         develop = checkout_develop()
     print('\nAlmost ready to go! Just a couple more commands to run:')
+    if not already_in_project: print(cd_into_project)
     if not develop: print(checkout_develop)
     if not venv: print(create_virtualenv)
     print(activate_venv)
@@ -96,6 +98,17 @@ def main(argv):
 
 def prompt(variable, default_value):
     return input('{} [{}]: '.format(variable, default_value)) or default_value
+
+
+def prepare_cwd():
+    invocation_dir = op.abspath(os.getcwd())
+    project_root = op.dirname(op.abspath(__file__))
+    if invocation_dir == project_root:
+        return True, None
+    os.chdir(project_root)
+    relative_path = op.relpath(project_root, invocation_dir)
+    cd_into_project = Command('', ['cd', relative_path])
+    return False, cd_into_project
 
 
 def prepare_virtualenv():
