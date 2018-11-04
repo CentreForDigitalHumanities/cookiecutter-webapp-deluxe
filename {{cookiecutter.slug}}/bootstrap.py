@@ -77,14 +77,11 @@ def main(argv):
         if migrate:
             superuser = create_superuser()
     master = track_master()
-    develop = not master
     gitflow = False
     if master:
         gitflow = setup_gitflow()
-        develop = checkout_develop()
     print('\nAlmost ready to go! Just a couple more commands to run:')
     if not already_in_project: print(cd_into_project)
-    if not develop: print(checkout_develop)
     if not venv: print(create_virtualenv)
     print(activate_venv)
     if not (pip_tools and backpack and frontpack and funcpack): print(install_all_packages)
@@ -201,17 +198,12 @@ create_superuser = Command(
 
 track_master = Command(
     'Create origin-tracking master branch',
-    ['git', 'checkout', '--track', 'origin/master'],
+    ['git', 'branch', '--track', 'master', 'origin/master'],
 )
 
 setup_gitflow = Command(
     'Initialize git-flow',
     ['git', 'flow', 'init', '-d'],
-)
-
-checkout_develop = Command(
-    'Switch back to the develop branch',
-    ['git', 'checkout', 'develop'],
 )
 
 yarn_start = Command('', ['yarn', 'start'])
