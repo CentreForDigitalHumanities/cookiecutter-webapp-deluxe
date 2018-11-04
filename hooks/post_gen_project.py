@@ -1,12 +1,12 @@
 import os
 import os.path as op
-import platform
 import sys
-import subprocess
-import shlex
 import re
 
-SLUG = '{{cookiecutter.slug}}'
+# import the bootstrap script from the generated project directory
+sys.path.append(os.getcwd())
+from bootstrap import *
+
 REPO_ORIGIN = '{{cookiecutter.origin}}'
 REPO_ORIGIN = re.sub(r'^(https?|git)://([^/]+)/(.+)$', r'git@\2:\3', REPO_ORIGIN)
 REPO_ORIGIN = re.sub(r'^github:(.+)$', r'git@github.com:\1', REPO_ORIGIN)
@@ -17,59 +17,8 @@ LOCALIZATIONS = map(
     '{{cookiecutter.localizations}}'.split(','),
 )
 PSQL_COMMAND = '{{cookiecutter.psql_command}}'
-WINDOWS = (platform.system() == 'Windows')
 VIRTUALENV = '{{cookiecutter.virtualenv}}'
 VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'
-VIRTUALENV_BINDIR = 'Scripts' if WINDOWS else 'bin'
-LOGFILE_NAME = 'bootstrap.log'
-
-
-class Command(object):
-    """ Representation of a command to be run in project setup.
-
-        We create a bunch of these to implement most of the steps in main.
-    """
-
-    @classmethod
-    def get_log(cls):
-        if not hasattr(cls, 'log'):
-            cls.log = open(LOGFILE_NAME, 'w', buffering=1)
-        return cls.log
-
-    def __init__(self, description, command, *args, **kwargs):
-        self.description = description
-        if isinstance(command, str):
-            command = shlex.split(command)
-        self.command = command
-        self.args = args
-        if 'stdout' not in kwargs:
-            kwargs['stdout'] = self.get_log()
-        if 'stderr' not in kwargs:
-            kwargs['stderr'] = subprocess.STDOUT
-        self.kwargs = kwargs
-
-    def __call__(self):
-        log = self.get_log()
-        print('{}... '.format(self.description), end='', flush=True)
-        log.write('$ {}\n\n'.format(self))
-        try:
-            exit_code = subprocess.call(self.command, *self.args, **self.kwargs)
-            if exit_code != 0:
-                print('failed ({}).'.format(exit_code))
-                return False
-            print('success.')
-            log.write('\n\n')
-            return True
-        except Exception as e:
-            print(e)
-            log.write('never ran (exception)\n\n')
-            return False
-
-    def __str__(self):
-        representation = ' '.join(map(shlex.quote, self.command))
-        if 'cwd' in self.kwargs:
-            return '(cd {} ; {})'.format(self.kwargs['cwd'], representation)
-        return representation
 
 
 def main(argv):
@@ -78,7 +27,7 @@ def main(argv):
     venv = create_virtualenv()
     pip_tools = backreq = backpack = clone_req = funcreq = funcpack = False
     if venv:
-        adopt_virtualenv()
+        adopt_virtualenv(VIRTUALENV)
         pip_tools = install_pip_tools()
         if pip_tools:
             backreq = compile_backend_requirements()
@@ -147,44 +96,15 @@ def generate_translations():
     return True
 
 
-def adopt_virtualenv():
-    """ Enable the virtualenv for our own subprocesses. """
-    # first lines are a quick imitation of a local bin/activate script
-    venv_abs = op.abspath(VIRTUALENV)
-    os.environ['VIRTUAL_ENV'] = venv_abs
-    python_bindir = op.join(venv_abs, VIRTUALENV_BINDIR)
-    os.environ['PATH'] = os.pathsep.join([python_bindir, os.environ['PATH']])
-    os.environ.pop('PYTHONHOME', None)
-    # next line is a fix for https://bugs.python.org/issue22490
-    os.environ.pop('__PYVENV_LAUNCHER__', None)
-
-
 cd_into_project = Command('', ['cd', SLUG])
 
-activate_helper = ([] if WINDOWS else ['source'])
-activate_venv = Command(
-    '',
-    activate_helper + [op.join(VIRTUALENV, VIRTUALENV_BINDIR, 'activate')],
-)
+create_virtualenv = make_create_venv_command(VIRTUALENV_COMMAND)
 
-create_virtualenv = Command(
-    'Create the virtualenv',
-    VIRTUALENV_COMMAND,
-)
-
-install_pip_tools = Command(
-    'Install pip-tools',
-    ['yarn', 'preinstall'],
-)
+activate_venv = make_activate_venv_command(VIRTUALENV)
 
 compile_backend_requirements = Command(
     'Compile the backend requirements',
     ['yarn', 'back', 'pip-compile'],
-)
-
-install_backend_packages = Command(
-    'Install the backend requirements',
-    ['yarn', 'install-back'],
 )
 
 copy_backreq_to_func = Command(
@@ -197,26 +117,9 @@ compile_functest_requirements = Command(
     ['yarn', 'func', 'pip-compile'],
 )
 
-install_functest_packages = Command(
-    'Install the functional test requirements',
-    ['yarn', 'install-func'],
-)
-
-install_frontend_packages = Command(
-    'Install the frontend packages',
-    ['yarn', 'fyarn'],
-)
-
-install_all_packages = Command('Install all packages', ['yarn'])
-
 setup_git = Command(
     'Initialize git',
     ['git', 'init'],
-)
-
-setup_gitflow = Command(
-    'Initialize git-flow',
-    ['git', 'flow', 'init', '-d'],
 )
 
 create_develop_branch = Command(
@@ -241,26 +144,9 @@ add_remote = Command(
 
 # psql does not properly indicate failure; it always exits with 0.
 # Fortunately, it is one of the last commands.
-create_db = Command(
-    'Create the database',
-    PSQL_COMMAND + ' -f ' + op.join('backend', 'create_db.sql'),
-)
-
-run_migrations = Command(
-    'Run the initial migrations',
-    ['yarn', 'django', 'migrate'],
-)
-
-create_superuser = Command(
-    'Create the superuser',
-    ['yarn', 'django', 'createsuperuser'],
-    stdout=None, # share stdout and stderr with this process
-    stderr=None,
-)
+create_db = make_create_db_command(PSQL_COMMAND)
 
 git_push = Command('', ['git', 'push', '-u', 'origin', 'master', 'develop'])
-
-yarn_start = Command('', ['yarn', 'start'])
 
 
 if __name__ == '__main__':
