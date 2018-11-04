@@ -80,6 +80,8 @@ def main(argv):
     gitflow = False
     if master:
         gitflow = setup_gitflow()
+    if not all([gitflow, superuser, frontpack, funcpack, pip_tools]):
+        print('\nPlease read {} for information on failed commands.'.format(LOGFILE_NAME))
     print('\nAlmost ready to go! Just a couple more commands to run:')
     if not already_in_project: print(cd_into_project)
     if not venv: print(create_virtualenv)

@@ -56,6 +56,8 @@ def main(argv):
         migrate = run_migrations()
         if migrate:
             superuser = create_superuser()
+    if not all([superuser, remote, commit, gitflow, funcpack]):
+        print('\nPlease read {} for information on failed commands.'.format(LOGFILE_NAME))
     print('\nAlmost ready to go! Just a couple more commands to run:')
     print(cd_into_project)
     if not venv: print(create_virtualenv)
