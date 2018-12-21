@@ -16,6 +16,9 @@ You need to install the following software:
  - Python >= 3.4, <= 3.6
  - virtualenv
  - WSGI-compatible webserver (deployment only)
+ - [Visual C++ for Python][14] (Windows only)
+
+[14]: https://wiki.python.org/moin/WindowsCompilers
 
 
 ## How it works
