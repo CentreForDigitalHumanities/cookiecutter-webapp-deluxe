@@ -50,13 +50,13 @@ Create and activate a virtualenv. Ensure your working directory is the one that 
 
 ```console
 $ psql -f create_db.sql
-$ pip install pip-tools psycopg2 --no-binary psycopg2
-$ pip-sync
+$ pip install pip-tools
+$ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py createsuperuser
 ```
 
-We need to install `psycopg2` with the `--no-binary` flag [until version 2.8 of `psycopg2` is available][8].
+We need to install `psycopg2` with the `--no-binary` flag [until version 2.8 of `psycopg2` is available][8]. If this were not the case, we could use `pip-sync` instead of `pip install -r`; the former currently doesn't work because of the `--no-binary` flag being present in the `requirements.txt`.
 
 [8]: http://initd.org/psycopg/docs/install.html#disabling-wheel-packages-for-psycopg-2-7
 
