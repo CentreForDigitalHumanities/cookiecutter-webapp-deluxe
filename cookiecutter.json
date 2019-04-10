@@ -8,6 +8,7 @@
   "database_user": "{{cookiecutter.slug}}",
   "database_password": "{{cookiecutter.slug}}",
   "localizations": "en:english,fr:french",
+  "frontend": "angular",
   "psql_command": "psql",
   "virtualenv": ".env",
   "virtualenv_command": "virtualenv {{cookiecutter.virtualenv}} --prompt=\"({{cookiecutter.slug}}) \"",

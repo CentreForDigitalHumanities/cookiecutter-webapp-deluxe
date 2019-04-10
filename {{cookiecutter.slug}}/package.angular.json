@@ -8,6 +8,7 @@
     "private": true,
     "scripts": {
         "front": "cd frontend && ",
+        "ng": "yarn front ng",
         "back": "cd backend && ",
         "func": "cd functional-tests && ",
         "fyarn": "yarn front yarn",

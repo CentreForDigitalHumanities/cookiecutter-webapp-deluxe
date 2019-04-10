@@ -11,8 +11,9 @@ A boilerplate for full-fledged web applications with [Django][1] backend, [Backb
 
 You need to install *at least* the following software:
 
+ - [@angular/cli](https://angular.io/guide/quickstart) for Angular projects.
  - Python >= 3.4, <= 3.6
- - [Cookiecutter][4]
+ - [Cookiecutter][4] (install using pip in a virtualenv using Python 3)
  - virtualenv
  - Git (if you use this cookiecutter directly from GitHub)
 

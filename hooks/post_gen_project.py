@@ -23,7 +23,8 @@ VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'
 
 def main(argv):
     print('\nFiles generated. Performing final steps.')
-    if not generate_translations(): return 1
+    activate_frontend()
+    if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
     venv = create_virtualenv()
     pip_tools = backreq = backpack = clone_req = funcreq = funcpack = False
     if venv:
@@ -79,7 +80,7 @@ def main(argv):
     print(yarn_start)
 
 
-def generate_translations():
+def generate_backbone_translations():
     print('Generate empty translation files... ', end='', flush=True)
     target_dir = op.join('frontend', 'src', 'i18n')
     os.remove(op.join(target_dir, '.placeholder'))

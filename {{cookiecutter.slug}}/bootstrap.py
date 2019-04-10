@@ -2,10 +2,13 @@
 
 import os
 import os.path as op
+from distutils import dir_util
+import glob
 import platform
 import sys
 import subprocess
 import shlex
+import shutil
 
 SLUG = '{{cookiecutter.slug}}'
 WINDOWS = (platform.system() == 'Windows')
@@ -163,6 +166,31 @@ def make_create_db_command(psql_cmd):
         psql_cmd + ' -f ' + op.join('backend', 'create_db.sql'),
     )
 
+def activate_frontend():
+    framework = '{{cookiecutter.frontend}}'
+    os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
+
+    if framework == 'backbone':
+        os.rename('frontend.backbone', 'frontend')
+    elif framework == 'angular':
+        project_name = '{{cookiecutter.slug}}'.replace('_', '-')
+        Command(
+            'Creating project',
+            ['ng', 'new', project_name]
+        )()
+        dir_util.copy_tree('frontend.angular', project_name)
+        os.rename(project_name, 'frontend')
+        Command(
+            'Set project to use yarn',
+            ['yarn', 'ng', 'config', '-g', 'cli.packageManager', 'yarn']
+        )()
+    else:
+        print('Unknown framework {{cookiecutter.frontend}} specified!')
+    # remove other frameworks
+    for path in glob.glob("frontend.*"):
+        shutil.rmtree(path)
+    for path in glob.glob("package.*.json"):
+        os.remove(path)
 
 install_pip_tools = Command(
     'Install pip-tools',
