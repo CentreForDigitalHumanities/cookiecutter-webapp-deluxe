@@ -29,4 +29,4 @@ script:
   - cd functional-tests && pip-compile && cd ..
   - yarn
   - yarn django migrate
-  - yarn serve-p & yarn test
+  - yarn test-back && yarn test-front

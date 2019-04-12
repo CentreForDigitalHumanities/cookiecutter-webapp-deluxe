@@ -23,4 +23,4 @@ script:
   - source .env/bin/activate
   - yarn
   - yarn django migrate
-  - yarn serve-p & yarn test
+  - yarn test-back && yarn test-front
