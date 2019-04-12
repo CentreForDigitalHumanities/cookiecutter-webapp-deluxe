@@ -15,12 +15,10 @@ before_install:
 install:
   - pip install cookiecutter
   - yarn global add @angular/cli chromedriver geckodriver webdriver
-before_script:
-  - cd project
 script:
-  - cookiecutter --no-input -o .
+  - cookiecutter cookiecutter-webapp-deluxe --no-input -o .
   - cd dighum_pro
   - source .env/bin/activate
   - yarn
   - yarn django migrate
-  - yarn serve-p & yarn test
+  - yarn test-back && yarn test-front
