@@ -25,9 +25,8 @@ script:
   - cookiecutter . --no-input
   - cd dighum_pro
   - cat bootstrap.log
-  - cd backend
-  - pip-compile
-  - cd ..
+  - cd backend && pip-compile && cd ..
+  - cd functional-tests && pip-compile && cd ..
   - yarn
   - yarn django migrate
-  - yarn test-back && yarn test-front
+  - yarn serve-p & yarn test
