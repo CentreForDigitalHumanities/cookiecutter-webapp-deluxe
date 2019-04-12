@@ -1,8 +1,19 @@
 {
     "version": null,
     "scripts": {
+{% set localizations = cookiecutter.localizations.split(',') %}
+{%- for loc in localizations %}
+{%- set code, name = loc.split(':') %}
+        "build:{{code}}": "ng build --configuration=production-{{code}}",
+{%- endfor %}
+        "i18n": "ng xi18n --output-path locale",
         "serve": "ng serve --proxy-config proxy.conf.json",
         "start": "yarn serve",
+{% set localizations = cookiecutter.localizations.split(',') %}
+{%- for loc in localizations %}
+{%- set code, name = loc.split(':') %}
+        "start:{{code}}": "ng serve --proxy-config proxy.conf.json --configuration={{code}}",
+{%- endfor %}
         "test": "ng test --watch=true",
         "test-once": "ng test --watch=false"
     }

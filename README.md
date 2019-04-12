@@ -1,9 +1,9 @@
 # cookiecutter-webapp-deluxe
 
-A boilerplate for full-fledged web applications with [Django][1] backend, [Backbone][2] frontend and [Selenium][3] functional tests.
+A boilerplate for full-fledged web applications with [Django][1] backend, [Angular][2] frontend and [Selenium][3] functional tests.
 
 [1]: https://www.djangoproject.com
-[2]: https://backbonejs.org
+[2]: https://angular.io
 [3]: https://www.seleniumhq.org/docs/03_webdriver.jsp
 
 

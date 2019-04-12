@@ -176,6 +176,30 @@ def merge_json(target, source):
             merge_json(target[key], source[key])
         else:
             target[key] = value
+    return target
+
+def create_angular_localization_settings():
+    with open('frontend/angular.json', 'r') as file:
+        data = json.load(file)
+    project = '{{cookiecutter.slug}}'.replace('_', '-')
+    for lang in '{{cookiecutter.localizations}}'.split(','):
+        [code, lang_name] = lang.split(':')
+        production = merge_json({}, data['projects'][project]['architect']['build']['configurations']['production'])
+        production['outputPath'] = f'dist/{code}'
+        production['i18nFile'] = f'src/locale/messages.{code}.xlf'
+        production['i18nFormat'] = 'xlf'
+        production['i18nLocale'] = code
+        production['i18nMissingTranslation'] = 'error'
+        data['projects'][project]['architect']['build']['configurations'][f'production-{code}'] = production
+
+        serve = merge_json({}, data['projects'][project]['architect']['serve']['configurations']['production'])
+        serve['browserTarget'] += f'-{code}'
+        data['projects'][project]['architect']['serve']['configurations'][code] = serve
+
+    data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist/default'
+
+    with open('frontend/angular.json', 'w') as file:
+        json.dump(data, file, indent=2)
 
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
@@ -195,14 +219,28 @@ def activate_frontend():
         dir_util.copy_tree('frontend.angular', project_name)
         os.rename(project_name, 'frontend')
         Command(
-            'Set project to use yarn',
+            'Set project to use Yarn',
             ['ng', 'config', 'cli.packageManager', 'yarn'],
             cwd="frontend"
         )()
+        Command(
+            'Install frontend dependencies using Yarn',
+            ['yarn'],
+            cwd="frontend"
+        )()
+        create_angular_localization_settings()
+        Command(
+            'Creating localizations',
+            ['ng', 'xi18n', '--output-path', 'locale'],
+            cwd="frontend"
+        )()
+        for lang in '{{cookiecutter.localizations}}'.split(','):
+            [code, lang_name] = lang.split(':')
+            shutil.copyfile('frontend/src/locale/messages.xlf', f'frontend/src/locale/messages.{code}.xlf')
         if '{{cookiecutter.frontend_port}}' != '4200':
             Command(
                 'Set frontend port',
-                ['ng', 'config', 'projects.{{cookiecutter.slug | replace('_', '-'))}}.architect.serve.options.port', '{{cookiecutter.frontend_port}}'],
+                ['ng', 'config', 'projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port', '{{cookiecutter.frontend_port}}'],
                 cwd="frontend"
             )()
     else:
@@ -215,6 +253,7 @@ def activate_frontend():
         with open('frontend/package.json', 'w') as file:
             merge_json(data, overwrite)
             json.dump(data, file, indent=2)
+        os.remove('frontend/package.overwrite.json')
     # remove other frameworks
     for path in glob.glob("frontend.*"):
         shutil.rmtree(path)
