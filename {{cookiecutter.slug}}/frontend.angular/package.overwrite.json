@@ -1,0 +1,9 @@
+{
+    "version": null,
+    "scripts": {
+        "serve": "ng serve --proxy-config proxy.conf.json",
+        "start": "yarn serve",
+        "test": "ng test --watch=true",
+        "test-once": "ng test --watch=false"
+    }
+}

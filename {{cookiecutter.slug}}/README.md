@@ -55,7 +55,7 @@ Running the application in [development mode][8] (hit ctrl-C to stop):
 $ yarn start
 ```
 
-This will run the backend and frontend applications, as well as their unittests, and watch all source files for changes. You can visit the frontend on http://localhost:8000/, the browsable backend API on http://localhost:8000/api/ and the backend admin on http://localhost:8000/admin/. On every change, unittests rerun, frontend code rebuilds and open browser tabs refresh automatically (livereload).
+This will run the backend and frontend applications, as well as their unittests, and watch all source files for changes. You can visit the frontend on http://localhost:{{cookiecutter.backend_port}}/, the browsable backend API on http://localhost:{{cookiecutter.backend_port}}/api/ and the backend admin on http://localhost:{{cookiecutter.backend_port}}/admin/. On every change, unittests rerun, frontend code rebuilds and open browser tabs refresh automatically (livereload).
 
 [8]: #development-mode-vs-production-mode
 
@@ -110,7 +110,7 @@ Run the functional test suite:
 $ yarn test-func [FUNCTIONAL TEST OPTIONS]
 ```
 
-The functional test suite by default assumes that you have the application running locally in production mode (i.e., on port `8080`). See [Configuring the browsers][10] and [Configuring the base address][11] in `functional-tests/README` for options.
+The functional test suite by default assumes that you have the application running locally in production mode (i.e., on port `{{cookiecutter.frontend_port}}`). See [Configuring the browsers][10] and [Configuring the base address][11] in `functional-tests/README` for options.
 
 [10]: functional-tests/README.md#configuring-the-browsers
 [11]: functional-tests/README.md#configuring-the-base-address
@@ -190,7 +190,7 @@ The purpose of development mode is to facilitate live development, as the name i
 dimension  |  Development mode  |  Production mode
 -----------|--------------------|-----------------
 command  |  `yarn start`  |  `yarn start-p`
-base address  |  http://localhost:8000  |  http://localhost:8080
+base address  |  http://localhost:{{cookiecutter.backend_port}}  |  http://localhost:{{cookiecutter.frontend_port}}
 backend server (Django)  |  in charge of everything  |  serves backend only
 frontend server (gulp-connect)  |  does not run  |  primary gateway
 static files  |  served directly by Django's staticfiles app  |  collected by Django, served by gulp-connect

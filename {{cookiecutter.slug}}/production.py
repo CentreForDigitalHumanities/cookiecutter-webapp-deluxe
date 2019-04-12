@@ -1,4 +1,4 @@
-""" Settings overrides to quicly enable production mode.
+""" Settings overrides to quickly enable production mode.
 
     Magic glue; this is NOT the place for customizations.
 """

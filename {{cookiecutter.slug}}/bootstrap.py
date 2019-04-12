@@ -4,6 +4,7 @@ import os
 import os.path as op
 from distutils import dir_util
 import glob
+import json
 import platform
 import sys
 import subprocess
@@ -166,6 +167,16 @@ def make_create_db_command(psql_cmd):
         psql_cmd + ' -f ' + op.join('backend', 'create_db.sql'),
     )
 
+def merge_json(target, source):
+    for key, value in source.items():
+        if value == None:
+            del target[key]
+        elif key in target and isinstance(target[key], dict) and \
+            isinstance(source[key], dict):
+            merge_json(target[key], source[key])
+        else:
+            target[key] = value
+
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
     os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
@@ -176,16 +187,34 @@ def activate_frontend():
         project_name = '{{cookiecutter.slug}}'.replace('_', '-')
         Command(
             'Creating project',
-            ['ng', 'new', project_name]
+            ['ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
+                '--skipGit=true',
+                '--skipInstall=true',
+                '--style=scss']
         )()
         dir_util.copy_tree('frontend.angular', project_name)
         os.rename(project_name, 'frontend')
         Command(
             'Set project to use yarn',
-            ['yarn', 'ng', 'config', '-g', 'cli.packageManager', 'yarn']
+            ['ng', 'config', 'cli.packageManager', 'yarn'],
+            cwd="frontend"
         )()
+        if '{{cookiecutter.frontend_port}}' != '4200':
+            Command(
+                'Set frontend port',
+                ['ng', 'config', 'projects.{{cookiecutter.slug | replace('_', '-'))}}.architect.serve.options.port', '{{cookiecutter.frontend_port}}'],
+                cwd="frontend"
+            )()
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
+    if os.path.isfile('frontend/package.overwrite.json'):
+        with open('frontend/package.overwrite.json', 'r') as file:
+            overwrite = json.load(file)
+        with open('frontend/package.json', 'r') as file:
+            data = json.load(file)
+        with open('frontend/package.json', 'w') as file:
+            merge_json(data, overwrite)
+            json.dump(data, file, indent=2)
     # remove other frameworks
     for path in glob.glob("frontend.*"):
         shutil.rmtree(path)

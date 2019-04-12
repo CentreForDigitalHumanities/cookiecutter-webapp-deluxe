@@ -49,7 +49,7 @@ then, to start the suite with default settings:
 $ pytest
 ```
 
-This will attempt to run the suite in Firefox and Chrome. It assumes that you have the application running locally on port 8080. In order specify other browsers or another network address, read on.
+This will attempt to run the suite in Firefox and Chrome. It assumes that you have the application running locally on port {{cookiecutter.frontend_port}}. In order specify other browsers or another network address, read on.
 
 
 ### Configuring the browsers
@@ -103,7 +103,7 @@ $ pytest --base-address http://localhost:5000/
 $ pytest --base-address https://www.{{cookiecutter.slug}}.com/app/
 ```
 
-If you want the base address to always default to something other than `http://localhost:8080/`, you can also set this in the `pytest.ini`:
+If you want the base address to always default to something other than `http://localhost:{{cookiecutter.frontend_port}}/`, you can also set this in the `pytest.ini`:
 
 ```ini
 [pytest]
@@ -132,7 +132,7 @@ def test_something(browser, base_address):
 [5]: https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#explicit-and-implicit-waits
 [10]: https://seleniumhq.github.io/selenium/docs/api/py/api.html
 
-`base_address` is the main address fixture. It is just a string, containing either whatever you passed as the `--base-address` or the default of `http://localhost:8080/`. There are a couple of derived address fixtures: `api_address`, `api_auth_address` and `admin_address`. Whenever you need to pass an address to the `browser`, make sure to compute this address relative to the `base_address` or one of its derived fixtures; this ensures that all requests in the test suite go to the right instance of the application.
+`base_address` is the main address fixture. It is just a string, containing either whatever you passed as the `--base-address` or the default of `http://localhost:{{cookiecutter.frontend_port}}/`. There are a couple of derived address fixtures: `api_address`, `api_auth_address` and `admin_address`. Whenever you need to pass an address to the `browser`, make sure to compute this address relative to the `base_address` or one of its derived fixtures; this ensures that all requests in the test suite go to the right instance of the application.
 
 Besides `browser` and the `*_address` fixtures, pytest provides several builtin fixtures that you can use. Especially the [`tmpdir` fixture][6] can be useful if, for example, you want to download files from the application. You can get a full list of available fixtures by running `pytest -q --fixtures`. You can also add your own fixtures; see below.
 
