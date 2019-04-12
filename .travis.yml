@@ -16,11 +16,15 @@ before_install:
   - sudo apt-get install -y -qq yarn
 install:
   - pip install cookiecutter
-  - yarn global add @angular/cli chromedriver geckodriver webdriver
+  - yarn global add @angular/cli
 script:
   - cookiecutter . --no-input
   - cd dighum_pro
+  - cat bootstrap.log
   - source .env/bin/activate
+  - cd backend
+  - pip-compile
+  - cd ..
   - yarn
   - yarn django migrate
   - yarn test-back && yarn test-front
