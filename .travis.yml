@@ -1,14 +1,15 @@
 language: python
 python:
   - 3.6
+node_js:
+  - 10
 cache:
   directories:
     - $HOME/.cache/pip
     - $HOME/.yarn-cache
     - node_modules
 before_install:
-  - curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
-  - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   - sudo apt-get update -qq
   - sudo apt-get install -y -qq yarn
