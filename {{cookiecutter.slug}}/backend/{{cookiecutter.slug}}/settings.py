@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'rest_framework',
+    'revproxy'
 ]
 
 MIDDLEWARE = [
@@ -49,7 +50,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+{% if cookiecutter.frontend == "backend" %}
     'livereload.middleware.LiveReloadScript',
+{% endif %}
 ]
 
 ROOT_URLCONF = '{{cookiecutter.slug}}.urls'
@@ -126,3 +129,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = []
+
+{% if cookiecutter.frontend == "angular" %}
+PROXY_FRONTEND = "http://localhost:{{cookiecutter.frontend_port}}"
+{% else %}
+PROXY_FRONTEND = None
+{% endif %}

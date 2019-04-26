@@ -196,6 +196,7 @@ def create_angular_localization_settings():
         serve['browserTarget'] += f'-{code}'
         data['projects'][project]['architect']['serve']['configurations'][code] = serve
 
+    data['projects'][project]['architect']['build']['options']['outputPath'] = 'dist'
     data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist/default'
 
     with open('frontend/angular.json', 'w') as file:
