@@ -12,7 +12,7 @@ A boilerplate for full-fledged web applications with [Django][1] backend, [Angul
 You need to install *at least* the following software:
 
  - [@angular/cli](https://angular.io/guide/quickstart) for Angular projects.
- - Python >= 3.4, <= 3.6
+ - Python 3.6, 3.7
  - [Cookiecutter][4] (install using pip in a virtualenv using Python 3)
  - virtualenv
  - Git (if you use this cookiecutter directly from GitHub)
@@ -64,6 +64,9 @@ The "pretty" name of your project, intended for human audiences.
 
 The "technical" name of your project, intended for file names, package names, variable names, etcetera. Should match the regular expression `^[a-z][a-z0-9_]*$`. The root directory of the generated project will have this name, too.
 
+### app_prefix
+
+The [app prefix](https://angular.io/guide/styleguide#component-custom-prefix) to use in Angular.
 
 #### description
 
@@ -95,6 +98,13 @@ Frontend languages for which you'd like to generate localization files initially
 
 [10]: https://www.i18next.com/principles/translation-resolution#languages
 
+#### frontend
+
+The frontend framework to use.
+
+#### {frontend,backend}_port
+
+The default port to use when locally running a frontend or backend server.
 
 #### psql_command
 
@@ -121,7 +131,7 @@ The post-generation script needs to know the path to your virtualenv, but you ar
 
 The command that will generate the virtualenv in the location that you provided in the previous parameter. This command will run with the root of the generated project as its working directory. It is important that you can run this command as yourself, i.e., without `sudo`.
 
-The virtualenv must have Python version >= 3.4, <= 3.6. If your virtualenv-creating command uses a different version by default, make sure to add an option to rectify this. The most commonly used command, `virtualenv`, has the `-p` option, so you can for example append `-p python3.4`.
+The virtualenv must have Python version >= 3.6, <= 3.7. If your virtualenv-creating command uses a different version by default, make sure to add an option to rectify this. The most commonly used command, `virtualenv`, has the `-p` option, so you can for example append `-p python3.6`.
 
 
 ### Post-generation script

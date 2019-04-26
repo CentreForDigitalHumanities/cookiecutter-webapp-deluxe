@@ -15,7 +15,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         '--base-address',
-        default='http://localhost:{{cookiecutter.frontend_port}}/',
+        default='http://localhost:{{cookiecutter.backend_port}}/',
         help='specifies the base address where the application is running',
         dest=BASE_ADDRESS_OPTION_NAME,
     )
