@@ -1,3 +1,4 @@
+import os
 import pytest
 from selenium import webdriver
 
@@ -34,8 +35,14 @@ def webdriver_instance(webdriver_name):
 
         Use the `browser` fixture instead; it performs cleanups after each test.
     """
-    factory = getattr(webdriver, webdriver_name)
-    driver = factory()
+    if os.environ['TRAVIS'] and webdriver_name == 'Chrome':
+        options = webdriver.ChromeOptions()
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(options)
+    else:
+        factory = getattr(webdriver, webdriver_name)
+        driver = factory()
     try:
         yield driver
     finally:
