@@ -288,12 +288,20 @@ run_migrations = Command(
     ['yarn', 'django', 'migrate'],
 )
 
-create_superuser = Command(
-    'Create the superuser',
-    ['yarn', 'django', 'createsuperuser'],
-    stdout=None, # share stdout and stderr with this process
-    stderr=None,
-)
+if os.environ['TRAVIS']:
+    create_superuser = Command(
+        'Skip creating the superuser',
+        ['yarn', 'back'],
+        stdout=None, # share stdout and stderr with this process
+        stderr=None,
+    )
+else:
+    create_superuser = Command(
+        'Create the superuser',
+        ['yarn', 'django', 'createsuperuser'],
+        stdout=None, # share stdout and stderr with this process
+        stderr=None,
+    )
 
 track_master = Command(
     'Create origin-tracking master branch',

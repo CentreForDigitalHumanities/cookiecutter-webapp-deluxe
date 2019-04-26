@@ -22,7 +22,7 @@ install:
 script:
   - cookiecutter . --no-input
   - cd dighum_pro
-  - cat bootstrap.log  
+  - cat bootstrap.log
   - yarn
   - yarn django migrate
   - yarn start-p &
