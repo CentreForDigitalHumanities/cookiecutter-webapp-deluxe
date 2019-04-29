@@ -1,6 +1,7 @@
 {
     "version": null,
     "scripts": {
+        "e2e": null,
 {% set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
 {%- set code, name = loc.split(':') %}

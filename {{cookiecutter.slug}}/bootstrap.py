@@ -178,7 +178,7 @@ def merge_json(target, source):
             target[key] = value
     return target
 
-def create_angular_localization_settings():
+def modify_angular_json():
     with open('frontend/angular.json', 'r') as file:
         data = json.load(file)
     project = '{{cookiecutter.slug}}'.replace('_', '-')
@@ -198,6 +198,9 @@ def create_angular_localization_settings():
 
     data['projects'][project]['architect']['build']['options']['outputPath'] = 'dist'
     data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist/default'
+
+    # remove e2e
+    del data['projects'][f'{project}-e2e']
 
     with open('frontend/angular.json', 'w') as file:
         json.dump(data, file, indent=2)
@@ -229,7 +232,9 @@ def activate_frontend():
             ['yarn'],
             cwd="frontend"
         )()
-        create_angular_localization_settings()
+        # Remove e2e
+        shutil.rmtree(os.path.join('frontend', 'e2e'))
+        modify_angular_json()
         Command(
             'Creating localizations',
             ['ng', 'xi18n', '--output-path', 'locale'],
@@ -288,7 +293,7 @@ run_migrations = Command(
     ['yarn', 'django', 'migrate'],
 )
 
-if os.environ['TRAVIS']:
+if 'TRAVIS' in os.environ:
     create_superuser = Command(
         'Skip creating the superuser',
         ['yarn', 'back'],
