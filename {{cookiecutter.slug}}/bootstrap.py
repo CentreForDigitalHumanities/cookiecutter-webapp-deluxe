@@ -196,7 +196,7 @@ def modify_angular_json():
         serve['browserTarget'] += f'-{code}'
         data['projects'][project]['architect']['serve']['configurations'][code] = serve
 
-    data['projects'][project]['architect']['build']['options']['outputPath'] =
+    data['projects'][project]['architect']['build']['options']['outputPath'] = \
         data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist'
 
     # remove e2e
