@@ -211,6 +211,7 @@ def activate_frontend():
 
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
+        shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
     elif framework == 'angular':
         project_name = '{{cookiecutter.slug}}'.replace('_', '-')
         Command(
@@ -222,6 +223,7 @@ def activate_frontend():
         )()
         dir_util.copy_tree('frontend.angular', project_name)
         os.rename(project_name, 'frontend')
+        shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
         Command(
             'Set project to use Yarn',
             ['ng', 'config', 'cli.packageManager', 'yarn'],

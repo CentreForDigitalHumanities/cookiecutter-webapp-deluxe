@@ -129,9 +129,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = []
-
-{% if cookiecutter.frontend == "angular" %}
-PROXY_FRONTEND = "http://localhost:{{cookiecutter.frontend_port}}"
-{% else %}
 PROXY_FRONTEND = None
-{% endif %}
