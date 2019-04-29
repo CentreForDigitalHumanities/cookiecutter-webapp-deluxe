@@ -26,5 +26,6 @@ script:
   - yarn
   - yarn django migrate
   - yarn static-p
+  - find static
   - yarn start-back-p &
   - yarn test
