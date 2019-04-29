@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 from rest_framework import routers
 
@@ -30,6 +31,9 @@ else:
     spa_url = url(r'', index)
 
 urlpatterns = [
+    url(r'^admin$', RedirectView.as_view(url='/admin/', permanent=True)),
+    url(r'^api$', RedirectView.as_view(url='/api/', permanent=True)),
+    url(r'^api-auth$', RedirectView.as_view(url='/api-auth/', permanent=True)),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(api_router.urls)),
     url(r'^api-auth/', include(
