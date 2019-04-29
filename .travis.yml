@@ -27,5 +27,6 @@ script:
   - cat bootstrap.log
   - yarn
   - yarn django migrate
-  - yarn start-p &
+  - yarn static-p
+  - yarn start-back-p &
   - yarn test
