@@ -72,10 +72,10 @@ $ python manage.py runserver
 Once you see this line:
 
 ```console
-Starting development server at http://127.0.0.1:8000/
+Starting development server at http://127.0.0.1:{{cookiecutter.backend_port}}/
 ```
 
-you can visit http://localhost:8000/admin/ and http://localhost:8000/api/ in your browser of choice. If you attached an external frontend application, its main page will be at http://localhost:8000/.
+you can visit http://localhost:{{cookiecutter.backend_port}}/admin/ and http://localhost:{{cookiecutter.backend_port}}/api/ in your browser of choice. If you attached an external frontend application, its main page will be at http://localhost:{{cookiecutter.backend_port}}/.
 
 
 ### Enabling livereload

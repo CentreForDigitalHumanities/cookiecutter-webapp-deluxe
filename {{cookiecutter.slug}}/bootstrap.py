@@ -2,10 +2,14 @@
 
 import os
 import os.path as op
+from distutils import dir_util
+import glob
+import json
 import platform
 import sys
 import subprocess
 import shlex
+import shutil
 
 SLUG = '{{cookiecutter.slug}}'
 WINDOWS = (platform.system() == 'Windows')
@@ -163,6 +167,106 @@ def make_create_db_command(psql_cmd):
         psql_cmd + ' -f ' + op.join('backend', 'create_db.sql'),
     )
 
+def merge_json(target, source):
+    for key, value in source.items():
+        if value == None:
+            del target[key]
+        elif key in target and isinstance(target[key], dict) and \
+            isinstance(source[key], dict):
+            merge_json(target[key], source[key])
+        else:
+            target[key] = value
+    return target
+
+def modify_angular_json():
+    with open('frontend/angular.json', 'r') as file:
+        data = json.load(file)
+    project = '{{cookiecutter.slug}}'.replace('_', '-')
+    for lang in '{{cookiecutter.localizations}}'.split(','):
+        [code, lang_name] = lang.split(':')
+        production = merge_json({}, data['projects'][project]['architect']['build']['configurations']['production'])
+        production['outputPath'] = f'dist/{code}'
+        production['i18nFile'] = f'src/locale/messages.{code}.xlf'
+        production['i18nFormat'] = 'xlf'
+        production['i18nLocale'] = code
+        production['i18nMissingTranslation'] = 'error'
+        data['projects'][project]['architect']['build']['configurations'][f'production-{code}'] = production
+
+        serve = merge_json({}, data['projects'][project]['architect']['serve']['configurations']['production'])
+        serve['browserTarget'] += f'-{code}'
+        data['projects'][project]['architect']['serve']['configurations'][code] = serve
+
+    data['projects'][project]['architect']['build']['options']['outputPath'] = \
+        data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist'
+
+    # remove e2e
+    del data['projects'][f'{project}-e2e']
+
+    with open('frontend/angular.json', 'w') as file:
+        json.dump(data, file, indent=2)
+
+def activate_frontend():
+    framework = '{{cookiecutter.frontend}}'
+    os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
+
+    if framework == 'backbone':
+        os.rename('frontend.backbone', 'frontend')
+        shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
+    elif framework == 'angular':
+        project_name = '{{cookiecutter.slug}}'.replace('_', '-')
+        Command(
+            'Creating project',
+            ['ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
+                '--skipGit=true',
+                '--skipInstall=true',
+                '--style=scss']
+        )()
+        dir_util.copy_tree('frontend.angular', project_name)
+        os.rename(project_name, 'frontend')
+        shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
+        Command(
+            'Set project to use Yarn',
+            ['ng', 'config', 'cli.packageManager', 'yarn'],
+            cwd="frontend"
+        )()
+        Command(
+            'Install frontend dependencies using Yarn',
+            ['yarn'],
+            cwd="frontend"
+        )()
+        # Remove e2e
+        shutil.rmtree(os.path.join('frontend', 'e2e'))
+        modify_angular_json()
+        Command(
+            'Creating localizations',
+            ['ng', 'xi18n', '--output-path', 'locale'],
+            cwd="frontend"
+        )()
+        for lang in '{{cookiecutter.localizations}}'.split(','):
+            [code, lang_name] = lang.split(':')
+            shutil.copyfile('frontend/src/locale/messages.xlf', f'frontend/src/locale/messages.{code}.xlf')
+        if '{{cookiecutter.frontend_port}}' != '4200':
+            Command(
+                'Set frontend port',
+                ['ng', 'config', 'projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port', '{{cookiecutter.frontend_port}}'],
+                cwd="frontend"
+            )()
+    else:
+        print('Unknown framework {{cookiecutter.frontend}} specified!')
+    if os.path.isfile('frontend/package.overwrite.json'):
+        with open('frontend/package.overwrite.json', 'r') as file:
+            overwrite = json.load(file)
+        with open('frontend/package.json', 'r') as file:
+            data = json.load(file)
+        with open('frontend/package.json', 'w') as file:
+            merge_json(data, overwrite)
+            json.dump(data, file, indent=2)
+        os.remove('frontend/package.overwrite.json')
+    # remove other frameworks
+    for path in glob.glob("frontend.*"):
+        shutil.rmtree(path)
+    for path in glob.glob("package.*.json"):
+        os.remove(path)
 
 install_pip_tools = Command(
     'Install pip-tools',
@@ -191,12 +295,20 @@ run_migrations = Command(
     ['yarn', 'django', 'migrate'],
 )
 
-create_superuser = Command(
-    'Create the superuser',
-    ['yarn', 'django', 'createsuperuser'],
-    stdout=None, # share stdout and stderr with this process
-    stderr=None,
-)
+if 'TRAVIS' in os.environ:
+    create_superuser = Command(
+        'Skip creating the superuser',
+        ['yarn', 'back'],
+        stdout=None, # share stdout and stderr with this process
+        stderr=None,
+    )
+else:
+    create_superuser = Command(
+        'Create the superuser',
+        ['yarn', 'django', 'createsuperuser'],
+        stdout=None, # share stdout and stderr with this process
+        stderr=None,
+    )
 
 track_master = Command(
     'Create origin-tracking master branch',

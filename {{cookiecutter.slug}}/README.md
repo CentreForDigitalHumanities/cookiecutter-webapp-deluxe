@@ -1,5 +1,7 @@
 # {{cookiecutter.project_title}}
 
+[![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/{{cookiecutter.slug}}.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/{{cookiecutter.slug}})
+
 {{cookiecutter.description}}
 
 
@@ -8,7 +10,7 @@
 You need to install the following software:
 
  - PostgreSQL >= 9.3, client, server and C libraries
- - Python >= 3.4, <= 3.6
+ - Python >= 3.4, <= 3.7
  - virtualenv
  - WSGI-compatible webserver (deployment only)
  - [Visual C++ for Python][1] (Windows only)
@@ -24,13 +26,16 @@ You need to install the following software:
 
 This project integrates three isolated subprojects, each inside its own subdirectory with its own code, package dependencies and tests:
 
- - `backend`, the server side web application based on [Django][3] and [DRF][4];
- - `frontend`, the client side web application based on [Backbone][5];
- - `functional-tests`, the functional test suite based on [Selenium][6] and [pytest][7].
+ - **backend**: the server side web application based on [Django][3] and [DRF][4]
+ {% if cookiecutter.frontend == "angular" %}
+ - **frontend**: the client side web application based on [Angular](https://angular.io)
+ {% elif cookiecutter.frontend == "backbone" %}
+ - **frontend**: the client side web application based on [Backbone](https://backbonejs.org)
+ {% endif %}
+ - **functional-tests**: the functional test suite based on [Selenium][6] and [pytest][7]
 
 [3]: https://www.djangoproject.com
 [4]: https://www.django-rest-framework.org
-[5]: https://backbonejs.org
 [6]: https://www.seleniumhq.org/docs/03_webdriver.jsp
 [7]: https://docs.pytest.org/en/latest/
 
@@ -55,7 +60,7 @@ Running the application in [development mode][8] (hit ctrl-C to stop):
 $ yarn start
 ```
 
-This will run the backend and frontend applications, as well as their unittests, and watch all source files for changes. You can visit the frontend on http://localhost:8000/, the browsable backend API on http://localhost:8000/api/ and the backend admin on http://localhost:8000/admin/. On every change, unittests rerun, frontend code rebuilds and open browser tabs refresh automatically (livereload).
+This will run the backend and frontend applications, as well as their unittests, and watch all source files for changes. You can visit the frontend on http://localhost:{{cookiecutter.backend_port}}/, the browsable backend API on http://localhost:{{cookiecutter.backend_port}}/api/ and the backend admin on http://localhost:{{cookiecutter.backend_port}}/admin/. On every change, unittests rerun, frontend code rebuilds and open browser tabs refresh automatically (livereload).
 
 [8]: #development-mode-vs-production-mode
 
@@ -110,7 +115,7 @@ Run the functional test suite:
 $ yarn test-func [FUNCTIONAL TEST OPTIONS]
 ```
 
-The functional test suite by default assumes that you have the application running locally in production mode (i.e., on port `8080`). See [Configuring the browsers][10] and [Configuring the base address][11] in `functional-tests/README` for options.
+The functional test suite by default assumes that you have the application running locally in production mode (i.e., on port `{{cookiecutter.frontend_port}}`). See [Configuring the browsers][10] and [Configuring the base address][11] in `functional-tests/README` for options.
 
 [10]: functional-tests/README.md#configuring-the-browsers
 [11]: functional-tests/README.md#configuring-the-base-address
@@ -157,6 +162,7 @@ Manage the frontend package dependencies:
 $ yarn fyarn (add|remove|upgrade|...) (PACKAGE ...) [OPTIONS]
 ```
 
+{% if cookiecutter.frontend == "backbone" %}
 Run [frontend Gulp commands][12]:
 
 ```console
@@ -164,7 +170,7 @@ $ yarn gulp [SUBCOMMAND ...] [OPTIONS]
 ```
 
 [12]: frontend/README.md#gulp-tasks-and-options
-
+{% endif %}
 
 ### Notes on Python package dependencies
 
@@ -190,16 +196,22 @@ The purpose of development mode is to facilitate live development, as the name i
 dimension  |  Development mode  |  Production mode
 -----------|--------------------|-----------------
 command  |  `yarn start`  |  `yarn start-p`
-base address  |  http://localhost:8000  |  http://localhost:8080
+base address  |  http://localhost:{{cookiecutter.backend_port}}  |  http://localhost:{{cookiecutter.frontend_port}}
 backend server (Django)  |  in charge of everything  |  serves backend only
+{% if cookiecutter.frontend == "angular" %}
+frontend server (angular-cli)  |  serves  |  watch and build
+{% elif cookiecutter.frontend == "backbone" %}
 frontend server (gulp-connect)  |  does not run  |  primary gateway
+{% endif %}
 static files  |  served directly by Django's staticfiles app  |  collected by Django, served by gulp-connect
 backend `DEBUG` setting  |  `True`  |  `False`
 backend `ALLOWED_HOSTS`  |  -  |  restricted to `localhost`
+{% if cookiecutter.frontend == "backbone" %}
 livereload  |  yes  |  no
+HTML embedded libraries  |  taken from `frontend/node_modules`  |  taken from CDN
+{% endif %}
 frontend sourcemaps  |  yes  |  no
 frontend optimization  |  no  |  yes
-HTML embedded libraries  |  taken from `frontend/node_modules`  |  taken from CDN
 
 
 ## Deployment
@@ -207,10 +219,12 @@ HTML embedded libraries  |  taken from `frontend/node_modules`  |  taken from CD
 Both the backend and frontend applications have a section dedicated to deployment in their own READMEs. You should read these sections entirely before proceeding. All instructions in these sections still apply, though it is good to know that you can use the following shorthand commands from the integrated project root:
 
 ```console
+{% if cookiecutter.frontend == "backbone" %}
 # build the frontend with overridden settings
 $ yarn gulp dist --production --config path/to/your/config-override.json
+{% endif %}
 # collect static files of both backend and frontend, with overridden settings
 $ yarn django collectstatic --settings SETTINGS --pythonpath path/to/SETTINGS.py
 ```
 
-You should execute these commands in the order shown, i.e., build the frontend before collecting all static files.
+You should build the frontend before collecting all static files.

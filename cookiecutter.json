@@ -1,6 +1,7 @@
 {
   "project_title": "DigHum Pro",
   "slug": "{{cookiecutter.project_title | lower | replace('-', '') | replace(' ', '_')}}",
+  "app_prefix": "dh",
   "description": "{{cookiecutter.project_title}} will humanize all your digits!",
   "author": "UU Digital Humanities Lab",
   "origin": "github:UUDigitalHumanitieslab/{{cookiecutter.slug}}",
@@ -8,12 +9,15 @@
   "database_user": "{{cookiecutter.slug}}",
   "database_password": "{{cookiecutter.slug}}",
   "localizations": "en:english,fr:french",
+  "frontend": ["angular", "backbone"],
+  "frontend_port": "4200",
+  "backend_port": "8000",
   "psql_command": "psql",
   "virtualenv": ".env",
   "virtualenv_command": "virtualenv {{cookiecutter.virtualenv}} --prompt=\"({{cookiecutter.slug}}) \"",
   "_copy_without_render": [
-    "frontend/src/core",
-    "frontend/gulpfile.ts",
-    "frontend/src/global/hbsHelpers.ts"
+    "frontend.backbone/src/core",
+    "frontend.backbone/gulpfile.ts",
+    "frontend.backbone/src/global/hbsHelpers.ts"
   ]
 }

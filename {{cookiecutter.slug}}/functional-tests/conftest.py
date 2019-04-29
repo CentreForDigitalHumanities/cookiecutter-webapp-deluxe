@@ -1,3 +1,4 @@
+import os
 import pytest
 from selenium import webdriver
 
@@ -15,7 +16,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         '--base-address',
-        default='http://localhost:8080/',
+        default='http://localhost:{{cookiecutter.backend_port}}/',
         help='specifies the base address where the application is running',
         dest=BASE_ADDRESS_OPTION_NAME,
     )
@@ -34,8 +35,19 @@ def webdriver_instance(webdriver_name):
 
         Use the `browser` fixture instead; it performs cleanups after each test.
     """
-    factory = getattr(webdriver, webdriver_name)
-    driver = factory()
+    if webdriver_name == 'Chrome':
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(options=options)
+    elif webdriver_name == 'Firefox':
+        options = webdriver.FirefoxOptions()
+        options.add_argument('-headless')
+        driver = webdriver.Firefox(options=options)
+    else:
+        factory = getattr(webdriver, webdriver_name)
+        driver = factory()
     try:
         yield driver
     finally:

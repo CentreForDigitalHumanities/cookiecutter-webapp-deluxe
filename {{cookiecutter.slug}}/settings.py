@@ -38,3 +38,7 @@ STATICFILES_DIRS += [
     op.join(here, 'frontend', 'dist'),
     op.join(here, 'frontend', 'node_modules'),
 ]
+
+{% if cookiecutter.frontend == "angular" %}
+PROXY_FRONTEND = "http://localhost:{{cookiecutter.frontend_port}}"
+{% endif %}

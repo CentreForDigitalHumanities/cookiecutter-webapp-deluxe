@@ -160,23 +160,23 @@ Each `browserLibs` item may have the following properties.
 
 ### Proxy configuration
 
-Suppose you have a backend application running on `localhost:8000` and you want to forward all requests for `/api` to this backend application. Create a JSON file with the following content:
+Suppose you have a backend application running on `localhost:{{cookiecutter.backend_port}}` and you want to forward all requests for `/api` to this backend application. Create a JSON file with the following content:
 
 ```json
 [{
   "context": ["/api/**"],
-  "options": {"target": "http://localhost:8000"}
+  "options": {"target": "http://localhost:{{cookiecutter.backend_port}}"}
 }]
 ```
 
-And pass the path to this file as the `--proxy` option to Gulp. Now, whenever you send a request to (a subpath of) `localhost:8080/api/`, it will be tranparently handled by the backend application.
+And pass the path to this file as the `--proxy` option to Gulp. Now, whenever you send a request to (a subpath of) `localhost:{{cookiecutter.backend_port}}/api/`, it will be tranparently handled by the backend application.
 
 Now suppose that you have another backend application running on `localhost:7000` and you want it to handle everything not under `/static` or `/api`. No problem, just add another rule to the proxy file:
 
 ```json
 [{
   "context": ["/api/**"],
-  "options": {"target": "http://localhost:8000"}
+  "options": {"target": "http://localhost:{{cookiecutter.backend_port}}"}
 }, {
   "context": ["/**", "!/static/**"],
   "options": {"target": "http://localhost:7000"}
