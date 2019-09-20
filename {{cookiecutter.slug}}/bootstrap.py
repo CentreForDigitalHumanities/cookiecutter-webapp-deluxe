@@ -217,14 +217,20 @@ def activate_frontend():
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
+        override_package_json()
     elif framework == 'angular':
         project_name = '{{cookiecutter.slug}}'.replace('_', '-')
+        Command(
+            'Install npx',
+            ['yarn', 'global', 'add', 'npx']
+        )()
         Command(
             'Creating project',
             ['npx', '-p', ANGULAR_CLI, 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
                 '--skipGit=true',
                 '--skipInstall=true',
-                '--style=scss']
+                '--style=scss',
+                '--routing=true']
         )()
         dir_util.copy_tree('frontend.angular', project_name)
         os.rename(project_name, 'frontend')
@@ -234,6 +240,7 @@ def activate_frontend():
             ['npx', 'ng', 'config', 'cli.packageManager', 'yarn'],
             cwd="frontend"
         )()
+        override_package_json()
         Command(
             'Install frontend dependencies using Yarn',
             ['yarn'],
@@ -260,7 +267,15 @@ def activate_frontend():
             )()
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
+    # remove other frameworks
+    for path in glob.glob("frontend.*"):
+        shutil.rmtree(path)
+    for path in glob.glob("package.*.json"):
+        os.remove(path)
+
+def override_package_json():
     if os.path.isfile('frontend/package.overwrite.json'):
+        print('Overriding package.json')
         with open('frontend/package.overwrite.json', 'r') as file:
             overwrite = json.load(file)
         with open('frontend/package.json', 'r') as file:
@@ -269,11 +284,6 @@ def activate_frontend():
             merge_json(data, overwrite)
             json.dump(data, file, indent=4)
         os.remove('frontend/package.overwrite.json')
-    # remove other frameworks
-    for path in glob.glob("frontend.*"):
-        shutil.rmtree(path)
-    for path in glob.glob("package.*.json"):
-        os.remove(path)
 
 install_pip_tools = Command(
     'Install pip-tools',

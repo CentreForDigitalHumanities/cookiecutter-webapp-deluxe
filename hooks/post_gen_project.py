@@ -23,7 +23,11 @@ VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'
 
 def main(argv):
     print('\nFiles generated. Performing final steps.')
-    activate_frontend()
+    try:
+        activate_frontend()
+    except Exception as exception:
+        print(exception)
+        print("[ERROR] Activating frontend failed!!")
     if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
     venv = create_virtualenv()
     pip_tools = backreq = backpack = clone_req = funcreq = funcpack = False

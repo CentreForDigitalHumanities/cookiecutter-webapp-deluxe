@@ -18,5 +18,15 @@
         "test": "ng test --watch=true",
         "test-once": "ng test --watch=false",
         "watch": "ng build --prod --watch"
-    }
+    },
+    "dependencies": {
+        "@fortawesome/angular-fontawesome": "^0.5.0",
+        "@fortawesome/fontawesome-svg-core": "^1.2.24",
+        "@fortawesome/free-solid-svg-icons": "^5.11.1",
+        "@ngrx/effects": "^8.3.0",
+        "@ngrx/store": "^8.3.0",
+        "bulma": "^0.7.5",
+        "primeicons": "^2.0.0",
+        "primeng": "^8.0.3"
+      }
 }
