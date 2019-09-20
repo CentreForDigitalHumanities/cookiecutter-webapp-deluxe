@@ -20,7 +20,7 @@ install:
   - pip install virtualenv
   - pip install cookiecutter
   - pip install pip-tools
-  - yarn global add @angular/cli chromedriver geckodriver webdriver
+  - yarn global add chromedriver geckodriver webdriver
 script:
   - cookiecutter . --no-input
   - cd dighum_pro
