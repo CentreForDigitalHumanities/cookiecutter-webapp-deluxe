@@ -15,7 +15,7 @@ cache:
     - node_modules
 before_install:
   - nvm install 10
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - google-chrome-stable --no-sandbox --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install:
   - pip install virtualenv
   - pip install cookiecutter
