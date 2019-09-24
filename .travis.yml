@@ -35,4 +35,4 @@ script:
   - yarn static-p
   - find static
   - yarn start-back-p &
-  - yarn test
+  - yarn test -o webdriver=Firefox
