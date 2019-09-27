@@ -34,11 +34,16 @@ from settings import *
 
 # Next, augment the settings to make the backend aware of the frontend.
 
+{% if cookiecutter.frontend == "angular" %}
+# Expose assets from static, everything else will be proxied to
+# the Angular frontend server
+STATICFILES_DIRS += [
+    op.join(here, 'frontend', 'src')
+]
+PROXY_FRONTEND = "http://localhost:{{cookiecutter.frontend_port}}"
+{% else %}
 STATICFILES_DIRS += [
     op.join(here, 'frontend', 'dist'),
     op.join(here, 'frontend', 'node_modules'),
 ]
-
-{% if cookiecutter.frontend == "angular" %}
-PROXY_FRONTEND = "http://localhost:{{cookiecutter.frontend_port}}"
 {% endif %}

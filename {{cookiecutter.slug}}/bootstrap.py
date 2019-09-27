@@ -11,7 +11,6 @@ import subprocess
 import shlex
 import shutil
 
-ANGULAR_CLI = '@angular/cli@8'
 SLUG = '{{cookiecutter.slug}}'
 WINDOWS = (platform.system() == 'Windows')
 VIRTUALENV_BINDIR = 'Scripts' if WINDOWS else 'bin'
@@ -184,6 +183,7 @@ def modify_angular_json():
         data = json.load(file)
     try:
         project = '{{cookiecutter.slug}}'.replace('_', '-')
+        data['projects'][project]['architect']['build']['options']['deployUrl'] = '/static/'
         for lang in '{{cookiecutter.localizations}}'.split(','):
             [code, lang_name] = lang.split(':')
             production = merge_json({}, data['projects'][project]['architect']['build']['configurations']['production'])
@@ -200,6 +200,8 @@ def modify_angular_json():
 
         data['projects'][project]['architect']['build']['options']['outputPath'] = \
             data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist'
+
+        data['projects'][project]['architect']['serve']['options']['deployUrl'] = '/'
 
         # remove e2e
         del data['projects'][project]['architect']['e2e']
@@ -221,12 +223,12 @@ def activate_frontend():
     elif framework == 'angular':
         project_name = '{{cookiecutter.slug}}'.replace('_', '-')
         Command(
-            'Install npx',
-            ['yarn', 'global', 'add', 'npx']
+            'Install dependencies',
+            ['yarn', 'install', '--ignore-scripts']
         )()
         Command(
             'Creating project',
-            ['npx', '-p', ANGULAR_CLI, 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
+            ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
                 '--skipGit=true',
                 '--skipInstall=true',
                 '--style=scss',
@@ -237,7 +239,7 @@ def activate_frontend():
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
         Command(
             'Set project to use Yarn',
-            ['npx', 'ng', 'config', 'cli.packageManager', 'yarn'],
+            ['yarn', 'ng', 'config', 'cli.packageManager', 'yarn'],
             cwd="frontend"
         )()
         override_package_json()
@@ -253,7 +255,7 @@ def activate_frontend():
         modify_angular_json()
         Command(
             'Creating localizations',
-            ['npx', 'ng', 'xi18n', '--output-path', 'locale'],
+            ['yarn', 'ng', 'xi18n', '--output-path', 'locale'],
             cwd="frontend"
         )()
         for lang in '{{cookiecutter.localizations}}'.split(','):
