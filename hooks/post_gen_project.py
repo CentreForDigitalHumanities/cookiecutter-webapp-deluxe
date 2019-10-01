@@ -8,7 +8,7 @@ sys.path.append(os.getcwd())
 from bootstrap import *
 
 def python_path():
-    for candidate in ['/usr/bin/python3', '/usr/local/bin/python3']:
+    for candidate in ['/usr/bin/python3', '/usr/local/bin/python3', '/opt/local/bin/python3']:
         op.exists(candidate)
         return candidate
     return sys.executable
