@@ -1,7 +1,8 @@
-django>=1.11,<2
+django>=3.0a1,<4
 djangorestframework
 django-livereload-server
-django-revproxy
+# 0.9.16 is not yet on PyPi but is needed for Django 3
+git+git://github.com/TracyWebTech/django-revproxy@master#egg=django-revproxy>=0.9.16
 psycopg2 --no-binary psycopg2
 pytest
 pytest-django

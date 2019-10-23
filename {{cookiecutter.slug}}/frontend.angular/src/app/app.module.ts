@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -22,7 +23,12 @@ import { HomeComponent } from './home/home.component';
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
-        FontAwesomeModule
+        FontAwesomeModule,
+        HttpClientModule,
+        HttpClientXsrfModule.withOptions({
+            cookieName: 'csrftoken',
+            headerName: 'X-CSRFToken'
+        })
     ],
     providers: [],
     bootstrap: [AppComponent]

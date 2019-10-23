@@ -7,6 +7,12 @@ import re
 sys.path.append(os.getcwd())
 from bootstrap import *
 
+def python_path():
+    for candidate in ['/usr/bin/python3', '/usr/local/bin/python3', '/opt/local/bin/python3']:
+        op.exists(candidate)
+        return candidate
+    return sys.executable
+
 REPO_ORIGIN = '{{cookiecutter.origin}}'
 REPO_ORIGIN = re.sub(r'^(https?|git)://([^/]+)/(.+)$', r'git@\2:\3', REPO_ORIGIN)
 REPO_ORIGIN = re.sub(r'^github:(.+)$', r'git@github.com:\1', REPO_ORIGIN)
@@ -18,7 +24,7 @@ LOCALIZATIONS = map(
 )
 PSQL_COMMAND = '{{cookiecutter.psql_command}}'
 VIRTUALENV = '{{cookiecutter.virtualenv}}'
-VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'
+VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'.replace('%PYTHON%', python_path())
 
 
 def main(argv):
