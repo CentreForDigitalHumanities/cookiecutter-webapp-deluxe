@@ -3,7 +3,7 @@ import { animations, showState } from '../animations';
 
 @Component({
     animations,
-    selector: 'sas-menu',
+    selector: '{{cookiecutter.app_prefix}}-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss']
 })
