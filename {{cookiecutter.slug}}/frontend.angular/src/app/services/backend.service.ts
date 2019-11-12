@@ -23,7 +23,7 @@ export class BackendService {
 
             // TODO: remove this part and enable below to actually contact the backend
             return Promise.resolve([{
-               'message': 'https://media.giphy.com/media/yoJC2GnSClbPOkV0eA/source.gif'
+               message: 'https://media.giphy.com/media/yoJC2GnSClbPOkV0eA/source.gif'
             }]);
 
             // return this.http.get(url)
