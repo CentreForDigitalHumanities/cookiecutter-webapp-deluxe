@@ -12,10 +12,8 @@ export class HomeComponent implements OnInit {
     constructor(private backend: BackendService) { }
 
     ngOnInit() {
-        // This is just an example call to /api/whatever
-        // Note that the backend service doesn't call the backend yet
-        // and simply returns some mock data
-        this.backend.get('whatever').then(hoorays => {
+        // This is just an example call to /api/example/
+        this.backend.get('example').then(hoorays => {
             if (hoorays.length) {
                 this.hooray = hoorays[0].message;
             }
