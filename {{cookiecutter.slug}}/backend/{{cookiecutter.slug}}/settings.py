@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'rest_framework',
-    'revproxy'
+    'revproxy',
+    'example'
 ]
 
 MIDDLEWARE = [
