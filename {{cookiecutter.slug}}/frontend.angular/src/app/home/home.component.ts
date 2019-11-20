@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendService } from './../services/backend.service';
 
 @Component({
   selector: '{{cookiecutter.app_prefix}}-home',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+    hooray: string;
 
-  constructor() { }
+    constructor(private backend: BackendService) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        // This is just an example call to /api/example/
+        this.backend.get('example').then(hoorays => {
+            if (hoorays.length) {
+                this.hooray = hoorays[0].message;
+            }
+        });
+    }
 
 }

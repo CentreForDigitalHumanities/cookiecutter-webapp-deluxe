@@ -8,12 +8,12 @@
         "build:{{code}}": "ng build --configuration=production-{{code}}",
 {%- endfor %}
         "i18n": "ng xi18n --output-path locale",
-        "serve": "ng serve --liveReload=false --proxy-config ../proxy.conf.json",
+        "serve": "ng serve --proxy-config ../proxy.conf.json",
         "start": "yarn serve",
 {% set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
 {%- set code, name = loc.split(':') %}
-        "serve:{{code}}": "ng serve --liveReload=false --proxy-config ../proxy.conf.json --configuration={{code}}",
+        "serve:{{code}}": "ng serve --proxy-config ../proxy.conf.json --configuration={{code}}",
 {%- endfor %}
         "stop": "lsof -t -i tcp:{{cookiecutter.frontend_port}} | xargs kill -9 || echo \"not running\"",
         "test": "ng test --watch=true",
