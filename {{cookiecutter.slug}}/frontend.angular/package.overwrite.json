@@ -15,6 +15,7 @@
 {%- set code, name = loc.split(':') %}
         "serve:{{code}}": "ng serve --liveReload=false --proxy-config ../proxy.conf.json --configuration={{code}}",
 {%- endfor %}
+        "stop": "lsof -t -i tcp:{{cookiecutter.frontend_port}} | xargs kill -9 || echo \"not running\"",
         "test": "ng test --watch=true",
         "test-once": "ng test --watch=false",
         "watch": "ng build --prod --watch"
