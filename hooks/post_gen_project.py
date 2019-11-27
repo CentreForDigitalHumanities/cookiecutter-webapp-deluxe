@@ -9,8 +9,8 @@ from bootstrap import *
 
 def python_path():
     for candidate in ['/usr/bin/python3', '/usr/local/bin/python3', '/opt/local/bin/python3']:
-        op.exists(candidate)
-        return candidate
+        if op.exists(candidate):
+            return candidate
     return sys.executable
 
 REPO_ORIGIN = '{{cookiecutter.origin}}'
