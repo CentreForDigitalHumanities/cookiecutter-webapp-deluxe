@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  backend:
+    build:
+      context: ./backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ./frontend
+    command: ng serve
+    volumes:
+      - .:/frontend
+    ports:
+      - "4200:4200"
