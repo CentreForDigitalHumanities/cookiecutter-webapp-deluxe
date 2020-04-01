@@ -7,15 +7,15 @@ RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable 
 RUN apt-get update && apt-get install -yq google-chrome-stable
 
 # set working directory
-WORKDIR /frontend
+WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
-ENV PATH /frontend/node_modules/.bin:$PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /frontend/package.json
-RUN npm install
-RUN npm install -g @angular/cli@7.3.9
+COPY package.json /app
+COPY yarn.lock /app
+RUN yarn
 
 # add app
-COPY . /frontend
+COPY . /app
