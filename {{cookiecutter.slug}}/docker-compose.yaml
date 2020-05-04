@@ -5,31 +5,33 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
     ports:
       - 80:80
       - 443:443
   db:
     image: postgres
     environment:
-      - POSTGRES_DB={{cookiecutter.slug}}
-      - POSTGRES_USER={{cookiecutter.slug}}
-      - POSTGRES_PASSWORD={{cookiecutter.slug}}
+      - POSTGRES_DB=chocchip
+      - POSTGRES_USER=chocchip
+      - POSTGRES_PASSWORD=chocchip
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   backend:
     build:
       context: ./backend
+    depends_on: 
+      - db
+    env_file:
+      - ./.env.dev
     command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
     depends_on:
       - db
   frontend:
     build:
       context: ./frontend
-    command: ng serve
-    ports:
-      - "4200:4200"
 
 volumes:
   postgres_data:
