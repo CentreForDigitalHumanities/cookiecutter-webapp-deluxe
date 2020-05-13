@@ -14,9 +14,9 @@ services:
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=chocchip
-      - POSTGRES_USER=chocchip
-      - POSTGRES_PASSWORD=chocchip
+      - POSTGRES_DB={{cookiecutter.database_name}}
+      - POSTGRES_USER={{cookiecutter.database_user}}
+      - POSTGRES_PASSWORD={{cookiecutter.database_password}}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   backend:
