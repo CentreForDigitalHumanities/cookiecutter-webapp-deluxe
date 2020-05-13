@@ -32,6 +32,7 @@ services:
   frontend:
     build:
       context: ./frontend
+    command: ng serve --host 0.0.0.0
 
 volumes:
   postgres_data:
