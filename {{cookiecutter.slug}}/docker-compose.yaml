@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   nginx: 
@@ -22,6 +22,10 @@ services:
   backend:
     build:
       context: ./backend
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /app
     depends_on: 
       - db
     env_file:
@@ -32,6 +36,10 @@ services:
   frontend:
     build:
       context: ./frontend
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /app
     command: ng serve --host 0.0.0.0
 
 volumes:
