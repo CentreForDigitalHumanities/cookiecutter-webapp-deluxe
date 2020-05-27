@@ -1,11 +1,7 @@
-FROM python:3.6-alpine
+FROM python:3.6
 
 # git to be able to install requirements from git
-RUN apk update && apk add --no-cache git openssh
-# build dependencies for psycopg2
-RUN apk add --virtual .build-deps gcc python3-dev musl-dev postgresql-dev
-# runtime dependency of psycopg2
-RUN apk add --no-cache libpq
+RUN apt-get update && apt-get install git && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
