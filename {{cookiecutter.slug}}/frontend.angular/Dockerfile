@@ -13,6 +13,5 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /app
-COPY yarn.lock /app
+COPY . /app
 RUN yarn

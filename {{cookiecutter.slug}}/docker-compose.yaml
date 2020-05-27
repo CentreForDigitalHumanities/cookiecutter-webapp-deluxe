@@ -38,8 +38,8 @@ services:
       context: ./frontend
     volumes:
       - type: bind
-        source: ./frontend
-        target: /app
+        source: ./frontend/src
+        target: /app/src
     command: ng serve --host 0.0.0.0
 
 volumes:
