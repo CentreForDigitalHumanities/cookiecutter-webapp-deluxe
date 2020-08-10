@@ -5,6 +5,7 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_data:/static
     depends_on:
       - backend
       - frontend
@@ -26,6 +27,7 @@ services:
       - type: bind
         source: ./backend
         target: /app
+      - static_data:/app/staticfiles
     depends_on: 
       - db
     env_file:
@@ -44,3 +46,4 @@ services:
 
 volumes:
   postgres_data:
+  static_data: 
