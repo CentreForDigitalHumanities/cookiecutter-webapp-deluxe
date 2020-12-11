@@ -8,6 +8,7 @@
   "database_name": "{{cookiecutter.slug}}",
   "database_user": "{{cookiecutter.slug}}",
   "database_password": "{{cookiecutter.slug}}",
+  "database_port": "5432",
   "localizations": "en:english,fr:french",
   "frontend": ["angular", "backbone"],
   "frontend_port": "4200",

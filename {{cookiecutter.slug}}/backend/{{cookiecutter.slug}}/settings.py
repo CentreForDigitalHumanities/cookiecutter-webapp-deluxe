@@ -85,6 +85,7 @@ DATABASES = {
         'USER': '{{cookiecutter.database_user}}',
         'PASSWORD': '{{cookiecutter.database_password}}',
         'HOST': 'localhost',
+        'PORT': '{{cookiecutter.database_port}}',
     }
 }
 
