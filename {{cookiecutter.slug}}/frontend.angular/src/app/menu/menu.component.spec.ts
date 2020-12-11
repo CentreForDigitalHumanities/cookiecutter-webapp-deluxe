@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { MenuComponent } from './menu.component';
 
@@ -11,7 +12,7 @@ describe('MenuComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [MenuComponent],
-            imports: [NoopAnimationsModule, RouterTestingModule]
+            imports: [NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
         }).compileComponents();
     }));
 
