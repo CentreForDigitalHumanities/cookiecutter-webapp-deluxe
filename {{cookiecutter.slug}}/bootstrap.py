@@ -201,7 +201,7 @@ def modify_angular_json():
         data['projects'][project]['architect']['build']['options']['outputPath'] = \
             data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist'
 
-        data['projects'][project]['architect']['serve']['options']['deployUrl'] = '/'
+        # data['projects'][project]['architect']['serve']['options']['deployUrl'] = '/'
 
         # remove e2e
         del data['projects'][project]['architect']['e2e']
@@ -229,20 +229,22 @@ def activate_frontend():
         Command(
             'Creating project',
             ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
-                '--skipGit=true',
-                '--skipInstall=true',
+                '--skip-git=true',
+                '--skip-install=true',
+                '--package-manager=yarn',
                 '--style=scss',
                 '--routing=true']
         )()
         dir_util.copy_tree('frontend.angular', project_name)
         os.rename(project_name, 'frontend')
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
-        Command(
-            'Set project to use Yarn',
-            ['yarn', 'ng', 'config', 'cli.packageManager', 'yarn'],
-            cwd="frontend"
-        )()
         override_package_json()
+        # ng: null in package.json override
+        # Command(
+        #     'Set project to use Yarn',
+        #     ['yarn', 'ng', 'config', 'cli.packageManager', 'yarn'],
+        #     cwd="frontend"
+        # )()
         Command(
             'Install frontend dependencies using Yarn',
             ['yarn'],
@@ -255,7 +257,12 @@ def activate_frontend():
         modify_angular_json()
         Command(
             'Creating localizations',
-            ['yarn', 'ng', 'xi18n', '--output-path', 'locale'],
+            ['yarn', 'ng', 'add', '@angular/localize'],
+            cwd="frontend"
+        )()
+        Command(
+            'Creating localizations',
+            ['yarn', 'ng', 'extract-i18n', '--output-path', 'locale'],
             cwd="frontend"
         )()
         for lang in '{{cookiecutter.localizations}}'.split(','):
@@ -264,7 +271,7 @@ def activate_frontend():
         if '{{cookiecutter.frontend_port}}' != '4200':
             Command(
                 'Set frontend port',
-                ['ng', 'config', 'projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port', '{{cookiecutter.frontend_port}}'],
+                ['yarn', 'ng', 'config', 'projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port', '{{cookiecutter.frontend_port}}'],
                 cwd="frontend"
             )()
     else:
