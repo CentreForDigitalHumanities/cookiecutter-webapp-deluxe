@@ -183,7 +183,6 @@ def modify_angular_json():
         data = json.load(file)
     try:
         project = '{{cookiecutter.slug}}'.replace('_', '-')
-        data['projects'][project]['architect']['build']['options']['deployUrl'] = '/static/'
         for lang in '{{cookiecutter.localizations}}'.split(','):
             [code, lang_name] = lang.split(':')
             production = merge_json({}, data['projects'][project]['architect']['build']['configurations']['production'])
@@ -200,8 +199,6 @@ def modify_angular_json():
 
         data['projects'][project]['architect']['build']['options']['outputPath'] = \
             data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist'
-
-        # data['projects'][project]['architect']['serve']['options']['deployUrl'] = '/'
 
         # remove e2e
         del data['projects'][project]['architect']['e2e']
@@ -239,12 +236,6 @@ def activate_frontend():
         os.rename(project_name, 'frontend')
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
         override_package_json()
-        # ng: null in package.json override
-        # Command(
-        #     'Set project to use Yarn',
-        #     ['yarn', 'ng', 'config', 'cli.packageManager', 'yarn'],
-        #     cwd="frontend"
-        # )()
         Command(
             'Install frontend dependencies using Yarn',
             ['yarn'],
@@ -262,7 +253,7 @@ def activate_frontend():
         )()
         Command(
             'Creating localizations',
-            ['yarn', 'ng', 'extract-i18n', '--output-path', 'locale'],
+            ['yarn', 'i18n'],
             cwd="frontend"
         )()
         for lang in '{{cookiecutter.localizations}}'.split(','):

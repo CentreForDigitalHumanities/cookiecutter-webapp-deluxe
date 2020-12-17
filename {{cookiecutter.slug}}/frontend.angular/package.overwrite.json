@@ -3,12 +3,13 @@
     "scripts": {
         "e2e": null,
         "ng": null,
+        "build": "ng build --deploy-url='/static/'",
 {% set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
 {%- set code, name = loc.split(':') %}
-        "build:{{code}}": "ng build --configuration=production-{{code}}",
+        "build:{{code}}": "ng build  --deploy-url='/static/' --configuration=production-{{code}}",
 {%- endfor %}
-        "i18n": "ng xi18n --output-path locale",
+        "i18n": "ng extract-i18n --output-path locale",
         "serve": "ng serve --proxy-config ../proxy.conf.json",
         "start": "yarn serve",
 {% set localizations = cookiecutter.localizations.split(',') %}
