@@ -14,6 +14,7 @@ cache:
     - $HOME/.yarn-cache
     - node_modules
 before_install:
+  - apt-get install git-flow
   - nvm install 10
   - google-chrome-stable --no-sandbox --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install:

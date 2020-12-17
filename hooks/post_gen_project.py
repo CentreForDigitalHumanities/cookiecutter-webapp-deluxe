@@ -41,6 +41,8 @@ def main(argv):
         adopt_virtualenv(VIRTUALENV)
         pip_tools = install_pip_tools()
         if pip_tools:
+            check_version_pip()
+            check_version_pip_compile()
             backreq = compile_backend_requirements()
             if backreq:
                 backpack = install_backend_packages()
@@ -114,6 +116,16 @@ cd_into_project = Command('', ['cd', SLUG])
 create_virtualenv = make_create_venv_command(VIRTUALENV_COMMAND)
 
 activate_venv = make_activate_venv_command(VIRTUALENV)
+
+check_version_pip = Command(
+    'pip version',
+    ['pip', '--version'],
+)
+
+check_version_pip_compile = Command(
+    'pip-compile version',
+    ['pip-compile', '--version'],
+)
 
 compile_backend_requirements = Command(
     'Compile the backend requirements',
