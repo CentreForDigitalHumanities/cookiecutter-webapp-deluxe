@@ -2,16 +2,22 @@ import os
 import os.path as op
 import sys
 import re
+import subprocess
 
 # import the bootstrap script from the generated project directory
 sys.path.append(os.getcwd())
 from bootstrap import *
 
 def python_path():
-    for candidate in ['/usr/bin/python3', '/usr/local/bin/python3', '/opt/local/bin/python3']:
-        if op.exists(candidate):
-            return candidate
-    return sys.executable
+    if 'TRAVIS' in os.environ:
+        python_system_path = subprocess.check_output(['which', 'python']).decode('utf-8').rstrip()
+        print(f"Python version used: {python_system_path}")
+        return python_system_path
+    else:
+        for candidate in ['/usr/bin/python3', '/usr/local/bin/python3', '/opt/local/bin/python3']:
+            if op.exists(candidate):
+                return candidate
+        return sys.executable
 
 REPO_ORIGIN = '{{cookiecutter.origin}}'
 REPO_ORIGIN = re.sub(r'^(https?|git)://([^/]+)/(.+)$', r'git@\2:\3', REPO_ORIGIN)

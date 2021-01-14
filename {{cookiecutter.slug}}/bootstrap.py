@@ -315,7 +315,7 @@ run_migrations = Command(
 if 'TRAVIS' in os.environ:
     create_superuser = Command(
         'Skip creating the superuser',
-        ['yarn', 'back'],
+        ['yarn', 'back', ':'], # ':' for no-op
         stdout=None, # share stdout and stderr with this process
         stderr=None,
     )
