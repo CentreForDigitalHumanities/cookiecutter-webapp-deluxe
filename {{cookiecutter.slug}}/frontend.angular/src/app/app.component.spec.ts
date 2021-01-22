@@ -1,20 +1,21 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './menu/menu.component';
 
 describe('AppComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 AppComponent,
                 MenuComponent,
                 FooterComponent
             ],
-            imports: [NoopAnimationsModule, RouterTestingModule]
+            imports: [NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
         }).compileComponents();
     }));
 
@@ -24,16 +25,16 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title '{{cookiecutter.slug.replace('_', '-')}}'`, () => {
+    it(`should have as title 'dighum-pro'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual(`{{cookiecutter.slug.replace('_', '-')}}`);
+        expect(app.title).toEqual(`dighum-pro`);
     });
 
     it('should render title', () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
         const compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('.navbar-brand .navbar-item').textContent).toContain('{{cookiecutter.project_title}}');
+        expect(compiled.querySelector('.navbar-brand .navbar-item').textContent).toContain('DigHum Pro');
     });
 });

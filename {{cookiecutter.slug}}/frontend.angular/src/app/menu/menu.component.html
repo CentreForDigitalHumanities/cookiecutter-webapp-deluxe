@@ -1,7 +1,7 @@
 <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
     <div class="container">
         <div class="navbar-brand">
-            <strong class="navbar-item">
+            <strong class="navbar-item" i18n>
                 {{cookiecutter.project_title}}
             </strong>
 
@@ -16,7 +16,7 @@
 
         <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': burgerActive}" [@slideInOut]="burgerShow">
             <div class="navbar-start">
-                <a [routerLink]="['/home']" routerLinkActive="is-active" class="navbar-item">
+                <a [routerLink]="['/home']" routerLinkActive="is-active" class="navbar-item" i18n>
                     Home
                 </a>
             </div>

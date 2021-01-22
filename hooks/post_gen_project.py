@@ -2,16 +2,22 @@ import os
 import os.path as op
 import sys
 import re
+import subprocess
 
 # import the bootstrap script from the generated project directory
 sys.path.append(os.getcwd())
 from bootstrap import *
 
 def python_path():
-    for candidate in ['/usr/bin/python3', '/usr/local/bin/python3', '/opt/local/bin/python3']:
-        if op.exists(candidate):
-            return candidate
-    return sys.executable
+    if 'TRAVIS' in os.environ:
+        python_system_path = subprocess.check_output(['which', 'python']).decode('utf-8').rstrip()
+        print(f"Python version used: {python_system_path}")
+        return python_system_path
+    else:
+        for candidate in ['/usr/bin/python3', '/usr/local/bin/python3', '/opt/local/bin/python3']:
+            if op.exists(candidate):
+                return candidate
+        return sys.executable
 
 REPO_ORIGIN = '{{cookiecutter.origin}}'
 REPO_ORIGIN = re.sub(r'^(https?|git)://([^/]+)/(.+)$', r'git@\2:\3', REPO_ORIGIN)
@@ -41,6 +47,8 @@ def main(argv):
         adopt_virtualenv(VIRTUALENV)
         pip_tools = install_pip_tools()
         if pip_tools:
+            check_version_pip()
+            check_version_pip_compile()
             backreq = compile_backend_requirements()
             if backreq:
                 backpack = install_backend_packages()
@@ -114,6 +122,16 @@ cd_into_project = Command('', ['cd', SLUG])
 create_virtualenv = make_create_venv_command(VIRTUALENV_COMMAND)
 
 activate_venv = make_activate_venv_command(VIRTUALENV)
+
+check_version_pip = Command(
+    'pip version',
+    ['pip', '--version'],
+)
+
+check_version_pip_compile = Command(
+    'pip-compile version',
+    ['pip-compile', '--version'],
+)
 
 compile_backend_requirements = Command(
     'Compile the backend requirements',

@@ -3,20 +3,20 @@
         <div class="container">
             <div class="columns">
                 <div class="column">
-                    <h1 class="subtitle">{{cookiecutter.project_title}}</h1>
+                    <h1 class="subtitle" i18n>{{cookiecutter.project_title}}</h1>
                     <div class="content">
-                        <p>
+                        <p i18n>
                             <a href="{{cookiecutter.origin.replace('github:', 'https://github.com/')}}">Source code</a> (BSD 3-Clause License)
                         </p>
                     </div>
                 </div>
                 <div class="column has-text-right-tablet">
                     <a class="university-logo image" href="https://uu.nl" target="_blank">
-                        <img src="/static/assets/utrecht-university.svg" alt="Utrecht University logo" width="200"
+                        <img src="{{"{{environment.assets}}"}}/utrecht-university.svg" alt="Utrecht University logo" i18n-alt width="200"
                             height="50" />
                     </a>
                     <a class="lab-logo image" href="https://dig.hum.uu.nl" target="_blank">
-                        <img src="/static/assets/dhlab.svg" alt="Digital Humanities Lab logo" width="200" height="40" />
+                        <img src="{{"{{environment.assets}}"}}/dhlab.svg" alt="Digital Humanities Lab logo" i18n-alt width="200" height="40" />
                     </a>
                 </div>
             </div>
