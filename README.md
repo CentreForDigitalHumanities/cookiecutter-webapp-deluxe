@@ -6,7 +6,7 @@ A boilerplate for full-fledged web applications with [Django][1] backend, [Angul
 
 [1]: https://www.djangoproject.com
 [2]: https://angular.io
-[3]: https://www.seleniumhq.org/docs/03_webdriver.jsp
+[3]: https://www.selenium.dev/documentation/webdriver/
 
 
 ## Before you start

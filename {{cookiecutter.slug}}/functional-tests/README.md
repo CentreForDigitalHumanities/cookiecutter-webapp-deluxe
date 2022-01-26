@@ -5,7 +5,7 @@
 This is a functional test suite based on [pytest][1] and [Selenium WebDriver][2]. It is designed such that it can test any network-reachable instance of the {{cookiecutter.project_title}} application. While the tests are based on knowledge about the user interface of the application, no knowledge of its implementation is needed.
 
 [1]: https://docs.pytest.org/en/latest/
-[2]: https://www.seleniumhq.org/docs/03_webdriver.jsp
+[2]: https://www.selenium.dev/documentation/webdriver/
 
 
 ## Before you start
@@ -128,9 +128,9 @@ def test_something(browser, base_address):
 
 `browser`, as you have probably guessed, is the fixture that provides the webdriver instance on which you can simulate user interaction. The elegance of pytest shines here; if you have configured the suite to run with multiple browsers, the test will be run once for every browser, so you can pretend that there is only one browser in your test. The available properties and methods on the `browser` are documented [over here][4]. In some cases, you will need to [wait][5] after an interaction before you can continue your test. There is also a full [API documentation][10] for the Selenium Python bindings.
 
-[4]: https://www.seleniumhq.org/docs/03_webdriver.jsp#selenium-webdriver-api-commands-and-operations
-[5]: https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#explicit-and-implicit-waits
-[10]: https://seleniumhq.github.io/selenium/docs/api/py/api.html
+[4]: https://www.selenium.dev/documentation/webdriver/capabilities/
+[5]: https://www.selenium.dev/documentation/webdriver/waits/
+[10]: https://www.selenium.dev/selenium/docs/api/py/api.html
 
 `base_address` is the main address fixture. It is just a string, containing either whatever you passed as the `--base-address` or the default of `http://localhost:{{cookiecutter.frontend_port}}/`. There are a couple of derived address fixtures: `api_address`, `api_auth_address` and `admin_address`. Whenever you need to pass an address to the `browser`, make sure to compute this address relative to the `base_address` or one of its derived fixtures; this ensures that all requests in the test suite go to the right instance of the application.
 

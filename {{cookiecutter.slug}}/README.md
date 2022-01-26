@@ -36,7 +36,7 @@ This project integrates three isolated subprojects, each inside its own subdirec
 
 [3]: https://www.djangoproject.com
 [4]: https://www.django-rest-framework.org
-[6]: https://www.seleniumhq.org/docs/03_webdriver.jsp
+[6]: https://www.selenium.dev/documentation/webdriver/
 [7]: https://docs.pytest.org/en/latest/
 
 Each subproject is configurable from the outside. Integration is achieved using "magic configuration" which is contained inside the root directory together with this README. In this way, the subprojects can stay truly isolated from each other.
