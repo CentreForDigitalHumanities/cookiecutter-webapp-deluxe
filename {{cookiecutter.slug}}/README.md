@@ -10,7 +10,7 @@
 You need to install the following software:
 
  - PostgreSQL >= 9.3, client, server and C libraries
- - Python >= 3.4, <= 3.7
+ - Python >= 3.8, <= 3.10
  - virtualenv
  - WSGI-compatible webserver (deployment only)
  - [Visual C++ for Python][1] (Windows only)

@@ -12,7 +12,7 @@ This is a functional test suite based on [pytest][1] and [Selenium WebDriver][2]
 
 You need to install the following software:
 
- - Python >= 3.4, <= 3.7
+ - Python >= 3.8, <= 3.10
  - virtualenv
  - WebDriver for at least one browser
 
