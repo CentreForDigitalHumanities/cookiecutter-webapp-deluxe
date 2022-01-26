@@ -262,7 +262,7 @@ def activate_frontend():
         if '{{cookiecutter.frontend_port}}' != '4200':
             Command(
                 'Set frontend port',
-                ['yarn', 'ng', 'config', 'projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port', '{{cookiecutter.frontend_port}}'],
+                ['yarn', 'ng', 'config', "projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port", '{{cookiecutter.frontend_port}}'],
                 cwd="frontend"
             )()
     else:
