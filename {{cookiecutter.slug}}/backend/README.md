@@ -12,7 +12,7 @@ This is a server side web application based on [Django][1] and [Django REST fram
 
 You need to install the following software:
 
- - PostgreSQL >= 9.3, client, server and C libraries
+ - PostgreSQL >= 10, client, server and C libraries
  - Python >= 3.8, <= 3.10
  - virtualenv
  - WSGI-compatible webserver (deployment only)
@@ -44,9 +44,9 @@ Unittest modules live directly next to the module they belong to. Each directory
 
 Create and activate a virtualenv. Ensure your working directory is the one that contains this README. Run the following commands as yourself (i.e., not in sudo mode nor with elevated privileges). You may need to [reconfigure PostgreSQL][5] and/or pass [additional arguments to `psql`][6] (in particular, your [own][7] PostgreSQL `dbname` and `username`) in order to be able to run the first command. You need to execute this sequence of commands only once after cloning the repository.
 
-[5]: https://www.postgresql.org/docs/9.3/auth-pg-hba-conf.html
-[6]: https://www.postgresql.org/docs/9.3/app-psql.html
-[7]: https://www.postgresql.org/docs/9.3/database-roles.html
+[5]: https://www.postgresql.org/docs/10/auth-pg-hba-conf.html
+[6]: https://www.postgresql.org/docs/10/app-psql.html
+[7]: https://www.postgresql.org/docs/10/database-roles.html
 
 ```console
 $ psql -f create_db.sql
