@@ -1,0 +1,83 @@
+name: Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      - 'release/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgrespwd
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Ubuntu packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install git-flow firefox
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install virtualenv
+        pip install cookiecutter
+        pip install pip-tools
+        yarn global add geckodriver webdriver
+
+    - name: Run all tests
+      env:
+        # Provide PostgreSQL environment variables in order to default to TCP connection
+        PGDATABASE: postgres
+        PGHOST: localhost
+        PGPORT: 5432
+        PGUSER: postgres
+        PGPASSWORD: postgrespwd
+      run: |
+        cookiecutter . --no-input
+        cd dighum_pro
+        cat bootstrap.log
+        yarn
+        yarn django migrate
+        yarn static-p
+        find static
+        yarn start-back-p &
+        chromedriver --version
+        yarn test -o webdriver=Firefox
