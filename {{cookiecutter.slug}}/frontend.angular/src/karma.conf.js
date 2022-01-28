@@ -28,9 +28,14 @@ module.exports = function (config) {
         autoWatch: true,
         browsers: ['ChromeHeadless'],
         customLaunchers: {
-            ChromeTravisCi: {
-                base: 'ChromeHeadless',
-                flags: ['--no-sandbox', '--disable-gpu']
+            ChromeHeadless: {
+                base: 'Chrome',
+                flags: [
+                    '--headless',
+                    '--disable-gpu',
+                    '--no-sandbox',
+                    '--remote-debugging-port=9222',
+                ]
             }
         },
         singleRun: false,
