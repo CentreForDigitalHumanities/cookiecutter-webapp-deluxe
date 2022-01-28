@@ -1,6 +1,5 @@
 # cookiecutter-webapp-deluxe
 
-[![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/cookiecutter-webapp-deluxe.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/cookiecutter-webapp-deluxe)
 
 A boilerplate for full-fledged web applications with [Django][1] backend, [Angular][2] frontend and [Selenium][3] functional tests.
 

@@ -1,6 +1,5 @@
 # {{cookiecutter.project_title}}
 
-[![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/{{cookiecutter.slug}}.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/{{cookiecutter.slug}})
 
 {{cookiecutter.description}}
 

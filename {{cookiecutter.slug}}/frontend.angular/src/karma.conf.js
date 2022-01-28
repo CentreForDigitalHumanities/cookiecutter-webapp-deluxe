@@ -42,8 +42,8 @@ module.exports = function (config) {
         restartOnFileChange: true
     };
 
-    if (process.env.TRAVIS) {
-        configuration.browsers = ['ChromeTravisCi'];
+    if (process.env.CI) {
+        configuration.browsers = ['ChromeHeadless'];
         configuration.singleRun = true;
     }
 

@@ -10,5 +10,6 @@ STATIC_ROOT = None
 {% if cookiecutter.frontend == "angular" %}
 PROXY_FRONTEND = None # use statically compiled files
 {% endif %}
-if 'TRAVIS' in os.environ:
+# Github Actions:
+if os.environ.get('CI'):
     DEBUG = True
