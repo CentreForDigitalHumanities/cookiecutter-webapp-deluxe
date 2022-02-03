@@ -1,5 +1,6 @@
 # {{cookiecutter.project_title}}
 
+[![Actions Status](https://github.com/{{cookiecutter.origin.replace('github:', '')}}/workflows/Unit%20tests/badge.svg)](https://github.com/{{cookiecutter.origin.replace('github:', '')}}/actions)
 
 {{cookiecutter.description}}
 

@@ -1,5 +1,6 @@
 # cookiecutter-webapp-deluxe
 
+[![Actions Status](https://github.com/UUDigitalHumanitiesLab/cookiecutter-webapp-deluxe/workflows/Tests/badge.svg)](https://github.com/UUDigitalHumanitiesLab/cookiecutter-webapp-deluxe/actions)
 
 A boilerplate for full-fledged web applications with [Django][1] backend, [Angular][2] frontend and [Selenium][3] functional tests.
 
