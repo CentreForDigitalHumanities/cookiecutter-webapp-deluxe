@@ -6,14 +6,14 @@ A boilerplate for full-fledged web applications with [Django][1] backend, [Angul
 
 [1]: https://www.djangoproject.com
 [2]: https://angular.io
-[3]: https://www.seleniumhq.org/docs/03_webdriver.jsp
+[3]: https://www.selenium.dev/documentation/webdriver/
 
 
 ## Before you start
 
 You need to install *at least* the following software:
 
-  - Python 3.6, 3.7
+ - Python 3.8 - 3.10
  - [Cookiecutter][4] (install using pip in a virtualenv using Python 3)
  - virtualenv
  - Git (if you use this cookiecutter directly from GitHub)
@@ -22,7 +22,7 @@ This is the minimum for Cookiecutter to be able to do its work, i.e., generate a
 
  - Git
  - [gitflow][5] (by default included with [Git for Windows][6])
- - PostgreSQL >= 9.3, client, server and C libraries
+ - PostgreSQL >= 10, client, server and C libraries
  - [Visual C++ for Python][7] (Windows only)
  - Node.js >= 8
  - Yarn
@@ -132,7 +132,7 @@ The post-generation script needs to know the path to your virtualenv, but you ar
 
 The command that will generate the virtualenv in the location that you provided in the previous parameter. This command will run with the root of the generated project as its working directory. It is important that you can run this command as yourself, i.e., without `sudo`.
 
-The virtualenv must have Python version >= 3.6, <= 3.7. If your virtualenv-creating command uses a different version by default, make sure to add an option to rectify this. The most commonly used command, `virtualenv`, has the `-p` option, so you can for example append `-p python3.6`.
+The virtualenv must have Python version >= 3.8, <= 3.10. If your virtualenv-creating command uses a different version by default, make sure to add an option to rectify this. The most commonly used command, `virtualenv`, has the `-p` option, so you can for example append `-p python3.10`.
 
 
 ### Post-generation script
@@ -170,7 +170,7 @@ The commands all rely on external software and documenting them in full detail i
  - `yarn django migrate` is a command that the post-generation script would normally automate for you. If it is listed for you to execute manually, this means that automatic database migration failed. In nearly all cases, this is due to the previous step (database *creation*) also having failed. The post-generation script cannot be aware of this because `psql` does not follow the convention of returning a non-zero exit status on failure. So, before you run `yarn django migrate`, first search for a line starting with `psql` in the `bootstrap.log`, read the debug output following that line and get the database created. You may wish to consult the [PostgreSQL documentation][11] as you go.
  - `git push -u origin master develop` requires the `origin` remote repository to exist. If it doesn't, create it first. If you create a new repository on GitHub or a similar hosting service, opt out of initializing it with a README, a `.gitignore`, a license or anything like that; the cookiecutter already takes care of all of those things.
 
-[11]: https://www.postgresql.org/docs/9.6/index.html
+[11]: https://www.postgresql.org/docs/10/index.html
 
 
 ### The generated project
