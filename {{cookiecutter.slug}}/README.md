@@ -1,6 +1,6 @@
 # {{cookiecutter.project_title}}
 
-[![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/{{cookiecutter.slug}}.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/{{cookiecutter.slug}})
+[![Actions Status](https://github.com/{{cookiecutter.origin.replace('github:', '')}}/workflows/Unit%20tests/badge.svg)](https://github.com/{{cookiecutter.origin.replace('github:', '')}}/actions)
 
 {{cookiecutter.description}}
 

@@ -312,7 +312,8 @@ run_migrations = Command(
     ['yarn', 'django', 'migrate'],
 )
 
-if 'TRAVIS' in os.environ:
+# Github Actions sets "CI" environment variable
+if os.environ.get('CI'):
     create_superuser = Command(
         'Skip creating the superuser',
         ['yarn', 'back', ':'], # ':' for no-op
