@@ -198,18 +198,18 @@ dimension  |  Development mode  |  Production mode
 command  |  `yarn start`  |  `yarn start-p`
 base address  |  http://localhost:{{cookiecutter.backend_port}}  |  http://localhost:{{cookiecutter.frontend_port}}
 backend server (Django)  |  in charge of everything  |  serves backend only
-{% if cookiecutter.frontend == "angular" %}
+{% if cookiecutter.frontend == "angular" -%}
 frontend server (angular-cli)  |  serves  |  watch and build
-{% elif cookiecutter.frontend == "backbone" %}
+{% elif cookiecutter.frontend == "backbone" -%}
 frontend server (gulp-connect)  |  does not run  |  primary gateway
-{% endif %}
+{% endif -%}
 static files  |  served directly by Django's staticfiles app  |  collected by Django, served by gulp-connect
 backend `DEBUG` setting  |  `True`  |  `False`
 backend `ALLOWED_HOSTS`  |  -  |  restricted to `localhost`
-{% if cookiecutter.frontend == "backbone" %}
+{% if cookiecutter.frontend == "backbone" -%}
 livereload  |  yes  |  no
 HTML embedded libraries  |  taken from `frontend/node_modules`  |  taken from CDN
-{% endif %}
+{% endif -%}
 frontend sourcemaps  |  yes  |  no
 frontend optimization  |  no  |  yes
 
