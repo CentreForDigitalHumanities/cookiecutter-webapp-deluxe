@@ -39,16 +39,16 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.6, 3.7]
-        node-version: [12.x]
+        python-version: ['3.8', '3.9', '3.10']
+        node-version: ['14.x']
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python {{ "${{ matrix.python-version }}" }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: {{ "${{ matrix.python-version }}" }}
     - name: Use Node.js {{ "${{ matrix.node-version }}" }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: {{ "${{ matrix.node-version }}" }}
     - name: Install Python dependencies
@@ -63,8 +63,9 @@ jobs:
     #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test Angular
+    - name: Run all tests
       run: |
+        cat bootstrap_ci.txt | python bootstrap.py
         yarn
         yarn django migrate
         yarn static-p
