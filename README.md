@@ -24,7 +24,7 @@ This is the minimum for Cookiecutter to be able to do its work, i.e., generate a
  - [gitflow][5] (by default included with [Git for Windows][6])
  - PostgreSQL >= 10, client, server and C libraries
  - [Visual C++ for Python][7] (Windows only)
- - Node.js >= 8
+ - Node.js >= 12
  - Yarn
 
 After generating a new project with this cookiecutter, you'll find a README in the root of the project that mentions two more dependencies not yet listed above. The post-generation script does not depend on them, but you'll likely need them at some later point while developing or deploying the generated project.
@@ -168,7 +168,7 @@ The commands that the script lists for you are supposed to work if you copy them
 The commands all rely on external software and documenting them in full detail is beyond the scope of this README. The most important gotchas are listed below.
 
  - `yarn django migrate` is a command that the post-generation script would normally automate for you. If it is listed for you to execute manually, this means that automatic database migration failed. In nearly all cases, this is due to the previous step (database *creation*) also having failed. The post-generation script cannot be aware of this because `psql` does not follow the convention of returning a non-zero exit status on failure. So, before you run `yarn django migrate`, first search for a line starting with `psql` in the `bootstrap.log`, read the debug output following that line and get the database created. You may wish to consult the [PostgreSQL documentation][11] as you go.
- - `git push -u origin master develop` requires the `origin` remote repository to exist. If it doesn't, create it first. If you create a new repository on GitHub or a similar hosting service, opt out of initializing it with a README, a `.gitignore`, a license or anything like that; the cookiecutter already takes care of all of those things.
+ - `git push -u origin main develop` requires the `origin` remote repository to exist. If it doesn't, create it first. If you create a new repository on GitHub or a similar hosting service, opt out of initializing it with a README, a `.gitignore`, a license or anything like that; the cookiecutter already takes care of all of those things.
 
 [11]: https://www.postgresql.org/docs/10/index.html
 

@@ -80,9 +80,9 @@ def main(argv):
         migrate = run_migrations()
         if migrate:
             superuser = create_superuser()
-    master = track_master()
+    main_branch = track_main()
     gitflow = False
-    if master:
+    if main_branch:
         gitflow = setup_gitflow()
     if not all([gitflow, superuser, frontpack, funcpack, pip_tools]):
         print('\nPlease read {} for information on failed commands.'.format(LOGFILE_NAME))
@@ -94,7 +94,7 @@ def main(argv):
     if not db: print(create_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
-    if not master: print(track_master)
+    if not main_branch: print(track_main)
     if not gitflow: print(setup_gitflow)
     print(yarn_start)
 
@@ -328,9 +328,9 @@ else:
         stderr=None,
     )
 
-track_master = Command(
-    'Create origin-tracking master branch',
-    ['git', 'branch', '--track', 'master', 'origin/master'],
+track_main = Command(
+    'Create origin-tracking main branch',
+    ['git', 'branch', '--track', 'main', 'origin/main'],
 )
 
 setup_gitflow = Command(

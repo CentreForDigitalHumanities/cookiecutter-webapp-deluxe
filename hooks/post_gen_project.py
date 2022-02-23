@@ -150,7 +150,7 @@ compile_functest_requirements = Command(
 
 setup_git = Command(
     'Initialize git',
-    ['git', 'init'],
+    ['git', 'init', '-b', 'main'],
 )
 
 create_develop_branch = Command(
@@ -177,7 +177,7 @@ add_remote = Command(
 # Fortunately, it is one of the last commands.
 create_db = make_create_db_command(PSQL_COMMAND)
 
-git_push = Command('', ['git', 'push', '-u', 'origin', 'master', 'develop'])
+git_push = Command('', ['git', 'push', '-u', 'origin', 'main', 'develop'])
 
 
 if __name__ == '__main__':
