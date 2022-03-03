@@ -25,16 +25,16 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title 'dighum-pro'`, () => {
+    it(`should have as title '{{cookiecutter.slug}}'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual(`dighum-pro`);
+        expect(app.title).toEqual(`{{cookiecutter.slug}}`);
     });
 
     it('should render title', () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
         const compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('.navbar-brand .navbar-item').textContent).toContain('DigHum Pro');
+        expect(compiled.querySelector('.navbar-brand .navbar-item').textContent).toContain('{{cookiecutter.project_title}}');
     });
 });
