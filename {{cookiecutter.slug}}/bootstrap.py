@@ -169,14 +169,15 @@ def make_create_db_command(psql_cmd):
 
 def merge_json(target, source):
     for key, value in source.items():
-        if value == None:
+        if value is None:
             del target[key]
         elif key in target and isinstance(target[key], dict) and \
-            isinstance(source[key], dict):
+                isinstance(source[key], dict):
             merge_json(target[key], source[key])
         else:
             target[key] = value
     return target
+
 
 def modify_angular_json():
     with open('frontend/angular.json', 'r') as file:
@@ -202,12 +203,13 @@ def modify_angular_json():
 
         # remove e2e
         del data['projects'][project]['architect']['e2e']
-    except:
+    except Exception as error:
         print("Oh no! :( Maybe the format changed?")
         print(json.dumps(data, indent=4))
-        raise
+        raise error
     with open('frontend/angular.json', 'w') as file:
         json.dump(data, file, indent=4)
+
 
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
@@ -273,6 +275,7 @@ def activate_frontend():
     for path in glob.glob("package.*.json"):
         os.remove(path)
 
+
 def override_package_json():
     if os.path.isfile('frontend/package.overwrite.json'):
         print('Overriding package.json')
@@ -284,6 +287,7 @@ def override_package_json():
             merge_json(data, overwrite)
             json.dump(data, file, indent=4)
         os.remove('frontend/package.overwrite.json')
+
 
 install_pip_tools = Command(
     'Install pip-tools',
@@ -316,15 +320,15 @@ run_migrations = Command(
 if os.environ.get('CI'):
     create_superuser = Command(
         'Skip creating the superuser',
-        ['yarn', 'back', ':'], # ':' for no-op
-        stdout=None, # share stdout and stderr with this process
+        ['yarn', 'back', ':'],  # ':' for no-op
+        stdout=None,  # share stdout and stderr with this process
         stderr=None,
     )
 else:
     create_superuser = Command(
         'Create the superuser',
         ['yarn', 'django', 'createsuperuser'],
-        stdout=None, # share stdout and stderr with this process
+        stdout=None,  # share stdout and stderr with this process
         stderr=None,
     )
 

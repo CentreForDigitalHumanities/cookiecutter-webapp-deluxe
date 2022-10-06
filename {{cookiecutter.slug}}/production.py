@@ -8,7 +8,7 @@ STATICFILES_DIRS = [op.join(here, 'static')]
 STATIC_ROOT = None
 
 {% if cookiecutter.frontend == "angular" %}
-PROXY_FRONTEND = None # use statically compiled files
+PROXY_FRONTEND = None  # use statically compiled files
 {% endif %}
 # Github Actions:
 if os.environ.get('CI'):

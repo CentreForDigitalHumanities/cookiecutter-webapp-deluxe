@@ -33,7 +33,6 @@ sys.modules[settings_name] = settings
 from settings import *
 
 # Next, augment the settings to make the backend aware of the frontend.
-
 {% if cookiecutter.frontend == "angular" %}
 # Expose assets from static, everything else will be proxied to
 # the Angular frontend server
