@@ -8,6 +8,9 @@
                         <p i18n>
                             <a href="{{cookiecutter.origin.replace('github:', 'https://github.com/')}}">Source code</a> (BSD 3-Clause License)
                         </p>
+                        <p>
+                            <em><ng-container i18n>Version: </ng-container><span [title]="environment.buildTime">{{"{{environment.version}}"}}</span>&nbsp;<a [href]="environment.sourceUrl" target="_blank" i18n>(source)</a></em>
+                        </p>
                     </div>
                 </div>
                 <div class="column has-text-right-tablet">
