@@ -81,11 +81,11 @@ WSGI_APPLICATION = '{{cookiecutter.slug}}.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '{{cookiecutter.database_name}}',
-        'USER': '{{cookiecutter.database_user}}',
-        'PASSWORD': '{{cookiecutter.database_password}}',
-        'HOST': 'localhost',
-        'PORT': '{{cookiecutter.database_port}}',
+        'NAME': os.environ.get('PGDATABASE') or '{{cookiecutter.database_name}}',
+        'USER': os.environ.get('PGUSER') or '{{cookiecutter.database_user}}',
+        'PASSWORD': os.environ.get('PGPASSWORD') or '{{cookiecutter.database_password}}',
+        'HOST': os.environ.get('PGHOST') or 'localhost',
+        'PORT': os.environ.get('PGPORT') or '{{cookiecutter.database_port}}',
     }
 }
 
