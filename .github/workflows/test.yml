@@ -23,7 +23,9 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_PASSWORD: postgrespwd
+          POSTGRES_DB: dighum_pro
+          POSTGRES_USER: dighum_pro
+          POSTGRES_PASSWORD: dighum_pro
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -59,11 +61,11 @@ jobs:
     - name: Run all tests
       env:
         # Provide PostgreSQL environment variables in order to default to TCP connection
-        PGDATABASE: postgres
+        PGDATABASE: dighum_pro
         PGHOST: localhost
-        PGPORT: 5432
-        PGUSER: postgres
-        PGPASSWORD: postgrespwd
+        PGPORT: ${{ job.services.postgres.ports['5432'] }}
+        PGUSER: dighum_pro
+        PGPASSWORD: dighum_pro
       run: |
         cookiecutter . --no-input
         cd dighum_pro
