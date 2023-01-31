@@ -36,9 +36,9 @@ async function getRemoteUrl() {
             }
 
             // format is either:
-            // git@github.com:UUDigitalHumanitieslab/{{cookiecutter.slug}}.git
-            // or https://github.com/UUDigitalHumanitieslab/{{cookiecutter.slug}}.git
-            // or https://USERNAME:SECRET@github.com/UUDigitalHumanitieslab/{{cookiecutter.slug}}.git/
+            // git@github.com:{{cookiecutter.origin.replace('github:', '')}}.git
+            // or https://github.com/{{cookiecutter.origin.replace('github:', '')}}.git
+            // or https://USERNAME:SECRET@github.com/{{cookiecutter.origin.replace('github:', '')}}.git/
 
             // remove https://
             let sourceUrl = stdout.replace(/^https?:\/\//, '').trim();
