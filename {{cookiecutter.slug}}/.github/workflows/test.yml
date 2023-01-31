@@ -26,7 +26,9 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_PASSWORD: postgrespwd
+          POSTGRES_DB: {{cookiecutter.slug}}
+          POSTGRES_USER: {{cookiecutter.slug}}_user
+          POSTGRES_PASSWORD: {{cookiecutter.slug}}_pwd
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -64,14 +66,21 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Run virtual framebuffer
+      run: |
+        sudo apt-get -y install xvfb
+        Xvfb -ac :99 -screen 0 1280x1024x16 &
+        export DISPLAY=:99
+
     - name: Run all tests
       env:
         # Provide PostgreSQL environment variables in order to default to TCP connection
-        PGDATABASE: postgres
+        PGDATABASE: {{cookiecutter.slug}}
         PGHOST: localhost
-        PGPORT: 5432
-        PGUSER: postgres
-        PGPASSWORD: postgrespwd
+        PGPORT: {{ "${{ job.services.postgres.ports['5432'] }}" }}
+        PGUSER: {{cookiecutter.slug}}_user
+        PGPASSWORD: {{cookiecutter.slug}}_pwd
       run: |
         cat bootstrap_ci.txt | python bootstrap.py
         yarn
