@@ -184,7 +184,7 @@ def modify_angular_json():
         data = json.load(file)
     try:
         project = '{{cookiecutter.slug}}'.replace('_', '-')
-        project['architect']['test']['options']['karmaConfig'] = 'karma.conf.js'
+        data['projects'][project]['architect']['test']['options']['karmaConfig'] = 'karma.conf.js'
         for lang in '{{cookiecutter.localizations}}'.split(','):
             [code, lang_name] = lang.split(':')
             production = merge_json({}, data['projects'][project]['architect']['build']['configurations']['production'])
