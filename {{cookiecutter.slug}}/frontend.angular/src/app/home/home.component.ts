@@ -7,7 +7,7 @@ import { BackendService } from './../services/backend.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-    hooray: string;
+    hooray?: string;
 
     constructor(private backend: BackendService) { }
 

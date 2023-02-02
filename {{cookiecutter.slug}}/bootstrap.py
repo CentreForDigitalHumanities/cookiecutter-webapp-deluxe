@@ -184,6 +184,7 @@ def modify_angular_json():
         data = json.load(file)
     try:
         project = '{{cookiecutter.slug}}'.replace('_', '-')
+        data['projects'][project]['architect']['test']['options']['karmaConfig'] = 'karma.conf.js'
         for lang in '{{cookiecutter.localizations}}'.split(','):
             [code, lang_name] = lang.split(':')
             production = merge_json({}, data['projects'][project]['architect']['build']['configurations']['production'])
@@ -200,9 +201,6 @@ def modify_angular_json():
 
         data['projects'][project]['architect']['build']['options']['outputPath'] = \
             data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist'
-
-        # remove e2e
-        del data['projects'][project]['architect']['e2e']
     except Exception as error:
         print("Oh no! :( Maybe the format changed?")
         print(json.dumps(data, indent=4))
@@ -243,14 +241,12 @@ def activate_frontend():
             ['yarn'],
             cwd="frontend"
         )()
-        # Remove e2e
-        shutil.rmtree(os.path.join('frontend', 'e2e'))
         # Remove editorconfig
         os.remove(os.path.join('frontend', '.editorconfig'))
         modify_angular_json()
         Command(
-            'Creating localizations',
-            ['yarn', 'ng', 'add', '@angular/localize'],
+            'ng add @angular/localize',
+            ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],
             cwd="frontend"
         )()
         Command(

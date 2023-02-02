@@ -29,15 +29,15 @@
         "watch-back": "yarn livereload-back & yarn watch-test-back",
         "start": "yarn start-front & yarn start-back & yarn watch-back",
         "build": "yarn front yarn build",
-        "build-p": "yarn front yarn build --prod",
+        "build-p": "yarn build",
         "collectstatic-p": "cd backend && python manage.py collectstatic --noinput -v 0 --settings collect --pythonpath ..",
         "clean-static": "rm -rf static || rd /S /Q static",
-        "static-p": "yarn build-p && yarn clean-static && yarn collectstatic-p",
+        "static-p": "yarn build && yarn clean-static && yarn collectstatic-p",
         "watch-front-p": "yarn front yarn watch",
         "start-back-p": "cd backend && python manage.py runserver --settings production --insecure --pythonpath ..",
         "start-p": "yarn static-p && yarn watch-front-p & yarn start-back-p"
     },
     "devDependencies": {
-        "@angular/cli": ">=11 <12"
+        "@angular/cli": ">=15 <16"
     }
 }

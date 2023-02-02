@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { animations, showState } from '../animations';
 
 @Component({
@@ -7,14 +7,11 @@ import { animations, showState } from '../animations';
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit {
-    burgerShow: showState;
+export class MenuComponent {
+    burgerShow: showState = 'hide';
     burgerActive = false;
 
     constructor(private ngZone: NgZone) { }
-
-    ngOnInit() {
-    }
 
     toggleBurger() {
         if (!this.burgerActive) {
