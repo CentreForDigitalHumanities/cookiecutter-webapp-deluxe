@@ -245,7 +245,7 @@ def activate_frontend():
         os.remove(os.path.join('frontend', '.editorconfig'))
         modify_angular_json()
         Command(
-            'ng add @angular/localze',
+            'ng add @angular/localize',
             ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],
             cwd="frontend"
         )()
