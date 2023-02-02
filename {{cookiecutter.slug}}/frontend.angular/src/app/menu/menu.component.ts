@@ -1,5 +1,7 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, LOCALE_ID, Inject, OnInit, NgZone } from '@angular/core';
+import { faGlobe, faSync } from '@fortawesome/free-solid-svg-icons';
 import { animations, showState } from '../animations';
+import { LanguageInfo, LanguageService } from '../services/language.service';
 
 @Component({
     animations,
@@ -7,11 +9,33 @@ import { animations, showState } from '../animations';
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent {
-    burgerShow: showState = 'hide';
+export class MenuComponent implements OnInit {
+    burgerShow: showState = 'show';
     burgerActive = false;
+    currentLanguage: string;
+    loading = false;
 
-    constructor(private ngZone: NgZone) { }
+    faGlobe = faGlobe;
+    faSync = faSync;
+
+    // use the target languages for displaying the respective language names
+    languages?: LanguageInfo['supported'];
+
+    constructor(
+        @Inject(LOCALE_ID) private localeId: string,
+        private ngZone: NgZone,
+        private languageService: LanguageService) {
+        this.currentLanguage = this.localeId;
+    }
+
+    async ngOnInit(): Promise<void> {
+        // allow switching even when the current locale is different
+        // this should really only be the case in development:
+        // then the instance is only running in a single language
+        const languageInfo = await this.languageService.get();
+        this.currentLanguage = languageInfo.current || this.localeId;
+        this.languages = languageInfo.supported;
+    }
 
     toggleBurger() {
         if (!this.burgerActive) {
@@ -30,5 +54,15 @@ export class MenuComponent {
         }
 
         this.burgerShow = this.burgerShow === 'show' ? 'hide' : 'show';
+    }
+
+    async setLanguage(language: string): Promise<void> {
+        if (this.currentLanguage !== language) {
+            this.loading = true;
+            await this.languageService.set(language);
+            // reload the application to make the server route
+            // to the different language version
+            document.location.reload();
+        }
     }
 }

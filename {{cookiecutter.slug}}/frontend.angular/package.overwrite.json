@@ -3,12 +3,7 @@
     "scripts": {
         "ng": null,
         "prebuild": "node ./build/build-pre.js",
-        "build": "ng build --deploy-url='/static/'",
-{% set localizations = cookiecutter.localizations.split(',') %}
-{%- for loc in localizations %}
-{%- set code, name = loc.split(':') %}
-        "build:{{code}}": "ng build  --deploy-url='/static/' --configuration=production-{{code}}",
-{%- endfor %}
+        "build": "ng build --base-href=static/ --localize",
         "i18n": "ng extract-i18n --output-path locale",
         "preserve": "yarn prebuild",
         "serve": "ng serve --proxy-config ../proxy.conf.json",

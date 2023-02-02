@@ -5,8 +5,8 @@
                 <div class="column">
                     <h1 class="subtitle" i18n>{{cookiecutter.project_title}}</h1>
                     <div class="content">
-                        <p i18n>
-                            <a href="{{cookiecutter.origin.replace('github:', 'https://github.com/')}}">Source code</a> (BSD 3-Clause License)
+                        <p>
+                            <a href="{{cookiecutter.origin.replace('github:', 'https://github.com/')}}" i18n>Source code</a>&nbsp;<ng-container i18n>(BSD 3-Clause License)</ng-container>
                         </p>
                         <p>
                             <em><ng-container i18n>Version: </ng-container><span [title]="environment.buildTime">{{"{{environment.version}}"}}</span>&nbsp;<a [href]="environment.sourceUrl" target="_blank" i18n>(source)</a></em>

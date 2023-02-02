@@ -1,0 +1,64 @@
+{
+    "projects": {
+        "{{cookiecutter.slug | replace('_', '-')}}": {
+            "i18n": {
+                "sourceLocale": {
+                    "code": "{{cookiecutter.default_localization}}",
+                    "baseHref": "/{{cookiecutter.default_localization}}/"
+                },
+                "locales": {
+{% set localizations = cookiecutter.localizations.split(',') %}
+{%- for loc in localizations %}
+{%- set code, name = loc.split(':') %}
+{%- if cookiecutter.default_localization != code -%}
+                    "{{code}}": {
+                        "translation": "locale/messages.{{code}}.xlf",
+                        "baseHref": "/{{code}}/"
+                    }
+{% endif %}
+{%- endfor %}
+                }
+            },
+            "architect": {
+                "build": {
+                    "options": {
+                        "outputPath": "dist",
+                        "baseHref": "/"
+                    },
+                    "configurations": {
+                        {% set localizations = cookiecutter.localizations.split(',') %}
+                        {%- for loc in localizations %}
+                        {%- set code, name = loc.split(':') %}
+                        {%- if cookiecutter.default_localization != code -%}
+                        "{{code}}": {
+                            "localize": [
+                                "{{code}}"
+                            ]
+                        }
+                        {% endif %}
+                        {%- endfor %}
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "serve": {
+                    "configurations": {
+                        {% set localizations = cookiecutter.localizations.split(',') %}
+                        {%- for loc in localizations %}
+                        {%- set code, name = loc.split(':') %}
+                        {%- if cookiecutter.default_localization != code -%}
+                        "{{code}}": {
+                            "browserTarget": "{{cookiecutter.slug}}:build:{{code}}"
+                        }
+                        {% endif %}
+                        {%- endfor %}
+                    }
+                },
+                "test": {
+                    "options": {
+                        "karmaConfig": "karma.conf.js"
+                    }
+                }
+            }
+        }
+    }
+}

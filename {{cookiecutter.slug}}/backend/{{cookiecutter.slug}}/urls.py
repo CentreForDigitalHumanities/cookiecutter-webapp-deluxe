@@ -22,6 +22,7 @@ from rest_framework import routers
 
 from .index import index
 from .proxy_frontend import proxy_frontend
+from .i18n import get, set
 
 from example.views import hooray as ExampleView # DELETEME, see below
 
@@ -44,5 +45,7 @@ urlpatterns = [
         'rest_framework.urls',
         namespace='rest_framework',
     )),
+    path('api/i18n/get/', get),
+    path('api/i18n/set/', set),
     spa_url,  # catch-all; unknown paths to be handled by a SPA
 ]

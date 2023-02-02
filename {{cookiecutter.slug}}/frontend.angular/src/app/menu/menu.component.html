@@ -6,19 +6,36 @@
             </strong>
 
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-                data-target="navbarBasicExample" (click)="toggleBurger()"
-                [ngClass]="{'is-active': burgerActive}">
+                data-target="navbarBasicExample" (click)="toggleBurger()" [ngClass]="{'is-active': burgerActive}">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
 
-        <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': burgerActive}" [@slideInOut]="burgerShow">
+        <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': burgerActive}"
+            [@slideInOut]="burgerShow">
             <div class="navbar-start">
                 <a [routerLink]="['/home']" routerLinkActive="is-active" class="navbar-item" i18n>
                     Home
                 </a>
+            </div>
+            <div class="navbar-end" *ngIf="languages">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        <span class="icon">
+                            <fa-icon *ngIf="!loading" [icon]="faGlobe"></fa-icon>
+                            <fa-icon *ngIf="loading" [icon]="faSync" [spin]="true"></fa-icon>
+                        </span>
+                    </a>
+
+                    <div class="navbar-dropdown is-right">
+                        <a class="navbar-item" [ngClass]="{'is-active': language.code == currentLanguage }"
+                            *ngFor="let language of languages" (click)="setLanguage(language.code)">
+                            {{"{{language.name}}"}}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
