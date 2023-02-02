@@ -55,6 +55,8 @@ async function getRemoteUrl() {
 
 Promise.all([getHash(), getRemoteUrl()]).then(([hash, remoteUrl]) => {
     writeVersion(hash, remoteUrl);
+}).catch((error) => {
+    console.log(`${colors.red('Could not update version: ')} ${error}`);
 });
 
 function writeVersion(hash, remoteUrl) {
