@@ -1,4 +1,9 @@
+import { buildTime, version, sourceUrl } from './version';
+
 export const environment = {
   production: true,
-  assets: '/static/assets'
+  assets: '/static/assets',
+  buildTime,
+  version,
+  sourceUrl
 };

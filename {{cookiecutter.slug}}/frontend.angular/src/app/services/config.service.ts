@@ -10,7 +10,7 @@ export interface Config {
     providedIn: 'root'
 })
 export class ConfigService {
-    private config: Promise<any>;
+    private config?: Promise<Config>;
 
     constructor(private http: HttpClient) { }
 

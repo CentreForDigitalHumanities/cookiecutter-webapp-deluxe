@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 import { ConfigService } from './config.service';
 
 
@@ -11,24 +12,22 @@ export class BackendService {
 
     constructor(protected config: ConfigService, protected http: HttpClient) { }
 
-     /**
-      * Collect JSON from an specific url.
-      * @param objectUrl The part of the URL after the backendUrl from config.json.
-      * (i.e. whatever comes after, for example, '/api/').
-      * Note that this method will add a '/' at the end of the url if it does not exist.
-      */
-    get(objectUrl: string): Promise<any> {
-        return this.getApiUrl().then(baseUrl => {
-            if (!objectUrl.endsWith('/')) { objectUrl = `${objectUrl}/`; }
-            const url: string = encodeURI(baseUrl + objectUrl);
+    /**
+     * Collect JSON from an specific url.
+     * @param objectUrl The part of the URL after the backendUrl from config.json.
+     * (i.e. whatever comes after, for example, '/api/').
+     * Note that this method will add a '/' at the end of the url if it does not exist.
+     */
+    async get(objectUrl: string): Promise<any> {
+        const baseUrl = await this.getApiUrl();
+        if (!objectUrl.endsWith('/')) { objectUrl = `${objectUrl}/`; }
+        const url: string = encodeURI(baseUrl + objectUrl);
 
-            return this.http.get(url)
-                .toPromise()
-                .then(response => {
-                    return response;
-                })
-                .catch(this.handleError);
-        });
+        try {
+            return await lastValueFrom(this.http.get(url));
+        } catch (error) {
+            return await this.handleError(error);
+        }
     }
 
     getApiUrl(): Promise<string> {

@@ -1,8 +1,8 @@
 {
     "version": null,
     "scripts": {
-        "e2e": null,
         "ng": null,
+        "prebuild": "node ./build/build-pre.js",
         "build": "ng build --deploy-url='/static/'",
 {% set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
@@ -10,6 +10,7 @@
         "build:{{code}}": "ng build  --deploy-url='/static/' --configuration=production-{{code}}",
 {%- endfor %}
         "i18n": "ng extract-i18n --output-path locale",
+        "preserve": "yarn prebuild",
         "serve": "ng serve --proxy-config ../proxy.conf.json",
         "start": "yarn serve",
 {% set localizations = cookiecutter.localizations.split(',') %}
@@ -18,18 +19,20 @@
         "serve:{{code}}": "ng serve --proxy-config ../proxy.conf.json --configuration={{code}}",
 {%- endfor %}
         "stop": "lsof -t -i tcp:{{cookiecutter.frontend_port}} | xargs kill -9 || echo \"not running\"",
+        "pretest": "yarn prebuild",
         "test": "ng test --watch=true",
         "test-once": "ng test --watch=false",
-        "watch": "ng build --prod --watch"
+        "watch": "ng build --watch"
     },
     "dependencies": {
-        "@fortawesome/angular-fontawesome": "^0.8.1",
-        "@fortawesome/fontawesome-svg-core": "^1.2.32",
-        "@fortawesome/free-solid-svg-icons": "^5.15.1",
-        "@ngrx/effects": "^10.1.1",
-        "@ngrx/store": "^10.1.1",
+        "@fortawesome/angular-fontawesome": "^0.12.1",
+        "@fortawesome/fontawesome-svg-core": "^6.2.1",
+        "@fortawesome/free-solid-svg-icons": "^6.2.1",
+        "@ngrx/effects": "^15.2.1",
+        "@ngrx/store": "^15.2.1",
         "bulma": "^0.9.1",
-        "primeicons": "^4.1.0",
-        "primeng": "^11.0.0"
+        "colors": "^1.4.0",
+        "primeicons": "^6.0.1",
+        "primeng": "^15.1.1"
       }
 }

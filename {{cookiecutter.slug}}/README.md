@@ -14,7 +14,7 @@ You need to install the following software:
  - virtualenv
  - WSGI-compatible webserver (deployment only)
  - [Visual C++ for Python][1] (Windows only)
- - Node.js >= 8
+ - Node.js >= 14.20.0
  - Yarn
  - [WebDriver][2] for at least one browser (only for functional testing)
 
