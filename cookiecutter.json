@@ -9,7 +9,7 @@
   "database_user": "{{cookiecutter.slug}}",
   "database_password": "{{cookiecutter.slug}}",
   "database_port": "5432",
-  "localizations": "en:Engels,nl:Nederlands",
+  "localizations": "en:English,nl:Nederlands",
   "default_localization": "en",
   "frontend": ["angular", "backbone"],
   "frontend_port": "4200",
