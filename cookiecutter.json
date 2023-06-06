@@ -3,7 +3,7 @@
   "slug": "{{cookiecutter.project_title | lower | replace('-', '') | replace(' ', '_')}}",
   "app_prefix": "dh",
   "description": "{{cookiecutter.project_title}} will humanize all your digits!",
-  "author": "UU Digital Humanities Lab",
+  "author": "UU Centre for Digital Humanities - Research Software Lab",
   "origin": "github:UUDigitalHumanitieslab/{{cookiecutter.slug}}",
   "database_name": "{{cookiecutter.slug}}",
   "database_user": "{{cookiecutter.slug}}",
