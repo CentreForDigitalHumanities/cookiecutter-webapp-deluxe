@@ -35,9 +35,9 @@ This project integrates three isolated subprojects, each inside its own subdirec
 [6]: https://www.selenium.dev/documentation/webdriver/
 [7]: https://docs.pytest.org/en/latest/
 
-Each subproject is configurable from the outside. Integration is achieved using "magic configuration" which is contained inside the root directory together with this README. In this way, the subprojects can stay truly isolated from each other.
+Each subproject is configurable from the outside. Integration is achieved using "magic configuration" which is contained inside the root directory together with this document. In this way, the subprojects can stay truly isolated from each other.
 
-If you are reading this README, you'll likely be working with the integrated project as a whole rather than with one of the subprojects in isolation. In this case, this README should be your primary source of information on how to develop or deploy the project. However, we recommend that you also read the "How it works" section in the README of each subproject.
+If you are reading this document, you'll likely be working with the integrated project as a whole rather than with one of the subprojects in isolation. In this case, this document should be your primary source of information on how to develop or deploy the project. However, we recommend that you also read the "How it works" section in the document of each subproject.
 
 
 ### Quickstart
@@ -79,7 +79,7 @@ Steps 1–5 also include updating the unittests. Only functions should be tested
 
 For release branches, we suggest the following checklist.
 
- 1. Bump the version number in the `package.json` next to this README.
+ 1. Bump the version number in the `package.json` in the project root.
  2. Run the functional tests in production mode, fix bugs if necessary.
  3. Try using the application in production mode, look for problems that may have escaped the tests.
  4. Add regression tests (unit or functional) that detect problems from step 3.
@@ -89,7 +89,7 @@ For release branches, we suggest the following checklist.
 
 ### Commands for common tasks
 
-The `package.json` next to this README defines several shortcut commands to help streamline development. In total, there are over 30 commands. Most may be regarded as implementation details of other commands, although each command could be used directly. Below, we discuss the commands that are most likely to be useful to you. For full details, consult the `package.json`.
+The `package.json` in the project root defines several shortcut commands to help streamline development. In total, there are over 30 commands. Most may be regarded as implementation details of other commands, although each command could be used directly. Below, we discuss the commands that are most likely to be useful to you. For full details, consult the `package.json`.
 
 Install the pinned versions of all package dependencies in all subprojects:
 
