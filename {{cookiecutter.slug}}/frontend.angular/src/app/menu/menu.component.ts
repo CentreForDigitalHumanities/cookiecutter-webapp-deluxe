@@ -8,16 +8,18 @@ import { animations, showState } from '../animations';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-    burgerShow: showState = 'hide';
+    burgerShow: showState;
     burgerActive = false;
 
-    constructor(private ngZone: NgZone) { }
+    constructor(private ngZone: NgZone) {
+        const isDesktop = window.matchMedia("screen and (min-width: 1024px)").matches
+        this.burgerShow = isDesktop ? 'show' : 'hide';
+    }
 
     toggleBurger() {
-        if (!this.burgerActive) {
-            // make it active to make it visible (add a class to
-            // override it being hidden for smaller screens)
-            this.burgerActive = true;
+        this.burgerActive = !this.burgerActive;
+
+        if (this.burgerActive) {
             // immediately hide it
             this.burgerShow = 'hide';
             setTimeout(() => {
