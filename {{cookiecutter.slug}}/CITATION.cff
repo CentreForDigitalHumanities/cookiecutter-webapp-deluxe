@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+title: '{{cookiecutter.project_title}}'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - name: '{{cookiecutter.author}}'
+    website: '{{cookiecutter.author_url}}'
+repository-code: '{{cookiecutter.origin}}'
+abstract: >-
+  {{cookiecutter.description}}
+license: BSD-3

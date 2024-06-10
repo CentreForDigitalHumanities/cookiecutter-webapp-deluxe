@@ -10,7 +10,7 @@ import { LanguageInfo, LanguageService } from '../services/language.service';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-    burgerShow: showState = 'show';
+    burgerShow: showState;
     burgerActive = false;
     currentLanguage: string;
     loading = false;
@@ -25,6 +25,8 @@ export class MenuComponent implements OnInit {
         @Inject(LOCALE_ID) private localeId: string,
         private ngZone: NgZone,
         private languageService: LanguageService) {
+        const isDesktop = window.matchMedia("screen and (min-width: 1024px)").matches
+        this.burgerShow = isDesktop ? 'show' : 'hide';
         this.currentLanguage = this.localeId;
     }
 
@@ -38,10 +40,9 @@ export class MenuComponent implements OnInit {
     }
 
     toggleBurger() {
-        if (!this.burgerActive) {
-            // make it active to make it visible (add a class to
-            // override it being hidden for smaller screens)
-            this.burgerActive = true;
+        this.burgerActive = !this.burgerActive;
+
+        if (this.burgerActive) {
             // immediately hide it
             this.burgerShow = 'hide';
             setTimeout(() => {
