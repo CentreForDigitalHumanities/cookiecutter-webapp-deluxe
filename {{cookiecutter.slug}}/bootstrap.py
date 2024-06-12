@@ -77,6 +77,7 @@ def main(argv):
     frontpack = install_frontend_packages()
     db, create_db = prepare_db()
     migrate = superuser = False
+    db, grant_db = access_db(db)
     if db and backpack:
         migrate = run_migrations()
         if migrate:
@@ -92,7 +93,9 @@ def main(argv):
     if not venv: print(create_virtualenv)
     print(activate_venv)
     if not (pip_tools and backpack and frontpack and funcpack): print(install_all_packages)
-    if not db: print(create_db)
+    if not db:
+        print(create_db)
+        print(grant_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
     if not main_branch: print(track_main)
@@ -160,6 +163,17 @@ def prepare_db():
     return success, create_command
 
 
+def access_db(created):
+    default_cmd = 'psql'
+    psql_cmd = prompt('psql_command', default_cmd)
+    access_command = make_access_db_command(psql_cmd)
+    if created:
+        success = access_command()
+    else:
+        success = False
+    return success, access_command
+
+
 def make_create_db_command(psql_cmd):
     # psql does not properly indicate failure; it always exits with 0.
     # Fortunately, it is one of the last commands.
@@ -167,6 +181,16 @@ def make_create_db_command(psql_cmd):
         'Create the database',
         psql_cmd + ' -f ' + op.join('backend', 'create_db.sql'),
     )
+
+
+def make_access_db_command(psql_cmd):
+    # psql does not properly indicate failure; it always exits with 0.
+    # Fortunately, it is one of the last commands.
+    return Command(
+        'Access the database',
+        psql_cmd + ' -d {{cookiecutter.database_name}} -f ' + op.join('backend', 'access_db.sql'),
+    )
+
 
 def merge_json(target, source):
     for key, value in source.items():
@@ -232,7 +256,8 @@ def activate_frontend():
                 messages = file.read()
             if code != '{{cookiecutter.default_localization}}':
                 with open(f'frontend/locale/messages.{code}.xlf', 'w') as file:
-                    targeted = re.sub(r'(source-language="[^"]+"[^>]*)', f'\g<1> target-language="{code}"', messages)
+                    # add the target-language attribute after the source-language attribute
+                    targeted = re.sub(r'(source-language="[^"]+"[^>]*)', f'\\g<1> target-language="{code}"', messages)
                     try:
                         with open(f'frontend/locale/messages.{code}.json', 'r') as pretranslated:
                             translations = json.load(pretranslated)
