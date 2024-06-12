@@ -23,7 +23,7 @@ export class LanguageService {
         const response = await lastValueFrom(this.http.get<{
             current: string,
             supported: [string, string][]
-        }>(this.baseApiUrl + '/i18n/get/'));
+        }>(this.baseApiUrl + '/i18n/'));
 
         return {
             current: response.current,
@@ -36,7 +36,7 @@ export class LanguageService {
      */
     async set(language: string): Promise<void> {
         const response = lastValueFrom(this.http.post<void>(
-            this.baseApiUrl + '/i18n/set/', {
+            this.baseApiUrl + '/i18n/', {
             language
         }));
 

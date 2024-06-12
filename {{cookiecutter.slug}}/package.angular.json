@@ -38,6 +38,6 @@
         "start-p": "yarn static-p && yarn watch-front-p & yarn start-back-p"
     },
     "devDependencies": {
-        "@angular/cli": ">=15 <16"
+        "@angular/cli": ">=17 <18"
     }
 }

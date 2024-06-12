@@ -1,4 +1,7 @@
 import { Component, LOCALE_ID, Inject, OnInit, NgZone } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGlobe, faSync } from '@fortawesome/free-solid-svg-icons';
 import { animations, showState } from '../animations';
 import { LanguageInfo, LanguageService } from '../services/language.service';
@@ -7,7 +10,9 @@ import { LanguageInfo, LanguageService } from '../services/language.service';
     animations,
     selector: '{{cookiecutter.app_prefix}}-menu',
     templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss']
+    styleUrls: ['./menu.component.scss'],
+    standalone: true,
+    imports: [CommonModule, RouterLink, FontAwesomeModule]
 })
 export class MenuComponent implements OnInit {
     burgerShow: showState;

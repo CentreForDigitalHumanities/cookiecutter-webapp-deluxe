@@ -5,18 +5,15 @@ from django.conf import settings
 from django.utils import translation
 
 
-@api_view(['GET'])
-def get(request: Request):
-    return Response({
-        'current': request.LANGUAGE_CODE,
-        'supported': settings.LANGUAGES
-    })
+@api_view(["GET", "POST"])
+def i18n(request: Request):
+    response = Response()
+    if request.method == "POST":
+        language = request.data["language"]
+        translation.activate(language)
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    else:
+        language = request.LANGUAGE_CODE
 
-
-@api_view(['POST'])
-def set(request: Request):
-    language = request.data['language']
-    translation.activate(language)
-    response = Response(language)
-    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    response.data = {"current": language, "supported": settings.LANGUAGES}
     return response

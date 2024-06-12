@@ -3,7 +3,7 @@
     "scripts": {
         "ng": null,
         "prebuild": "node ./build/build-pre.js",
-        "build": "ng build --base-href=static/ --localize",
+        "build": "ng build --base-href=/static/ --localize",
         "i18n": "ng extract-i18n --output-path locale",
         "preserve": "yarn prebuild",
         "serve": "ng serve --proxy-config ../proxy.conf.json",
@@ -20,14 +20,17 @@
         "watch": "ng build --watch"
     },
     "dependencies": {
-        "@fortawesome/angular-fontawesome": "^0.12.1",
-        "@fortawesome/fontawesome-svg-core": "^6.2.1",
-        "@fortawesome/free-solid-svg-icons": "^6.2.1",
-        "@ngrx/effects": "^15.2.1",
-        "@ngrx/store": "^15.2.1",
+        "@fortawesome/angular-fontawesome": "^0.14.1",
+        "@fortawesome/fontawesome-svg-core": "^6.5.2",
+        "@fortawesome/free-solid-svg-icons": "^6.5.2",
+        "@ngrx/effects": "^17.2.0",
+        "@ngrx/store": "^17.2.0",
         "bulma": "^0.9.1",
         "colors": "^1.4.0",
-        "primeicons": "^6.0.1",
-        "primeng": "^15.1.1"
-      }
+        "primeicons": "^7.0.0",
+        "primeng": "^17.18.0"
+    },
+    "devDependencies": {
+        "ng-extract-i18n-merge": "^2.12.0"
+    }
 }
