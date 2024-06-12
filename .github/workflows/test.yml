@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.8', '3.9']
-        node-version: ['14.x', '16.x']
+        node-version: ['18.x', '20.x']
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
