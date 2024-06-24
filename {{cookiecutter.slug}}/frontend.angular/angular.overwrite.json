@@ -26,7 +26,12 @@
                 "build": {
                     "options": {
                         "outputPath": "dist",
-                        "baseHref": "/"
+                        "baseHref": "/",
+                        "assets": [
+                          "src/favicon.png",
+                          "src/favicon.svg",
+                          "src/assets"
+                        ]
                     },
                     "configurations": {
                         {% set comma = joiner(",") %}
@@ -79,7 +84,12 @@
                 },
                 "test": {
                     "options": {
-                        "karmaConfig": "karma.conf.js"
+                        "karmaConfig": "karma.conf.js",
+                        "assets": [
+                          "src/favicon.png",
+                          "src/favicon.svg",
+                          "src/assets"
+                        ]
                     }
                 }
             }
