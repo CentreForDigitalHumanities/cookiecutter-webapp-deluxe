@@ -221,6 +221,7 @@ def activate_frontend():
         Command(
             'Creating project',
             ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
+                '--ssr',
                 '--skip-git=true',
                 '--skip-install=true',
                 '--package-manager=yarn',

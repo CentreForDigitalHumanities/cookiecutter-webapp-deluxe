@@ -23,14 +23,17 @@ export class MenuComponent implements OnInit {
     faGlobe = faGlobe;
     faSync = faSync;
 
-    // use the target languages for displaying the respective language names
+    /**
+     * Use the target languages for displaying the respective language names
+     */
     languages?: LanguageInfo['supported'];
 
     constructor(
         @Inject(LOCALE_ID) private localeId: string,
         private ngZone: NgZone,
         private languageService: LanguageService) {
-        const isDesktop = window.matchMedia("screen and (min-width: 1024px)").matches
+        // Window is undefined on the server
+        const isDesktop = typeof window !== "undefined" ? window.matchMedia("screen and (min-width: 1024px)").matches : true;
         this.burgerShow = isDesktop ? 'show' : 'hide';
         this.currentLanguage = this.localeId;
     }

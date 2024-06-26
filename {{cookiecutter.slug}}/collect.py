@@ -14,7 +14,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1']
 
+{% if cookiecutter.frontend == "angular" %}
+STATICFILES_DIRS = [op.join(here, 'frontend', 'dist', 'browser')]
+{% else %}
 STATICFILES_DIRS = [op.join(here, 'frontend', 'dist')]
+{% endif %}
 
 STATIC_ROOT = op.join(here, 'static')
 
