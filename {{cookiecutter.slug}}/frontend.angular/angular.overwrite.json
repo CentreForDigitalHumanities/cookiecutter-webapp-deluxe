@@ -1,0 +1,98 @@
+{% set localizations = cookiecutter.localizations.split(',') %}
+{% set project_name = cookiecutter.slug | replace('_', '-') %}
+{
+    "projects": {
+        "{{project_name}}": {
+            "i18n": {
+                "sourceLocale": {
+                    "code": "{{cookiecutter.default_localization}}",
+                    "baseHref": "/{{cookiecutter.default_localization}}/"
+                },
+                "locales": {
+                    {% set comma = joiner(",") %}
+                    {%- for loc in localizations %}
+                    {%- set code, name = loc.split(':') %}
+                    {%- if cookiecutter.default_localization != code -%}
+                    {{ comma() }}
+                    "{{code}}": {
+                        "translation": "locale/messages.{{code}}.xlf",
+                        "baseHref": "/{{code}}/"
+                    }
+                    {% endif %}
+                    {%- endfor %}
+                }
+            },
+            "architect": {
+                "build": {
+                    "options": {
+                        "outputPath": "dist",
+                        "baseHref": "/",
+                        "assets": [
+                          "src/favicon.png",
+                          "src/favicon.svg",
+                          "src/assets"
+                        ]
+                    },
+                    "configurations": {
+                        {% set comma = joiner(",") %}
+                        {%- for loc in localizations %}
+                        {%- set code, name = loc.split(':') %}
+                        {%- if cookiecutter.default_localization != code -%}
+                        {{ comma() }}
+                        "{{code}}": {
+                            "localize": [
+                                "{{code}}"
+                            ]
+                        }
+                        {% endif %}
+                        {%- endfor %}
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "serve": {
+                    "configurations": {
+                        {% set comma = joiner(",") %}
+                        {%- for loc in localizations %}
+                        {%- set code, name = loc.split(':') %}
+                        {%- if cookiecutter.default_localization != code -%}
+                        {{ comma() }}
+                        "{{code}}": {
+                            "browserTarget": "{{project_name}}:build:{{code}}"
+                        }
+                        {% endif %}
+                        {%- endfor %}
+                    }
+                },
+                "extract-i18n": {
+                  "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
+                  "options": {
+                    "browserTarget": "{{project_name}}:build",
+                    "format": "xlf",
+                    "outputPath": "locale",
+                    "includeContext": true,
+                    "targetFiles": [
+                        {% set comma = joiner(",") %}
+                        {%- for loc in localizations %}
+                        {%- set code, name = loc.split(':') %}
+                        {%- if cookiecutter.default_localization != code -%}
+                        {{ comma() }}
+                        "messages.{{code}}.xlf"
+                        {% endif %}
+                        {%- endfor %}
+                    ]
+                  }
+                },
+                "test": {
+                    "options": {
+                        "karmaConfig": "karma.conf.js",
+                        "assets": [
+                          "src/favicon.png",
+                          "src/favicon.svg",
+                          "src/assets"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

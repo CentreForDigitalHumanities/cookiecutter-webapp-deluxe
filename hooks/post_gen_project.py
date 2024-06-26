@@ -70,6 +70,8 @@ def main(argv):
                 commit = initial_commit()
         remote = add_remote()
     db = create_db()
+    if db:
+        db = grant_db()
     migrate = superuser = False
     if db and backpack:
         migrate = run_migrations()
@@ -91,7 +93,9 @@ def main(argv):
     if not stage: print(git_add)
     if not commit: print(initial_commit)
     if not remote: print(add_remote)
-    if not db: print(create_db)
+    if not db:
+        print(create_db)
+        print(grant_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
     print(git_push)
@@ -176,6 +180,7 @@ add_remote = Command(
 # psql does not properly indicate failure; it always exits with 0.
 # Fortunately, it is one of the last commands.
 create_db = make_create_db_command(PSQL_COMMAND)
+grant_db = make_access_db_command(PSQL_COMMAND)
 
 git_push = Command('', ['git', 'push', '-u', 'origin', 'main', 'develop'])
 

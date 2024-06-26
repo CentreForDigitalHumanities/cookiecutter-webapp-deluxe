@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { BackendService } from './../services/backend.service';
 
 @Component({
-  selector: '{{cookiecutter.app_prefix}}-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: '{{cookiecutter.app_prefix}}-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true
 })
 export class HomeComponent implements OnInit {
     hooray?: string;

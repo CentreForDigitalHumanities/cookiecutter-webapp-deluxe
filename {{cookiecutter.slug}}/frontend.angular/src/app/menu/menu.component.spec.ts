@@ -11,8 +11,11 @@ describe('MenuComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [MenuComponent],
-            imports: [NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
+            imports: [
+                MenuComponent,
+                NoopAnimationsModule,
+                RouterTestingModule,
+                HttpClientTestingModule]
         }).compileComponents();
     }));
 

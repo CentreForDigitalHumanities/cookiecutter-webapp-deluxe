@@ -1,6 +1,6 @@
 # cookiecutter-webapp-deluxe
 
-[![Actions Status](https://github.com/UUDigitalHumanitiesLab/cookiecutter-webapp-deluxe/workflows/Tests/badge.svg)](https://github.com/UUDigitalHumanitiesLab/cookiecutter-webapp-deluxe/actions)
+[![Actions Status](https://github.com/CentreForDigitalHumanities/cookiecutter-webapp-deluxe/workflows/Tests/badge.svg)](https://github.com/CentreForDigitalHumanities/cookiecutter-webapp-deluxe/actions)
 
 A boilerplate for full-fledged web applications with [Django][1] backend, [Angular][2] frontend and [Selenium][3] functional tests.
 
@@ -47,7 +47,7 @@ These are all the external dependencies you'll need during or after project gene
 
 ```console
 $ cd to/parent/directory/that/contains/all/your/projects/
-$ cookiecutter gh:UUDigitalHumanitieslab/cookiecutter-webapp-deluxe --checkout develop
+$ cookiecutter gh:CentreForDigitalHumanities/cookiecutter-webapp-deluxe --checkout develop
 # (the plan is to change the latter command into `dh init`)
 ```
 

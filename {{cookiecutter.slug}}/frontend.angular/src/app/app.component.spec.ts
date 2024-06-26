@@ -4,20 +4,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { AppComponent } from './app.component';
-import { FooterComponent } from './footer/footer.component';
-import { MenuComponent } from './menu/menu.component';
 
 describe('AppComponent', () => {
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                AppComponent,
-                MenuComponent,
-                FooterComponent
-            ],
-            imports: [NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
+            imports: [
+                AppComponent, NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
         }).compileComponents();
     }));
+
 
     it('should create the app', () => {
         const fixture = TestBed.createComponent(AppComponent);
@@ -25,10 +20,10 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title '{{cookiecutter.slug | replace('_', '-')}}'`, () => {
+    it(`should have as title '{{cookiecutter.project_title}}'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual(`{{cookiecutter.slug | replace('_', '-')}}`);
+        expect(app.title).toEqual(`{{cookiecutter.project_title}}`);
     });
 
     it('should render title', () => {

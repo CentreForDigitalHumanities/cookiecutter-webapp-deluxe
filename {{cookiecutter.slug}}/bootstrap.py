@@ -10,6 +10,7 @@ import sys
 import subprocess
 import shlex
 import shutil
+import re
 
 SLUG = '{{cookiecutter.slug}}'
 WINDOWS = (platform.system() == 'Windows')
@@ -76,6 +77,7 @@ def main(argv):
     frontpack = install_frontend_packages()
     db, create_db = prepare_db()
     migrate = superuser = False
+    db, grant_db = access_db(db)
     if db and backpack:
         migrate = run_migrations()
         if migrate:
@@ -91,7 +93,9 @@ def main(argv):
     if not venv: print(create_virtualenv)
     print(activate_venv)
     if not (pip_tools and backpack and frontpack and funcpack): print(install_all_packages)
-    if not db: print(create_db)
+    if not db:
+        print(create_db)
+        print(grant_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
     if not main_branch: print(track_main)
@@ -159,6 +163,17 @@ def prepare_db():
     return success, create_command
 
 
+def access_db(created):
+    default_cmd = 'psql'
+    psql_cmd = prompt('psql_command', default_cmd)
+    access_command = make_access_db_command(psql_cmd)
+    if created:
+        success = access_command()
+    else:
+        success = False
+    return success, access_command
+
+
 def make_create_db_command(psql_cmd):
     # psql does not properly indicate failure; it always exits with 0.
     # Fortunately, it is one of the last commands.
@@ -166,6 +181,16 @@ def make_create_db_command(psql_cmd):
         'Create the database',
         psql_cmd + ' -f ' + op.join('backend', 'create_db.sql'),
     )
+
+
+def make_access_db_command(psql_cmd):
+    # psql does not properly indicate failure; it always exits with 0.
+    # Fortunately, it is one of the last commands.
+    return Command(
+        'Access the database',
+        psql_cmd + ' -d {{cookiecutter.database_name}} -f ' + op.join('backend', 'access_db.sql'),
+    )
+
 
 def merge_json(target, source):
     for key, value in source.items():
@@ -179,36 +204,6 @@ def merge_json(target, source):
     return target
 
 
-def modify_angular_json():
-    with open('frontend/angular.json', 'r') as file:
-        data = json.load(file)
-    try:
-        project = '{{cookiecutter.slug}}'.replace('_', '-')
-        data['projects'][project]['architect']['test']['options']['karmaConfig'] = 'karma.conf.js'
-        for lang in '{{cookiecutter.localizations}}'.split(','):
-            [code, lang_name] = lang.split(':')
-            production = merge_json({}, data['projects'][project]['architect']['build']['configurations']['production'])
-            production['outputPath'] = f'dist/{code}'
-            production['i18nFile'] = f'locale/messages.{code}.xlf'
-            production['i18nFormat'] = 'xlf'
-            production['i18nLocale'] = code
-            production['i18nMissingTranslation'] = 'error'
-            data['projects'][project]['architect']['build']['configurations'][f'production-{code}'] = production
-
-            serve = merge_json({}, data['projects'][project]['architect']['serve']['configurations']['production'])
-            serve['browserTarget'] += f'-{code}'
-            data['projects'][project]['architect']['serve']['configurations'][code] = serve
-
-        data['projects'][project]['architect']['build']['options']['outputPath'] = \
-            data['projects'][project]['architect']['build']['configurations']['production']['outputPath'] = 'dist'
-    except Exception as error:
-        print("Oh no! :( Maybe the format changed?")
-        print(json.dumps(data, indent=4))
-        raise error
-    with open('frontend/angular.json', 'w') as file:
-        json.dump(data, file, indent=4)
-
-
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
     os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
@@ -216,7 +211,7 @@ def activate_frontend():
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
-        override_package_json()
+        override_json('package')
     elif framework == 'angular':
         project_name = '{{cookiecutter.slug}}'.replace('_', '-')
         Command(
@@ -226,6 +221,7 @@ def activate_frontend():
         Command(
             'Creating project',
             ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
+                '--ssr',
                 '--skip-git=true',
                 '--skip-install=true',
                 '--package-manager=yarn',
@@ -235,20 +231,23 @@ def activate_frontend():
         dir_util.copy_tree('frontend.angular', project_name)
         os.rename(project_name, 'frontend')
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
-        override_package_json()
+        override_json('package')
         Command(
             'Install frontend dependencies using Yarn',
             ['yarn'],
             cwd="frontend"
         )()
+        # Remove favicon.ico
+        os.remove(os.path.join('frontend', 'src', 'favicon.ico'))
         # Remove editorconfig
         os.remove(os.path.join('frontend', '.editorconfig'))
-        modify_angular_json()
         Command(
             'ng add @angular/localize',
             ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],
             cwd="frontend"
         )()
+
+        override_json('angular')
         Command(
             'Creating localizations',
             ['yarn', 'i18n'],
@@ -256,7 +255,21 @@ def activate_frontend():
         )()
         for lang in '{{cookiecutter.localizations}}'.split(','):
             [code, lang_name] = lang.split(':')
-            shutil.copyfile('frontend/locale/messages.xlf', f'frontend/locale/messages.{code}.xlf')
+            with open(f'frontend/locale/messages.xlf', 'r') as file:
+                messages = file.read()
+            if code != '{{cookiecutter.default_localization}}':
+                with open(f'frontend/locale/messages.{code}.xlf', 'w') as file:
+                    # add the target-language attribute after the source-language attribute
+                    targeted = re.sub(r'(source-language="[^"]+"[^>]*)', f'\\g<1> target-language="{code}"', messages)
+                    try:
+                        with open(f'frontend/locale/messages.{code}.json', 'r') as pretranslated:
+                            translations = json.load(pretranslated)
+                            for key, value in translations.items():
+                                targeted = targeted.replace(f'<source>{key}</source>', f'<source>{key}</source>\n        <target state="translated">{value}</target>')
+                        os.remove(f'frontend/locale/messages.{code}.json')
+                    except FileNotFoundError:
+                        pass
+                    file.write(targeted)
         if '{{cookiecutter.frontend_port}}' != '4200':
             Command(
                 'Set frontend port',
@@ -272,17 +285,17 @@ def activate_frontend():
         os.remove(path)
 
 
-def override_package_json():
-    if os.path.isfile('frontend/package.overwrite.json'):
-        print('Overriding package.json')
-        with open('frontend/package.overwrite.json', 'r') as file:
+def override_json(filename):
+    if os.path.isfile(f'frontend/{filename}.overwrite.json'):
+        print(f'Overriding {filename}.json')
+        with open(f'frontend/{filename}.overwrite.json', 'r') as file:
             overwrite = json.load(file)
-        with open('frontend/package.json', 'r') as file:
+        with open(f'frontend/{filename}.json', 'r') as file:
             data = json.load(file)
-        with open('frontend/package.json', 'w') as file:
+        with open(f'frontend/{filename}.json', 'w') as file:
             merge_json(data, overwrite)
             json.dump(data, file, indent=4)
-        os.remove('frontend/package.overwrite.json')
+        os.remove(f'frontend/{filename}.overwrite.json')
 
 
 install_pip_tools = Command(
