@@ -35,7 +35,7 @@
         "static-p": "yarn build && yarn clean-static && yarn collectstatic-p",
         "watch-front-p": "yarn front yarn watch",
         "start-back-p": "cd backend && python manage.py runserver --settings production --insecure --pythonpath ..",
-        "start-p": "yarn static-p && yarn watch-front-p & yarn start-back-p"
+        "start-p": "yarn start-back-p & sleep 5 && yarn static-p && yarn watch-front-p"
     },
     "devDependencies": {
         "@angular/cli": ">=17 <18"

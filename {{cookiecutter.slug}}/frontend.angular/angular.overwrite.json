@@ -31,9 +31,37 @@
                           "src/favicon.png",
                           "src/favicon.svg",
                           "src/assets"
+                        ],
+                        "styles": [
+                          "src/styles.scss",
+                          {
+                            "input": "src/dark.scss",
+                            "bundleName": "dark",
+                            "inject": false
+                          },
+                          {
+                            "input": "src/light.scss",
+                            "bundleName": "light",
+                            "inject": false
+                          }
                         ]
                     },
                     "configurations": {
+                        "production": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "500kb",
+                                    "maximumError": "2mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
+                                }
+                            ],
+                            "sourceMap": true
+                        },
                         {% set comma = joiner(",") %}
                         {%- for loc in localizations %}
                         {%- set code, name = loc.split(':') %}
@@ -50,6 +78,9 @@
                     "defaultConfiguration": "production"
                 },
                 "serve": {
+                    "options": {
+                        "proxyConfig": "../proxy.conf.json"
+                    },
                     "configurations": {
                         {% set comma = joiner(",") %}
                         {%- for loc in localizations %}

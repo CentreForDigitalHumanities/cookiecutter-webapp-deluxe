@@ -21,7 +21,9 @@
                     Home
                 </a>
             </div>
-            <div class="navbar-end" *ngIf="languages">
+            <div class="navbar-end">
+                <{{cookiecutter.app_prefix}}-dark-mode-toggle class="navbar-item"></{{cookiecutter.app_prefix}}-dark-mode-toggle>
+                @if (languages) {
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
                         <span class="icon">
@@ -37,6 +39,7 @@
                         </a>
                     </div>
                 </div>
+                }
             </div>
         </div>
     </div>

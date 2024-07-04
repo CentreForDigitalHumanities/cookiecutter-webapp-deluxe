@@ -1,9 +1,10 @@
-import { Component, LOCALE_ID, Inject, OnInit, NgZone } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, LOCALE_ID, Inject, OnInit, NgZone, afterRender } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGlobe, faSync } from '@fortawesome/free-solid-svg-icons';
 import { animations, showState } from '../animations';
+import { DarkModeToggleComponent } from '../dark-mode-toggle/dark-mode-toggle.component';
 import { LanguageInfo, LanguageService } from '../services/language.service';
 
 @Component({
@@ -12,10 +13,10 @@ import { LanguageInfo, LanguageService } from '../services/language.service';
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
     standalone: true,
-    imports: [CommonModule, RouterLink, FontAwesomeModule]
+    imports: [CommonModule, RouterLink, FontAwesomeModule, DarkModeToggleComponent]
 })
 export class MenuComponent implements OnInit {
-    burgerShow: showState;
+    burgerShow: showState = 'show';
     burgerActive = false;
     currentLanguage: string;
     loading = false;
@@ -29,13 +30,18 @@ export class MenuComponent implements OnInit {
     languages?: LanguageInfo['supported'];
 
     constructor(
+        @Inject(DOCUMENT) private document: Document,
         @Inject(LOCALE_ID) private localeId: string,
         private ngZone: NgZone,
         private languageService: LanguageService) {
-        // Window is undefined on the server
-        const isDesktop = typeof window !== "undefined" ? window.matchMedia("screen and (min-width: 1024px)").matches : true;
-        this.burgerShow = isDesktop ? 'show' : 'hide';
         this.currentLanguage = this.localeId;
+
+        // Using the DOM API to only render on the browser instead of on the server
+        afterRender(() => {
+            const window = this.document.defaultView;
+            const isDesktop = window ? window.matchMedia("screen and (min-width: 1024px)").matches : true;
+            this.burgerShow = isDesktop ? 'show' : 'hide';
+        });
     }
 
     async ngOnInit(): Promise<void> {
