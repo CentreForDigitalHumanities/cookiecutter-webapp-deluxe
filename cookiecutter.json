@@ -4,7 +4,7 @@
   "app_prefix": "dh",
   "description": "{{cookiecutter.project_title}} will humanize all your digits!",
   "author": "Research Software Lab, Centre for Digital Humanities, Utrecht University",
-  "author_url": "https://cdh.uu.nl/centre-for-digital-humanities/research-software-lab/",
+  "author_url": "https://cdh.uu.nl/about/research-software-lab/",
   "origin": "github:CentreForDigitalHumanities/{{cookiecutter.slug}}",
   "database_name": "{{cookiecutter.slug}}",
   "database_user": "{{cookiecutter.slug}}",

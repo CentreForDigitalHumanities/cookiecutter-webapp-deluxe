@@ -7,7 +7,13 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 
-export const BACKEND_URL = new InjectionToken<string>('BackendUrl');
+export const BACKEND_URL = new InjectionToken<string>('BackendUrl', {
+    // because proxy doesn't work for SSR, support a wonky workaround
+    // by manually specifying the URL where the backend is running
+    // https://github.com/angular/angular-cli/issues/27144
+    // By default it is empty, because in the browser this isn't needed
+    factory: () => ''
+});
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -27,11 +33,6 @@ export const appConfig: ApplicationConfig = {
         // the root e.g. /home
         // The server should then switch index.html based on a language
         // cookie with a fallback to Dutch e.g. /nl/static/index.html
-        { provide: APP_BASE_HREF, useValue: '/' },
-        // because proxy doesn't work for SSR, support a wonky workaround
-        // by manually specifying the URL where the backend is running
-        // https://github.com/angular/angular-cli/issues/27144
-        // By default it is empty, because in the browser this isn't needed
-        { provide: BACKEND_URL, useValue: '' }
+        { provide: APP_BASE_HREF, useValue: '/' }
     ]
 };
