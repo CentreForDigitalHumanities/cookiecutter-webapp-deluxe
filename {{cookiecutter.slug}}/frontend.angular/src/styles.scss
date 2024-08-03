@@ -1,8 +1,10 @@
-@import 'variables';
-@import 'bulma/bulma';
-@import 'primeicons/primeicons.css';
-@import 'primeng/resources/themes/fluent-light/theme.css';
-@import 'primeng/resources/primeng.css';
+@use 'variables' with ( // University Brand Colors
+    $primary: #FFCD00,
+    $green: #24A793,
+    $red: #C00A35,
+    $yellow: #FFCD00,
+    $blue: #5287C6);
+@use 'bulma/bulma';
 
 @media print {
 
@@ -21,7 +23,7 @@
 
         >tr>th,
         >tr>td {
-            border: solid 1px $dark !important;
+            border: solid 1px variables.$dark !important;
         }
     }
 }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
+import { BackendService } from './backend.service';
 
 export interface LanguageInfo {
     current: string;
@@ -16,14 +17,14 @@ export interface LanguageInfo {
 export class LanguageService {
     baseApiUrl = '/api';
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private backendService: BackendService) {
     }
 
     async get(): Promise<LanguageInfo> {
-        const response = await lastValueFrom(this.http.get<{
+        const response: {
             current: string,
             supported: [string, string][]
-        }>(this.baseApiUrl + '/i18n/'));
+        } = await this.backendService.get('i18n')
 
         return {
             current: response.current,

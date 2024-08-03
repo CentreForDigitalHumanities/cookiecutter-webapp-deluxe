@@ -78,8 +78,10 @@ jobs:
         cat bootstrap_ci.txt | python bootstrap.py
         yarn
         yarn django migrate
+        # start the backend first for the SSR
+        yarn start-back-p &
+        sleep 10
         yarn static-p
         find static
-        yarn start-back-p &
         chromedriver --version
         yarn test

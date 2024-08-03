@@ -6,12 +6,12 @@
         "build": "ng build --base-href=/static/ --localize",
         "i18n": "ng extract-i18n --output-path locale",
         "preserve": "yarn prebuild",
-        "serve": "ng serve --proxy-config ../proxy.conf.json",
+        "serve": "ng serve",
         "start": "yarn serve",
 {% set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
 {%- set code, name = loc.split(':') %}
-        "serve:{{code}}": "ng serve --proxy-config ../proxy.conf.json --configuration={{code}}",
+        "serve:{{code}}": "ng serve --configuration={{code}}",
 {%- endfor %}
         "stop": "lsof -t -i tcp:{{cookiecutter.frontend_port}} | xargs kill -9 || echo \"not running\"",
         "pretest": "yarn prebuild",
@@ -25,9 +25,8 @@
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
         "@ngrx/effects": "^17.2.0",
         "@ngrx/store": "^17.2.0",
-        "bulma": "^0.9.1",
+        "bulma": "^1.0.1",
         "colors": "^1.4.0",
-        "primeicons": "^7.0.0",
         "primeng": "^17.18.0"
     },
     "devDependencies": {
