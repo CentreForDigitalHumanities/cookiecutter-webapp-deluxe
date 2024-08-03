@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from './config.service';
-import { BACKEND_URL } from '../app.config';
+import { BACKEND_URL_OVERRIDE } from '../app.config';
 
 
 @Injectable({
@@ -17,7 +17,7 @@ export class BackendService {
         /**
          * Override BACKEND_URL for SSR
          */
-        @Inject(BACKEND_URL) private backendUrl: string) {
+        @Inject(BACKEND_URL_OVERRIDE) private backendUrlOverride: string) {
     }
 
     /**
@@ -40,7 +40,7 @@ export class BackendService {
 
     getApiUrl(): Promise<string> {
         if (!this.apiUrl) {
-            this.apiUrl = this.config.get().then(config => this.backendUrl ?? config.backendUrl);
+            this.apiUrl = this.config.get().then(config => this.backendUrlOverride ?? config.backendUrl);
         }
 
         return this.apiUrl;

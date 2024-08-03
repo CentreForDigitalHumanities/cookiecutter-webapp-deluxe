@@ -13,7 +13,7 @@ import { routes } from './app.routes';
  * https://github.com/angular/angular-cli/issues/27144
  * By default it is empty, because in the browser this isn't needed
  */
-export const BACKEND_URL = new InjectionToken<string | null>('BackendUrl', {
+export const BACKEND_URL_OVERRIDE = new InjectionToken<string | null>('BackendUrl', {
     factory: () => null
 });
 
