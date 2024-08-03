@@ -11,7 +11,13 @@ import { BACKEND_URL } from '../app.config';
 export class BackendService {
     protected apiUrl: Promise<string> | null = null;
 
-    constructor(protected config: ConfigService, protected http: HttpClient, @Inject(BACKEND_URL) private backendUrl: string) {
+    constructor(
+        protected config: ConfigService,
+        protected http: HttpClient,
+        /**
+         * Override BACKEND_URL for SSR
+         */
+        @Inject(BACKEND_URL) private backendUrl: string) {
     }
 
     /**
@@ -34,7 +40,7 @@ export class BackendService {
 
     getApiUrl(): Promise<string> {
         if (!this.apiUrl) {
-            this.apiUrl = this.config.get().then(config => this.backendUrl + config.backendUrl);
+            this.apiUrl = this.config.get().then(config => this.backendUrl ?? config.backendUrl);
         }
 
         return this.apiUrl;

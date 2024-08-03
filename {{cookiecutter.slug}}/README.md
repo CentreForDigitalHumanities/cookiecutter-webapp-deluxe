@@ -12,7 +12,7 @@
 
 ## Getting started
 
-{{cookiecutter.project_title}} is a web application: it can be acessed using a web browser.
+{{cookiecutter.project_title}} is a web application: it can be accessed using a web browser.
 
 *If you are hosting {{cookiecutter.project_title}} anywhere, provide a URL and any additional info.*
 

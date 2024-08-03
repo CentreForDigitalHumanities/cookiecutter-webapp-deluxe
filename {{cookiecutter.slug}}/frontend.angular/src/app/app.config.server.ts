@@ -5,7 +5,7 @@ import { BACKEND_URL, appConfig } from './app.config';
 const serverConfig: ApplicationConfig = {
     providers: [
         provideServerRendering(),
-        { provide: BACKEND_URL, useValue: 'http://localhost:8000' }
+        { provide: BACKEND_URL, useValue: 'http://localhost:8000/api/' }
     ]
 };
 

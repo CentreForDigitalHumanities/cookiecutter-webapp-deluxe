@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, afterRender } from '@angular/core';
-import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
+import { Inject, Injectable, OnDestroy, afterRender } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription, combineLatestWith, distinctUntilChanged, fromEvent, map, startWith } from 'rxjs';
 
 /**
  * Bulma theme
@@ -10,24 +10,44 @@ type Theme = 'dark' | 'light';
 @Injectable({
     providedIn: 'root'
 })
-export class DarkModeService {
+export class DarkModeService implements OnDestroy {
     private initialized = false;
+    private readonly subscriptions: Subscription[] = [];
+    /**
+     * Whether the user's system is set to use dark or light mode.
+     */
+    private readonly system = new BehaviorSubject<Theme>('light');
 
     /**
-     * Whether the user's system is set to use dark mode.
+     * Did the user override the system settings?
      */
-    private system: Theme = 'light';
+    private readonly user = new BehaviorSubject<Theme | null>(null);
 
-    private theme!: BehaviorSubject<Theme>;
     theme$: Observable<Theme>;
 
-
     constructor(@Inject(DOCUMENT) private document: Document) {
-        this.theme = new BehaviorSubject<Theme>(this.get() ?? this.system);
-        this.theme$ = this.theme.pipe(distinctUntilChanged());
+        const user = this.get();
+        if (user) {
+            this.user.next(user);
+        }
+
+        // set the active theme by the user or if this is
+        // empty, listen to the system settings
+        this.theme$ = this.user.pipe(
+            combineLatestWith(this.system),
+            distinctUntilChanged(),
+            map(([user, system]) => {
+                console.log({ user, system });
+                return user ?? system
+            }));
+
         afterRender(() => {
             this.initialize();
         });
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     private initialize() {
@@ -36,16 +56,26 @@ export class DarkModeService {
         }
 
         this.initialized = true;
-        const window = this.document.defaultView;
-        const system =
-            window?.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-                ? 'dark'
-                : 'light';
-
-        if (this.system !== system) {
-            this.system = system;
-            this.theme.next(this.get() ?? this.system);
+        const system$ = this.observeSystem();
+        if (system$) {
+            this.subscriptions.push(system$.subscribe(theme => this.system.next(theme)));
         }
+    }
+
+    /**
+     * Gets the current theme from the system settings
+     * @returns 
+     */
+    private observeSystem(): Observable<Theme> | null {
+        const window = this.document.defaultView;
+        if (!window || !window.matchMedia) {
+            return null;
+        }
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        return fromEvent<MediaQueryList>(mediaQuery, 'change').pipe(
+            startWith(mediaQuery),
+            map((list: MediaQueryList) => list.matches ? 'dark' : 'light')
+        );
     }
 
     /**
@@ -70,18 +100,18 @@ export class DarkModeService {
         } else {
             localStorage.setItem('theme', value);
         }
+
+        this.user.next(value);
     }
 
     toggle() {
-        const target: Theme = this.theme.value === 'dark' ? 'light' : 'dark';
-        if (target === this.system) {
+        const target: Theme = (this.user.value ?? this.system.value) === 'dark' ? 'light' : 'dark';
+        if (target === this.system.value) {
             // restore to system setting - if the user might change that
             // system's setting later on this application will follow
             this.set(null);
         } else {
             this.set(target);
         }
-
-        this.theme.next(target);
     }
 }

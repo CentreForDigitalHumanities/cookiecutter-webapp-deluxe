@@ -7,12 +7,14 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 
-export const BACKEND_URL = new InjectionToken<string>('BackendUrl', {
-    // because proxy doesn't work for SSR, support a wonky workaround
-    // by manually specifying the URL where the backend is running
-    // https://github.com/angular/angular-cli/issues/27144
-    // By default it is empty, because in the browser this isn't needed
-    factory: () => ''
+/**
+ * because proxy doesn't work for SSR, support a wonky workaround
+ * by manually specifying the URL where the backend is running
+ * https://github.com/angular/angular-cli/issues/27144
+ * By default it is empty, because in the browser this isn't needed
+ */
+export const BACKEND_URL = new InjectionToken<string | null>('BackendUrl', {
+    factory: () => null
 });
 
 export const appConfig: ApplicationConfig = {
