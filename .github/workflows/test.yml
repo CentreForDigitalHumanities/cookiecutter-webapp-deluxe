@@ -41,7 +41,7 @@ jobs:
         python-version: ['3.8', '3.9']
         node-version: ['18.x', '20.x']
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -66,13 +66,18 @@ jobs:
         PGUSER: dighum_pro
         PGPASSWORD: dighum_pro
       run: |
+        # need to be able to create an initial commit
+        git config --global user.name 'Agent Smith'
+        git config --global user.email 'agent-smith@hum.uu.nl'
         cookiecutter . --no-input
         cd dighum_pro
         cat bootstrap.log
         yarn
         yarn django migrate
+        # start the backend first for the SSR
+        yarn start-back-p &
+        sleep 10
         yarn static-p
         find static
-        yarn start-back-p &
         chromedriver --version
         yarn test

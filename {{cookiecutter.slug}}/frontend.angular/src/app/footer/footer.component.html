@@ -6,16 +6,18 @@
                     <h1 class="subtitle" i18n>{{cookiecutter.project_title}}</h1>
                     <div class="content">
                         <p>
-                            <a href="{{cookiecutter.origin.replace('github:', 'https://github.com/')}}" i18n>Source code</a>&nbsp;<ng-container i18n>(BSD 3-Clause License)</ng-container>
+                            <a [href]="environment.sourceUrl" target="_blank" i18n>Source code</a>&nbsp;<ng-container i18n>(BSD 3-Clause License)</ng-container>
                         </p>
                         <p>
-                            <em><ng-container i18n>Version: </ng-container><span [title]="environment.buildTime">{{"{{environment.version}}"}}</span>&nbsp;<a [href]="environment.sourceUrl" target="_blank" i18n>(source)</a></em>
+                            <em><ng-container i18n>Version: </ng-container><span>{{"{{environment.version}}"}}</span>&nbsp;(<span [title]="environment.buildTime">{{"{{buildTime}}"}})</span></em>
                         </p>
                     </div>
                 </div>
                 <div class="column has-text-right-tablet is-narrow">
-                    <a class="lab-logo image" href="https://cdh.uu.nl/centre-for-digital-humanities/research-software-lab/" target="_blank">
-                        <img src="{{"{{environment.assets}}"}}/uu-cdh.svg" alt="Centre for Digital Humanities, Utrecht University" i18n-alt height="100" />
+                    <a class="centre-logo image"
+                        href="https://cdh.uu.nl/about/research-software-lab/" target="_blank">
+                        <img [src]="environment.assets + (dark ? '/uu-cdh-dark.svg' :'/uu-cdh.svg')"
+                            alt="Centre for Digital Humanities, Utrecht University" i18n-alt width="450" height="105" />
                     </a>
                 </div>
             </div>

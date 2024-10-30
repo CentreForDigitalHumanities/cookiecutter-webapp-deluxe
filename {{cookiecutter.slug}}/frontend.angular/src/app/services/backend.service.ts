@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from './config.service';
+import { BACKEND_URL_OVERRIDE } from '../app.config';
 
 
 @Injectable({
@@ -10,7 +11,14 @@ import { ConfigService } from './config.service';
 export class BackendService {
     protected apiUrl: Promise<string> | null = null;
 
-    constructor(protected config: ConfigService, protected http: HttpClient) { }
+    constructor(
+        protected config: ConfigService,
+        protected http: HttpClient,
+        /**
+         * Override BACKEND_URL for SSR
+         */
+        @Inject(BACKEND_URL_OVERRIDE) private backendUrlOverride: string) {
+    }
 
     /**
      * Collect JSON from an specific url.
@@ -32,10 +40,11 @@ export class BackendService {
 
     getApiUrl(): Promise<string> {
         if (!this.apiUrl) {
-            return this.config.get().then(config => config.backendUrl);
-        } else {
-            return Promise.resolve(this.apiUrl);
+            this.apiUrl = this.config.get().then(config => this.backendUrlOverride ?? config.backendUrl);
         }
+
+        return this.apiUrl;
+
     }
 
     protected handleError(error: any): Promise<any> {
