@@ -41,65 +41,6 @@ def main(argv):
         print(exception)
         print("[ERROR] Activating frontend failed!!")
     if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
-    venv = create_virtualenv()
-    pip_tools = backreq = backpack = clone_req = funcreq = funcpack = False
-    if venv:
-        adopt_virtualenv(VIRTUALENV)
-        pip_tools = install_pip_tools()
-        if pip_tools:
-            check_version_pip()
-            check_version_pip_compile()
-            backreq = compile_backend_requirements()
-            if backreq:
-                backpack = install_backend_packages()
-                clone_req = copy_backreq_to_func()
-                if clone_req:
-                    funcreq = compile_functest_requirements()
-                    if funcreq:
-                        funcpack = install_functest_packages()
-    frontpack = install_frontend_packages()
-    git = setup_git()
-    gitflow = develop = stage = commit = remote = False
-    if git:
-        gitflow = setup_gitflow()
-        if not gitflow:
-            develop = create_develop_branch()
-        if funcreq and frontpack:
-            stage = git_add()
-            if stage:
-                commit = initial_commit()
-        remote = add_remote()
-    db = create_db()
-    if db:
-        db = grant_db()
-    migrate = superuser = False
-    if db and backpack:
-        migrate = run_migrations()
-        if migrate:
-            superuser = create_superuser()
-    if not all([superuser, remote, commit, gitflow, funcpack]):
-        print('\nPlease read {} for information on failed commands.'.format(LOGFILE_NAME))
-    print('\nAlmost ready to go! Just a couple more commands to run:')
-    print(cd_into_project)
-    if not venv: print(create_virtualenv)
-    print(activate_venv)
-    if not pip_tools: print(install_pip_tools)
-    if not backreq: print(compile_backend_requirements)
-    if not clone_req: print(copy_backreq_to_func)
-    if not funcreq: print(compile_functest_requirements)
-    if not (backpack and frontpack and funcpack): print(install_all_packages)
-    if not git: print(setup_git)
-    if not gitflow and not develop: print(create_develop_branch)
-    if not stage: print(git_add)
-    if not commit: print(initial_commit)
-    if not remote: print(add_remote)
-    if not db:
-        print(create_db)
-        print(grant_db)
-    if not migrate: print(run_migrations)
-    if not superuser: print(create_superuser)
-    print(git_push)
-    print(yarn_start)
 
 
 def generate_backbone_translations():
