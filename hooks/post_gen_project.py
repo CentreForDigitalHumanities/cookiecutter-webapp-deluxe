@@ -35,6 +35,10 @@ VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'.replace('%PYTHON%', p
 
 def main(argv):
     print('\nFiles generated. Performing final steps.')
+    boot_sup = bootstrap_subprojects()
+    if not boot_sup:
+        print(f'\nSubproject initialization failed. Please see {LOGFILE_NAME} for details.')
+        return 1
     try:
         activate_frontend()
     except Exception as exception:
@@ -61,6 +65,11 @@ def generate_backbone_translations():
     print('success.')
     return True
 
+
+bootstrap_subprojects = Command(
+    'Finalize subproject package configuration',
+    ['docker', 'compose', '-f', 'compose-postgenerate.yml', 'up']
+)
 
 cd_into_project = Command('', ['cd', SLUG])
 

@@ -1,0 +1,17 @@
+services:
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile-postgenerate
+        volumes:
+            - ./backend:/usr/src/app/backend
+    frontend:
+        build:
+            context: ./frontend.{{cookiecutter.frontend}}
+            dockerfile: Dockerfile-postgenerate
+        volumes:
+            - ./frontend.{{cookiecutter.frontend}}:/usr/src/app/frontend
+            - frnomo:/usr/src/app/frontend/node_modules
+
+volumes:
+    frnomo:

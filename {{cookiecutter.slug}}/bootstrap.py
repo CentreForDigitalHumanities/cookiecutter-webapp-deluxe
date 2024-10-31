@@ -205,53 +205,15 @@ def merge_json(target, source):
 
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
-    os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
 
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
         override_json('package')
     elif framework == 'angular':
-        project_name = '{{cookiecutter.slug}}'.replace('_', '-')
-        Command(
-            'Install dependencies',
-            ['yarn', 'install', '--ignore-scripts']
-        )()
-        Command(
-            'Creating project',
-            ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
-                '--ssr',
-                '--skip-git=true',
-                '--skip-install=true',
-                '--package-manager=yarn',
-                '--style=scss',
-                '--routing=true']
-        )()
-        shutil.copytree('frontend.angular', project_name, dirs_exist_ok=True)
-        os.rename(project_name, 'frontend')
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
         override_json('package')
-        Command(
-            'Install frontend dependencies using Yarn',
-            ['yarn'],
-            cwd="frontend"
-        )()
-        # Remove favicon.ico
-        os.remove(os.path.join('frontend', 'src', 'favicon.ico'))
-        # Remove editorconfig
-        os.remove(os.path.join('frontend', '.editorconfig'))
-        Command(
-            'ng add @angular/localize',
-            ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],
-            cwd="frontend"
-        )()
-
         override_json('angular')
-        Command(
-            'Creating localizations',
-            ['yarn', 'i18n'],
-            cwd="frontend"
-        )()
         for lang in '{{cookiecutter.localizations}}'.split(','):
             [code, lang_name] = lang.split(':')
             with open(f'frontend/locale/messages.xlf', 'r') as file:
@@ -269,12 +231,6 @@ def activate_frontend():
                     except FileNotFoundError:
                         pass
                     file.write(targeted)
-        if '{{cookiecutter.frontend_port}}' != '4200':
-            Command(
-                'Set frontend port',
-                ['yarn', 'ng', 'config', "projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port", '{{cookiecutter.frontend_port}}'],
-                cwd="frontend"
-            )()
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
     # remove other frameworks

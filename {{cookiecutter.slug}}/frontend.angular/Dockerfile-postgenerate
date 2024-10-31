@@ -1,0 +1,23 @@
+FROM node:18 as bootstrap
+
+WORKDIR /usr/src/app
+RUN yarn init -yp && \
+    yarn add "@angular/cli@17" && \
+    yarn ng new {{cookiecutter.npm_slug}} \
+        --prefix={{cookiecutter.app_prefix}} \
+        --ssr \
+        --skip-git=true \
+        --skip-install=true \
+        --package-manager=yarn \
+        --style=scss \
+        --routing=true && \
+    mv {{cookiecutter.npm_slug}} frontend
+
+COPY . /usr/src/app/frontend/
+WORKDIR /usr/src/app/frontend
+RUN rm src/favicon.ico .editorconfig && \
+    yarn ng add @angular/localize --skip-confirmation && \
+    yarn i18n
+
+VOLUME /usr/src/app/frontend
+CMD echo done
