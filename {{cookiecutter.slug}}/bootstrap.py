@@ -213,7 +213,11 @@ def activate_frontend():
     elif framework == 'angular':
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
         override_json('package')
+        if not angular_bootstrap_2():
+            return false
         override_json('angular')
+        if not angular_bootstrap_3():
+            return false
         for lang in '{{cookiecutter.localizations}}'.split(','):
             [code, lang_name] = lang.split(':')
             with open(f'frontend/locale/messages.xlf', 'r') as file:
@@ -252,6 +256,19 @@ def override_json(filename):
             json.dump(data, file, indent=4)
         os.remove(f'frontend/{filename}.overwrite.json')
 
+
+def make_bootstrap_command(profile):
+    return Command(
+        'Finalize subproject package configuration',
+        ['docker', 'compose',
+         '-f', 'compose-postgenerate.yml',
+         '--profile', profile,
+         'up']
+    )
+
+
+angular_bootstrap_2 = make_bootstrap_command('bootstrap-2')
+angular_bootstrap_3 = make_bootstrap_command('bootstrap-3')
 
 install_pip_tools = Command(
     'Install pip-tools',

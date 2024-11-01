@@ -13,11 +13,26 @@ RUN yarn init -yp && \
         --routing=true
 
 COPY . /usr/src/app/{{cookiecutter.npm_slug}}/
+
+VOLUME /usr/src/app/frontend
+CMD cp {{cookiecutter.npm_slug}}/package{,.overwrite}.json frontend/
+
+FROM bootstrap as bootstrap-2
+
 WORKDIR /usr/src/app/{{cookiecutter.npm_slug}}
+COPY package.json ./
 RUN rm src/favicon.ico .editorconfig && \
     yarn && \
-    yarn ng add @angular/localize --skip-confirmation && \
-    yarn ng extract-i18n --output-path locale
+    yarn ng add @angular/localize --skip-confirmation
+
+VOLUME /usr/src/app/frontend
+CMD cp angular{,.overwrite}.json ../frontend
+
+FROM bootstrap-2 as bootstrap-3
+
+WORKDIR /usr/src/app/{{cookiecutter.npm_slug}}
+COPY angular.json ./
+RUN yarn ng extract-i18n --output-path locale
 
 VOLUME /usr/src/app/frontend
 CMD cp -r * .* ../frontend/

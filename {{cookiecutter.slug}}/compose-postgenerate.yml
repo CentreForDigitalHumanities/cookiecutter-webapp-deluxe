@@ -1,17 +1,37 @@
 services:
     backend:
+        profiles: ['bootstrap']
         build:
             context: ./backend
             dockerfile: Dockerfile-postgenerate
         volumes:
             - ./backend:/usr/src/app/backend
     frontend:
+        profiles: ['bootstrap']
         build:
             context: ./frontend.{{cookiecutter.frontend}}
             dockerfile: Dockerfile-postgenerate
-        volumes:
+            {% if cookiecutter.frontend == 'angular' %}
+            target: bootstrap
+            {% endif %}
+        volumes: &frontend-volumes
             - ./frontend:/usr/src/app/frontend
             - frnomo:/usr/src/app/frontend/node_modules
+    {% if cookiecutter.frontend == 'angular' %}
+    frontend-2:
+        profiles: ['bootstrap-2']
+        build: &angular-staged-build
+            context: ./frontend
+            dockerfile: ../frontend.angular/Dockerfile-postgenerate
+            target: bootstrap-2
+        volumes: *frontend-volumes
+    frontend-3:
+        profiles: ['bootstrap-3']
+        build:
+            <<: *angular-staged-build
+            target: bootstrap-3
+        volumes: *frontend-volumes
+    {% endif %}
 
 volumes:
     frnomo:

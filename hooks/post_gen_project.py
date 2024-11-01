@@ -66,10 +66,7 @@ def generate_backbone_translations():
     return True
 
 
-bootstrap_subprojects = Command(
-    'Finalize subproject package configuration',
-    ['docker', 'compose', '-f', 'compose-postgenerate.yml', 'up']
-)
+bootstrap_subprojects = make_bootstrap_command('bootstrap')
 
 cd_into_project = Command('', ['cd', SLUG])
 
