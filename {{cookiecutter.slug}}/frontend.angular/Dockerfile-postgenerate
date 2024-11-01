@@ -10,14 +10,14 @@ RUN yarn init -yp && \
         --skip-install=true \
         --package-manager=yarn \
         --style=scss \
-        --routing=true && \
-    mv {{cookiecutter.npm_slug}} frontend
+        --routing=true
 
-COPY . /usr/src/app/frontend/
-WORKDIR /usr/src/app/frontend
+COPY . /usr/src/app/{{cookiecutter.npm_slug}}/
+WORKDIR /usr/src/app/{{cookiecutter.npm_slug}}
 RUN rm src/favicon.ico .editorconfig && \
+    yarn && \
     yarn ng add @angular/localize --skip-confirmation && \
-    yarn i18n
+    yarn ng extract-i18n --output-path locale
 
 VOLUME /usr/src/app/frontend
-CMD echo done
+CMD cp -r * .* ../frontend/
