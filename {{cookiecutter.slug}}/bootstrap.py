@@ -259,7 +259,7 @@ def override_json(filename):
 
 def make_bootstrap_command(profile):
     return Command(
-        'Finalize subproject package configuration',
+        f'Finalize subproject package configuration ({profile})',
         ['docker', 'compose',
          '-f', 'compose-postgenerate.yml',
          '--profile', profile,
