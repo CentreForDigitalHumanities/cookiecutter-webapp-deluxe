@@ -238,10 +238,10 @@ def activate_frontend():
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
     # remove other frameworks
-    for path in glob.glob("frontend.*"):
-        shutil.rmtree(path)
-    for path in glob.glob("package.*.json"):
-        os.remove(path)
+    # for path in glob.glob("frontend.*"):
+    #     shutil.rmtree(path)
+    # for path in glob.glob("package.*.json"):
+    #     os.remove(path)
 
 
 def override_json(filename):
