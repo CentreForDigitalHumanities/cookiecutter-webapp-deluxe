@@ -27,7 +27,7 @@ RUN rm src/favicon.ico .editorconfig && \
     yarn ng add @angular/localize --skip-confirmation
 
 VOLUME /usr/src/app/frontend
-CMD cp angular{,.overwrite}.json ../frontend/
+CMD cp angular.json angular.overwrite.json ../frontend/
 
 FROM bootstrap-2 as bootstrap-3
 
