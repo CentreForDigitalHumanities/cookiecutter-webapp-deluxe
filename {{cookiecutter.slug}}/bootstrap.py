@@ -211,7 +211,6 @@ def activate_frontend():
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
         override_json('package')
     elif framework == 'angular':
-        shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
         override_json('package')
         if not angular_bootstrap_2():
             return false
@@ -235,6 +234,7 @@ def activate_frontend():
                     except FileNotFoundError:
                         pass
                     file.write(targeted)
+        shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
     # remove other frameworks
