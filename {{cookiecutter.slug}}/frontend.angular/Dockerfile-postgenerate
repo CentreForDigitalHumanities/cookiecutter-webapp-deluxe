@@ -12,7 +12,7 @@ RUN yarn init -yp && \
         --style=scss \
         --routing=true
 
-COPY . /usr/src/app/{{cookiecutter.npm_slug}}/
+COPY . /usr/src/app/{{cookiecutter.npm_slug}}
 
 VOLUME /usr/src/app/frontend
 CMD cp {{cookiecutter.npm_slug}}/package{,.overwrite}.json frontend/
@@ -26,7 +26,7 @@ RUN rm src/favicon.ico .editorconfig && \
     yarn ng add @angular/localize --skip-confirmation
 
 VOLUME /usr/src/app/frontend
-CMD cp angular{,.overwrite}.json ../frontend
+CMD cp angular{,.overwrite}.json ../frontend/
 
 FROM bootstrap-2 as bootstrap-3
 
