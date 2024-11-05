@@ -12,10 +12,11 @@ RUN yarn init -yp && \
         --style=scss \
         --routing=true
 
-COPY . /usr/src/app/{{cookiecutter.npm_slug}}
+WORKDIR /usr/src/app/{{cookiecutter.npm_slug}}
+COPY . .
 
 VOLUME /usr/src/app/frontend
-CMD cp {{cookiecutter.npm_slug}}/package{,.overwrite}.json frontend/
+CMD cp package.json package.overwrite.json ../frontend/
 
 FROM bootstrap as bootstrap-2
 
