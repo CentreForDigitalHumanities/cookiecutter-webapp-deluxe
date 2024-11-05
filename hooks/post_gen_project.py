@@ -35,16 +35,16 @@ VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'.replace('%PYTHON%', p
 
 def main(argv):
     print('\nFiles generated. Performing final steps.')
-    # boot_sup = bootstrap_subprojects()
-    # if not boot_sup:
-    #     print(f'\nSubproject initialization failed. Please see {LOGFILE_NAME} for details.')
-    #     return 1
-    # try:
-    #     activate_frontend()
-    # except Exception as exception:
-    #     print(exception)
-    #     print("[ERROR] Activating frontend failed!!")
-    # if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
+    boot_sup = bootstrap_subprojects()
+    if not boot_sup:
+        print(f'\nSubproject initialization failed. Please see {LOGFILE_NAME} for details.')
+        return 1
+    try:
+        activate_frontend()
+    except Exception as exception:
+        print(exception)
+        print("[ERROR] Activating frontend failed!!")
+    if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
 
 
 def generate_backbone_translations():
