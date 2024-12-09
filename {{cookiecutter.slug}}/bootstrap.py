@@ -46,7 +46,11 @@ class Command(object):
         print('{}... '.format(self.description), end='', flush=True)
         log.write('$ {}\n\n'.format(self))
         try:
-            exit_code = subprocess.call(self.command, *self.args, **self.kwargs)
+            # On Windows, we need to run the command through the shell to get
+            # access to commands in PATH.
+            exit_code = subprocess.call(
+                self.command, *self.args, **self.kwargs, shell=WINDOWS
+            )
             if exit_code != 0:
                 print('failed ({}).'.format(exit_code))
                 return False
@@ -76,7 +80,7 @@ def main(argv):
     frontpack = install_frontend_packages()
     db, create_db = prepare_db()
     migrate = superuser = False
-    db, grant_db = access_db(db)
+    # db, grant_db = access_db(db)
     if db and backpack:
         migrate = run_migrations()
         if migrate:
@@ -94,7 +98,7 @@ def main(argv):
     if not (pip_tools and backpack and frontpack and funcpack): print(install_all_packages)
     if not db:
         print(create_db)
-        print(grant_db)
+        # print(grant_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
     if not main_branch: print(track_main)
