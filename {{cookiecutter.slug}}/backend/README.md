@@ -51,14 +51,10 @@ Create and activate a virtualenv. Ensure your working directory is the one that 
 ```console
 $ psql -f create_db.sql
 $ pip install pip-tools
-$ pip install -r requirements.txt
+$ pip sync
 $ python manage.py migrate
 $ python manage.py createsuperuser
 ```
-
-We need to install `psycopg2` with the `--no-binary` flag [until version 2.8 of `psycopg2` is available][8]. If this were not the case, we could use `pip-sync` instead of `pip install -r`; the former currently doesn't work because of the `--no-binary` flag being present in the `requirements.txt`.
-
-[8]: http://initd.org/psycopg/docs/install.html#disabling-wheel-packages-for-psycopg-2-7
 
 If you are overriding the default settings, you may pass `--pythonpath` and `--settings` arguments to every invocation of `python manage.py`. `--settings` should be the name of the module (without `.py`) with your settings overrides. `--pythonpath` should be the path to the directory with your overridden settings module.
 
