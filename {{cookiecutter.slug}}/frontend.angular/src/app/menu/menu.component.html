@@ -1,46 +1,58 @@
-<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <strong class="navbar-item" i18n>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" aria-label="main navigation"
+    data-bs-theme="dark">
+    <div class="container-fluid">
+        <div class="navbar-brand" i18n>
                 {{cookiecutter.project_title}}
-            </strong>
-
-            <button class="navbar-burger burger" aria-label="menu"
-            [attr.aria-expanded]="burgerActive" data-target="navigation-links"
-            (click)="toggleBurger()"
-            [ngClass]="{'is-active': burgerActive}">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-        </button>
         </div>
 
-        <div id="navigation-links" class="navbar-menu" [ngClass]="{'is-active': burgerActive}" [@slideInOut]="burgerShow">
-            <div class="navbar-start">
-                <a [routerLink]="['/home']" routerLinkActive="is-active" class="navbar-item" i18n>
-                    Home
-                </a>
-            </div>
-            <div class="navbar-end">
-                <{{cookiecutter.app_prefix}}-dark-mode-toggle class="navbar-item"></{{cookiecutter.app_prefix}}-dark-mode-toggle>
-                @if (languages) {
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        <span class="icon">
-                            <fa-icon *ngIf="!loading" [icon]="faGlobe"></fa-icon>
-                            <fa-icon *ngIf="loading" [icon]="faSync" [spin]="true"></fa-icon>
-                        </span>
-                    </a>
+        <button class="navbar-toggler" type="button"
+            aria-controls="navigation-links"
+            [attr.aria-expanded]="burgerActive"
+            aria-label="toggle navigation"
+            (click)="toggleBurger()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    <div class="navbar-dropdown is-right">
-                        <a class="navbar-item" [ngClass]="{'is-active': language.code == currentLanguage }"
-                            *ngFor="let language of languages" (click)="setLanguage(language.code)">
+        <div id="navigation-links" class="navbar-collapse" [ngbCollapse]="!burgerActive">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a [routerLink]="['/home']" routerLinkActive="active" class="nav-link" i18n>
+                        home
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <dh-dark-mode-toggle role="listitem" class="nav-item" />
+                </li>
+                @if (languages) {
+                    <li class="nav-item" ngbDropdown>
+                        <button class="nav-link" ngbDropdownToggle
+                            id="language-dropdown-toggle"
+                            aria-label="language">
+                            @if (loading) {
+                                <div class="spinner-border">
+                                    <span class="visually-hidden">Loading languages...</span>
+                                </div>
+                            } @else {
+                                <fa-icon [icon]="faGlobe" aria-hidden="true" />
+                            }
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="language-dropdown-toggle"
+                            class="dropdown-menu dropdown-menu-end">
+                            <button *ngFor="let language of languages"
+                                ngbDropdownItem
+                                class="navbar-item"
+                                [class.active]="language.code == currentLanguage"
+                                [attr.aria-pressed]="language.code == currentLanguage"
+                                (click)="setLanguage(language.code)">
                             {{"{{language.name}}"}}
-                        </a>
-                    </div>
-                </div>
+                        </button>
+                        </div>
+                    </li>
                 }
-            </div>
+            </ul>
         </div>
     </div>
 </nav>

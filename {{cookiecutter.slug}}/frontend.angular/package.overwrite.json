@@ -25,9 +25,10 @@
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
         "@ngrx/effects": "^17.2.0",
         "@ngrx/store": "^17.2.0",
-        "bulma": "^1.0.1",
         "colors": "^1.4.0",
-        "primeng": "^17.18.0"
+        "@ng-bootstrap/ng-bootstrap": "^16.0.0",
+        "@popperjs/core": "^2.11.8",
+        "bootstrap": "^5.3.3"
     },
     "devDependencies": {
         "ng-extract-i18n-merge": "^2.12.0"
