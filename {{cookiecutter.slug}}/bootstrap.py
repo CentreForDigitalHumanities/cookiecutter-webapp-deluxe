@@ -212,29 +212,29 @@ def activate_frontend():
         override_json('package')
     elif framework == 'angular':
         override_json('package')
-        # if not angular_bootstrap_2():
-        #     return false
-        # override_json('angular')
-        # if not angular_bootstrap_3():
-        #     return false
-        # for lang in '{{cookiecutter.localizations}}'.split(','):
-        #     [code, lang_name] = lang.split(':')
-        #     with open(f'frontend/locale/messages.xlf', 'r') as file:
-        #         messages = file.read()
-        #     if code != '{{cookiecutter.default_localization}}':
-        #         with open(f'frontend/locale/messages.{code}.xlf', 'w') as file:
-        #             # add the target-language attribute after the source-language attribute
-        #             targeted = re.sub(r'(source-language="[^"]+"[^>]*)', f'\\g<1> target-language="{code}"', messages)
-        #             try:
-        #                 with open(f'frontend/locale/messages.{code}.json', 'r') as pretranslated:
-        #                     translations = json.load(pretranslated)
-        #                     for key, value in translations.items():
-        #                         targeted = targeted.replace(f'<source>{key}</source>', f'<source>{key}</source>\n        <target state="translated">{value}</target>')
-        #                 os.remove(f'frontend/locale/messages.{code}.json')
-        #             except FileNotFoundError:
-        #                 pass
-        #             file.write(targeted)
-        # shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
+        if not angular_bootstrap_2():
+            return false
+        override_json('angular')
+        if not angular_bootstrap_3():
+            return false
+        for lang in '{{cookiecutter.localizations}}'.split(','):
+            [code, lang_name] = lang.split(':')
+            with open(f'frontend/locale/messages.xlf', 'r') as file:
+                messages = file.read()
+            if code != '{{cookiecutter.default_localization}}':
+                with open(f'frontend/locale/messages.{code}.xlf', 'w') as file:
+                    # add the target-language attribute after the source-language attribute
+                    targeted = re.sub(r'(source-language="[^"]+"[^>]*)', f'\\g<1> target-language="{code}"', messages)
+                    try:
+                        with open(f'frontend/locale/messages.{code}.json', 'r') as pretranslated:
+                            translations = json.load(pretranslated)
+                            for key, value in translations.items():
+                                targeted = targeted.replace(f'<source>{key}</source>', f'<source>{key}</source>\n        <target state="translated">{value}</target>')
+                        os.remove(f'frontend/locale/messages.{code}.json')
+                    except FileNotFoundError:
+                        pass
+                    file.write(targeted)
+        shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
     # remove other frameworks
