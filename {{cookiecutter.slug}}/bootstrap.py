@@ -206,6 +206,8 @@ def activate_frontend():
         shutil.rmtree(path)
     for path in glob.glob("package.*.json"):
         os.remove(path)
+    os.remove(op.join('frontend', 'Dockerfile-postgenerate'))
+    shutil.rmtree(op.join('frontend', 'bootstrap'))
 
 
 install_pip_tools = Command(
