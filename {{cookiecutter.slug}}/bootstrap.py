@@ -191,49 +191,13 @@ def make_access_db_command(psql_cmd):
     )
 
 
-def merge_json(target, source):
-    for key, value in source.items():
-        if value is None:
-            del target[key]
-        elif key in target and isinstance(target[key], dict) and \
-                isinstance(source[key], dict):
-            merge_json(target[key], source[key])
-        else:
-            target[key] = value
-    return target
-
-
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
 
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
-        override_json('package')
     elif framework == 'angular':
-        override_json('package')
-        if not angular_bootstrap_2():
-            return false
-        override_json('angular')
-        if not angular_bootstrap_3():
-            return false
-        for lang in '{{cookiecutter.localizations}}'.split(','):
-            [code, lang_name] = lang.split(':')
-            with open(f'frontend/locale/messages.xlf', 'r') as file:
-                messages = file.read()
-            if code != '{{cookiecutter.default_localization}}':
-                with open(f'frontend/locale/messages.{code}.xlf', 'w') as file:
-                    # add the target-language attribute after the source-language attribute
-                    targeted = re.sub(r'(source-language="[^"]+"[^>]*)', f'\\g<1> target-language="{code}"', messages)
-                    try:
-                        with open(f'frontend/locale/messages.{code}.json', 'r') as pretranslated:
-                            translations = json.load(pretranslated)
-                            for key, value in translations.items():
-                                targeted = targeted.replace(f'<source>{key}</source>', f'<source>{key}</source>\n        <target state="translated">{value}</target>')
-                        os.remove(f'frontend/locale/messages.{code}.json')
-                    except FileNotFoundError:
-                        pass
-                    file.write(targeted)
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
@@ -243,32 +207,6 @@ def activate_frontend():
     for path in glob.glob("package.*.json"):
         os.remove(path)
 
-
-def override_json(filename):
-    if os.path.isfile(f'frontend/{filename}.overwrite.json'):
-        print(f'Overriding {filename}.json')
-        with open(f'frontend/{filename}.overwrite.json', 'r') as file:
-            overwrite = json.load(file)
-        with open(f'frontend/{filename}.json', 'r') as file:
-            data = json.load(file)
-        with open(f'frontend/{filename}.json', 'w') as file:
-            merge_json(data, overwrite)
-            json.dump(data, file, indent=4)
-        os.remove(f'frontend/{filename}.overwrite.json')
-
-
-def make_bootstrap_command(profile):
-    return Command(
-        f'Finalize subproject package configuration ({profile})',
-        ['docker', 'compose',
-         '-f', 'compose-postgenerate.yml',
-         '--profile', profile,
-         'up']
-    )
-
-
-angular_bootstrap_2 = make_bootstrap_command('bootstrap-2')
-angular_bootstrap_3 = make_bootstrap_command('bootstrap-3')
 
 install_pip_tools = Command(
     'Install pip-tools',
