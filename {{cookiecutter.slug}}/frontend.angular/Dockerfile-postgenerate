@@ -33,7 +33,7 @@ RUN rm src/favicon.ico .editorconfig && \
 
 FROM python:3.9 AS bootstrap-4
 
-WORDIR /usr/src/app/frontend
+WORKDIR /usr/src/app/frontend
 RUN python bootstrap/override_json.py angular
 
 FROM node:18 AS bootstrap-5
