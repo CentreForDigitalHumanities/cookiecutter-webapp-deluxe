@@ -191,90 +191,14 @@ def make_access_db_command(psql_cmd):
     )
 
 
-def merge_json(target, source):
-    for key, value in source.items():
-        if value is None:
-            del target[key]
-        elif key in target and isinstance(target[key], dict) and \
-                isinstance(source[key], dict):
-            merge_json(target[key], source[key])
-        else:
-            target[key] = value
-    return target
-
-
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
-    os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
 
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
-        override_json('package')
     elif framework == 'angular':
-        project_name = '{{cookiecutter.slug}}'.replace('_', '-')
-        Command(
-            'Install dependencies',
-            ['yarn', 'install', '--ignore-scripts']
-        )()
-        Command(
-            'Creating project',
-            ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
-                '--ssr',
-                '--skip-git=true',
-                '--skip-install=true',
-                '--package-manager=yarn',
-                '--style=scss',
-                '--routing=true']
-        )()
-        shutil.copytree('frontend.angular', project_name, dirs_exist_ok=True)
-        os.rename(project_name, 'frontend')
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
-        override_json('package')
-        Command(
-            'Install frontend dependencies using Yarn',
-            ['yarn'],
-            cwd="frontend"
-        )()
-        # Remove favicon.ico
-        os.remove(os.path.join('frontend', 'src', 'favicon.ico'))
-        # Remove editorconfig
-        os.remove(os.path.join('frontend', '.editorconfig'))
-        Command(
-            'ng add @angular/localize',
-            ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],
-            cwd="frontend"
-        )()
-
-        override_json('angular')
-        Command(
-            'Creating localizations',
-            ['yarn', 'i18n'],
-            cwd="frontend"
-        )()
-        for lang in '{{cookiecutter.localizations}}'.split(','):
-            [code, lang_name] = lang.split(':')
-            with open(f'frontend/locale/messages.xlf', 'r') as file:
-                messages = file.read()
-            if code != '{{cookiecutter.default_localization}}':
-                with open(f'frontend/locale/messages.{code}.xlf', 'w') as file:
-                    # add the target-language attribute after the source-language attribute
-                    targeted = re.sub(r'(source-language="[^"]+"[^>]*)', f'\\g<1> target-language="{code}"', messages)
-                    try:
-                        with open(f'frontend/locale/messages.{code}.json', 'r') as pretranslated:
-                            translations = json.load(pretranslated)
-                            for key, value in translations.items():
-                                targeted = targeted.replace(f'<source>{key}</source>', f'<source>{key}</source>\n        <target state="translated">{value}</target>')
-                        os.remove(f'frontend/locale/messages.{code}.json')
-                    except FileNotFoundError:
-                        pass
-                    file.write(targeted)
-        if '{{cookiecutter.frontend_port}}' != '4200':
-            Command(
-                'Set frontend port',
-                ['yarn', 'ng', 'config', "projects.{{cookiecutter.slug | replace('_', '-')}}.architect.serve.options.port", '{{cookiecutter.frontend_port}}'],
-                cwd="frontend"
-            )()
     else:
         print('Unknown framework {{cookiecutter.frontend}} specified!')
     # remove other frameworks
@@ -282,19 +206,8 @@ def activate_frontend():
         shutil.rmtree(path)
     for path in glob.glob("package.*.json"):
         os.remove(path)
-
-
-def override_json(filename):
-    if os.path.isfile(f'frontend/{filename}.overwrite.json'):
-        print(f'Overriding {filename}.json')
-        with open(f'frontend/{filename}.overwrite.json', 'r') as file:
-            overwrite = json.load(file)
-        with open(f'frontend/{filename}.json', 'r') as file:
-            data = json.load(file)
-        with open(f'frontend/{filename}.json', 'w') as file:
-            merge_json(data, overwrite)
-            json.dump(data, file, indent=4)
-        os.remove(f'frontend/{filename}.overwrite.json')
+    os.remove(op.join('frontend', 'Dockerfile-postgenerate'))
+    shutil.rmtree(op.join('frontend', 'bootstrap'))
 
 
 install_pip_tools = Command(
