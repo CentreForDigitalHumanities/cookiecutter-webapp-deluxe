@@ -1,4 +1,6 @@
-create user {{cookiecutter.database_user}} with createdb password '{{cookiecutter.database_password}}';
-create database {{cookiecutter.database_name}};
-grant all on database {{cookiecutter.database_name}} to {{cookiecutter.database_user}};
-GRANT ALL ON SCHEMA public to {{cookiecutter.database_user}};
+CREATE user {{cookiecutter.database_user}} WITH createdb PASSWORD '{{cookiecutter.database_password}}';
+CREATE DATABASE {{cookiecutter.database_name}};
+GRANT ALL ON DATABASE {{cookiecutter.database_name}} TO {{cookiecutter.database_user}};
+GRANT ALL ON SCHEMA public TO {{cookiecutter.database_user}};
+
+ALTER DATABASE {{cookiecutter.database_name}} OWNER TO {{cookiecutter.database_user}};
