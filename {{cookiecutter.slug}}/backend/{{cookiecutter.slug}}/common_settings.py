@@ -7,6 +7,14 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'rest_framework',
+{% if cookiecutter.basic_authentication %}
+    'allauth',
+    'allauth.account',
+    # Required for deleting accounts, but not actually used,
+    # cf. https://github.com/iMerica/dj-rest-auth/pull/110.
+    'allauth.socialaccount',
+    'user',
+{% endif %}
     'revproxy',
     'example'
 ]

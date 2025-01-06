@@ -6,3 +6,6 @@ psycopg2
 pytest
 pytest-django
 pytest-xdist
+{% if cookiecutter.basic_authentication %}
+django-allauth
+{% endif %}
