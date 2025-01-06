@@ -46,7 +46,11 @@ class Command(object):
         print('{}... '.format(self.description), end='', flush=True)
         log.write('$ {}\n\n'.format(self))
         try:
-            exit_code = subprocess.call(self.command, *self.args, **self.kwargs)
+            # On Windows, we need to run the command through the shell to get
+            # access to commands in PATH.
+            exit_code = subprocess.call(
+                self.command, *self.args, **self.kwargs, shell=WINDOWS
+            )
             if exit_code != 0:
                 print('failed ({}).'.format(exit_code))
                 return False
