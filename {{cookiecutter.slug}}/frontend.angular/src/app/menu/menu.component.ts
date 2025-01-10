@@ -6,6 +6,7 @@ import { faGlobe, faSync } from '@fortawesome/free-solid-svg-icons';
 import { animations, showState } from '../animations';
 import { DarkModeToggleComponent } from '../dark-mode-toggle/dark-mode-toggle.component';
 import { LanguageInfo, LanguageService } from '../services/language.service';
+import { UserMenuComponent } from './user-menu/user-menu.component';
 
 @Component({
     animations,
@@ -13,7 +14,7 @@ import { LanguageInfo, LanguageService } from '../services/language.service';
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
     standalone: true,
-    imports: [CommonModule, RouterLink, FontAwesomeModule, DarkModeToggleComponent]
+    imports: [CommonModule, RouterLink, FontAwesomeModule, DarkModeToggleComponent, UserMenuComponent]
 })
 export class MenuComponent implements OnInit {
     burgerShow: showState = 'show';

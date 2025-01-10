@@ -1,0 +1,27 @@
+<h1>Confirm e-mail address</h1>
+
+<div *ngIf="userDetails$ | async as userDetails; else noUser" class="mb-3">
+    <p>
+        Please confirm that
+        <a href="mailto:{{ userDetails.email }}">{{ userDetails.email }}</a>
+        is an e-mail address for user {{ userDetails.username }}.
+    </p>
+
+    <button class="btn btn-primary" (click)="confirm()">
+        Confirm
+        <div
+            *ngIf="loading$ | async"
+            class="spinner-border spinner-border-sm"
+            role="status"
+        >
+            <span class="visually-hidden">Verifying email...</span>
+        </div>
+    </button>
+</div>
+
+<ng-template #noUser>
+    <section class="no-user-details mt-4">
+        <h5>User details could not be verified.</h5>
+        <p>Please check the URL, refresh the page and request a new verification link if the problem persists.</p>
+    </section>
+</ng-template>

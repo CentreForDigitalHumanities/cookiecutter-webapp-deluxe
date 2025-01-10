@@ -7,5 +7,7 @@ pytest
 pytest-django
 pytest-xdist
 {% if cookiecutter.basic_authentication %}
+dj_rest_auth
 django-allauth
+requests-oauthlib
 {% endif %}

@@ -1,0 +1,96 @@
+<h1>User settings</h1>
+
+<p>Use the form below to change your name or password.</p>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div *ngIf="form.controls.username as control">
+        <label for="username" class="form-label"> Username </label>
+        <input
+            type="text"
+            id="username"
+            class="form-control"
+            [class.is-invalid]="control.touched && control.invalid"
+            [formControl]="control"
+        />
+        <p
+            *ngFor="let error of usernameErrors$ | async"
+            class="invalid-feedback"
+        >
+            {{ error }}
+        </p>
+    </div>
+    <div>
+        <label for="first-name" class="form-label">First name</label>
+        <input
+            type="text"
+            id="first-name"
+            class="form-control"
+            [class.is-invalid]="
+                form.controls.firstName.touched &&
+                form.controls.firstName.invalid
+            "
+            [formControl]="form.controls.firstName"
+        />
+    </div>
+    <div>
+        <label for="last-name" class="form-label"> Last name </label>
+        <input
+            type="text"
+            id="first-name"
+            class="form-control"
+            [class.is-invalid]="
+                form.controls.lastName.touched && form.controls.lastName.invalid
+            "
+            [formControl]="form.controls.lastName"
+        />
+    </div>
+    <p
+        *ngFor="let error of formErrors$ | async"
+        class="invalid-feedback always-block"
+    >
+        {{ error }}
+    </p>
+
+    <div
+        class="d-flex flex-wrap justify-content-start align-items-center button-row mt-3"
+    >
+        <button type="submit" class="btn btn-primary">
+            Save changes
+            <div
+                *ngIf="updateSettingsLoading$ | async"
+                class="spinner-border spinner-border-sm"
+                role="status"
+            >
+                <span class="visually-hidden"
+                    >Requesting password reset link...</span
+                >
+            </div>
+        </button>
+        <button
+            class="btn btn-primary"
+            type="button"
+            (click)="requestPasswordReset()"
+        >
+            Request new password
+            <div
+                *ngIf="requestResetLoading$ | async"
+                class="spinner-border spinner-border-sm"
+                role="status"
+            >
+                <span class="visually-hidden">
+                    Requesting password reset link...
+                </span>
+            </div>
+        </button>
+        <button class="btn btn-danger" type="button" (click)="deleteAccount()">
+            Delete account
+            <div
+                *ngIf="deleteUserLoading$ | async"
+                class="spinner-border spinner-border-sm"
+                role="status"
+            >
+                <span class="visually-hidden">Deleting account...</span>
+            </div>
+        </button>
+    </div>
+</form>
