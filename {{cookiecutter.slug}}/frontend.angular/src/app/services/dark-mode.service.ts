@@ -36,10 +36,8 @@ export class DarkModeService implements OnDestroy {
         this.theme$ = this.user.pipe(
             combineLatestWith(this.system),
             distinctUntilChanged(),
-            map(([user, system]) => {
-                console.log({ user, system });
-                return user ?? system
-            }));
+            map(([user, system]) => user ?? system)
+        );
 
         afterRender(() => {
             this.initialize();
@@ -64,7 +62,7 @@ export class DarkModeService implements OnDestroy {
 
     /**
      * Gets the current theme from the system settings
-     * @returns 
+     * @returns
      */
     private observeSystem(): Observable<Theme> | null {
         const window = this.document.defaultView;
