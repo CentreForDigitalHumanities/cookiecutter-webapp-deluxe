@@ -24,7 +24,7 @@
 
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <dh-dark-mode-toggle role="listitem" class="nav-item" />
+                    <{{cookiecutter.app_prefix}}-dark-mode-toggle role="listitem" class="nav-item" />
                 </li>
                 @if (languages) {
                     <li class="nav-item" ngbDropdown>
@@ -32,9 +32,8 @@
                             id="language-dropdown-toggle"
                             aria-label="language">
                             @if (loading) {
-                                <div class="spinner-border">
-                                    <span class="visually-hidden">Loading languages...</span>
-                                </div>
+                                <span class="spinner-border spinner-border-sm"></span>
+                                <span class="visually-hidden">Loading languages...</span>
                             } @else {
                                 <fa-icon [icon]="faGlobe" aria-hidden="true" />
                             }
