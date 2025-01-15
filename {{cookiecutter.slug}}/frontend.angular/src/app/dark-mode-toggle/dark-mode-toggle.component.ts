@@ -17,6 +17,9 @@ export class DarkModeToggleComponent implements OnDestroy {
     faMoon = faMoon;
     dark = false;
 
+    darkLabel: string = $localize`switch to dark mode`;
+    lightLabel: string = $localize`switch to light mode`;
+
     constructor(private darkModeService: DarkModeService) {
         this.subscriptions = [
             this.darkModeService.theme$.subscribe(theme => this.dark = theme === 'dark')];

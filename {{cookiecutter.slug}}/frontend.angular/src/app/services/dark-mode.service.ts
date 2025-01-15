@@ -3,7 +3,7 @@ import { Inject, Injectable, OnDestroy, afterRender } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, combineLatestWith, distinctUntilChanged, fromEvent, map, startWith } from 'rxjs';
 
 /**
- * Bulma theme
+ * Bootstrap theme
  */
 type Theme = 'dark' | 'light';
 
@@ -64,7 +64,7 @@ export class DarkModeService implements OnDestroy {
 
     /**
      * Gets the current theme from the system settings
-     * @returns 
+     * @returns
      */
     private observeSystem(): Observable<Theme> | null {
         const window = this.document.defaultView;
