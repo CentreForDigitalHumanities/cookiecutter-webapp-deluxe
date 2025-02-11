@@ -1,62 +1,55 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, OnDestroy, afterRender } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, combineLatestWith, distinctUntilChanged, fromEvent, map, startWith } from 'rxjs';
+import { DOCUMENT } from "@angular/common";
+import { DestroyRef, Inject, Injectable, OnInit } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import {
+    BehaviorSubject,
+    Observable,
+    combineLatestWith,
+    distinctUntilChanged,
+    fromEvent,
+    map,
+    of,
+    startWith,
+} from "rxjs";
 
 /**
  * Bulma theme
  */
-type Theme = 'dark' | 'light';
+type Theme = "dark" | "light";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
-export class DarkModeService implements OnDestroy {
-    private initialized = false;
-    private readonly subscriptions: Subscription[] = [];
+export class DarkModeService implements OnInit {
     /**
      * Whether the user's system is set to use dark or light mode.
      */
-    private readonly system = new BehaviorSubject<Theme>('light');
+    private readonly systemTheme$ = new BehaviorSubject<Theme | null>("light");
 
     /**
      * Did the user override the system settings?
      */
     private readonly user = new BehaviorSubject<Theme | null>(null);
 
-    theme$: Observable<Theme>;
+    public theme$ = this.user.pipe(
+        combineLatestWith(this.systemTheme$),
+        distinctUntilChanged(),
+        map(([user, system]) => user ?? system)
+    );
 
-    constructor(@Inject(DOCUMENT) private document: Document) {
-        const user = this.get();
-        if (user) {
-            this.user.next(user);
-        }
+    constructor(
+        @Inject(DOCUMENT) private document: Document,
+        private destroyRef: DestroyRef
+    ) {}
 
-        // set the active theme by the user or if this is
-        // empty, listen to the system settings
-        this.theme$ = this.user.pipe(
-            combineLatestWith(this.system),
-            distinctUntilChanged(),
-            map(([user, system]) => user ?? system)
-        );
+    ngOnInit(): void {
+        this.observeSystem$()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((theme) => this.systemTheme$.next(theme));
 
-        afterRender(() => {
-            this.initialize();
-        });
-    }
-
-    ngOnDestroy(): void {
-        this.subscriptions.forEach(s => s.unsubscribe());
-    }
-
-    private initialize() {
-        if (this.initialized) {
-            return;
-        }
-
-        this.initialized = true;
-        const system$ = this.observeSystem();
-        if (system$) {
-            this.subscriptions.push(system$.subscribe(theme => this.system.next(theme)));
+        const userTheme = this.readUserTheme();
+        if (userTheme) {
+            this.user.next(userTheme);
         }
     }
 
@@ -64,15 +57,15 @@ export class DarkModeService implements OnDestroy {
      * Gets the current theme from the system settings
      * @returns
      */
-    private observeSystem(): Observable<Theme> | null {
+    private observeSystem$(): Observable<Theme | null> {
         const window = this.document.defaultView;
         if (!window || !window.matchMedia) {
-            return null;
+            return of(null);
         }
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        return fromEvent<MediaQueryList>(mediaQuery, 'change').pipe(
+        return fromEvent<MediaQueryList>(mediaQuery, "change").pipe(
             startWith(mediaQuery),
-            map((list: MediaQueryList) => list.matches ? 'dark' : 'light')
+            map((list: MediaQueryList) => (list.matches ? "dark" : "light"))
         );
     }
 
@@ -80,36 +73,38 @@ export class DarkModeService implements OnDestroy {
      * Gets the user's theme or null if they did not set anything
      * @returns
      */
-    private get(): Theme | null {
-        if (typeof localStorage == 'undefined') {
+    private readUserTheme(): Theme | null {
+        if (typeof localStorage == "undefined") {
             // localStorage is undefined on the server
             return null;
         }
-        return <Theme | null>localStorage.getItem('theme');
+        return localStorage.getItem("theme") as Theme | null;
     }
 
     /**
      * Sets the user's theme
      * @param value user setting or null if it should depend on the system
      */
-    private set(value: Theme | null): void {
+    private writeUserTheme(value: Theme | null): void {
         if (value == null) {
-            localStorage.removeItem('theme');
+            localStorage.removeItem("theme");
         } else {
-            localStorage.setItem('theme', value);
+            localStorage.setItem("theme", value);
         }
-
         this.user.next(value);
     }
 
     toggle() {
-        const target: Theme = (this.user.value ?? this.system.value) === 'dark' ? 'light' : 'dark';
-        if (target === this.system.value) {
+        const target: Theme =
+            (this.user.value ?? this.systemTheme$.value) === "dark"
+                ? "light"
+                : "dark";
+        if (target === this.systemTheme$.value) {
             // restore to system setting - if the user might change that
             // system's setting later on this application will follow
-            this.set(null);
+            this.writeUserTheme(null);
         } else {
-            this.set(target);
+            this.writeUserTheme(target);
         }
     }
 }
