@@ -168,7 +168,7 @@ def make_create_db_command(psql_cmd):
     # Fortunately, it is one of the last commands.
     return Command(
         'Create the database',
-        psql_cmd + ' -f ' + op.join('backend', 'create_db.sql'),
+        psql_cmd + ' -f ' + 'backend/create_db.sql',
     )
 
 

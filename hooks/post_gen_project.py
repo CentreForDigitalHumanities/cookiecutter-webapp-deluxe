@@ -144,7 +144,7 @@ compile_backend_requirements = Command(
 
 copy_backreq_to_func = Command(
     'Copy the backend requirements',
-    ['cp', op.join('backend', 'requirements.txt'), 'functional-tests'],
+    ['cp', 'backend/requirements.txt', 'functional-tests'],
 )
 
 compile_functest_requirements = Command(
