@@ -6,7 +6,7 @@ import { buildTime, version, sourceUrl } from "./version";
 export const environment = {
     production: false,
     assets: "assets",
-    baseUrl: "http://localhost:8000",
+    baseUrl: "http://127.0.0.1:8000",
     buildTime,
     version,
     sourceUrl,

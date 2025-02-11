@@ -8,6 +8,7 @@
         "preserve": "yarn prebuild",
         "serve": "ng serve",
         "start": "yarn serve",
+        "serve:ssr:ssri18n": "node dist/server/en/server.mjs",
 {% set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
 {%- set code, name = loc.split(':') %}
