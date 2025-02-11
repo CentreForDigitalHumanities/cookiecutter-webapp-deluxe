@@ -34,7 +34,8 @@
         "clean-static": "rm -rf static || rd /S /Q static",
         "static-p": "yarn build && yarn clean-static && yarn collectstatic-p",
         "watch-front-p": "yarn front yarn watch",
-        "start-back-p": "cd backend && python manage.py runserver --settings production --insecure --pythonpath ..",
+        "start-back-p": "cd backend && python manage.py runserver --settings ../private/settings --insecure --pythonpath ..",
+        "start-back-p-local": "cd backend && python manage.py runserver --settings production --insecure --pythonpath ..",
         "start-p": "yarn start-back-p & sleep 5 && yarn static-p && yarn watch-front-p",
         "stop-back": "lsof -t -i tcp:{{cookiecutter.backend_port}} | xargs kill -9 || echo \"not running\""
     },
