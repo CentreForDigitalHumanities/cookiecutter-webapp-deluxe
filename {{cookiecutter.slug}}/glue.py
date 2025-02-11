@@ -1,7 +1,7 @@
 """ This is magic glue for integrating the frontend and backend.
 
     This is NOT the place for backend customizations. Go to
-    api/{{cookiecutter.slug}}/settings.py instead.
+    backend/{{cookiecutter.slug}}/settings.py instead.
 """
 
 import os.path as op
