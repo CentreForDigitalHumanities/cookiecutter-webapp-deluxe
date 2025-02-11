@@ -180,7 +180,6 @@ add_remote = Command(
 # psql does not properly indicate failure; it always exits with 0.
 # Fortunately, it is one of the last commands.
 create_db = make_create_db_command(PSQL_COMMAND)
-grant_db = make_access_db_command(PSQL_COMMAND)
 
 git_push = Command('', ['git', 'push', '-u', 'origin', 'main', 'develop'])
 
