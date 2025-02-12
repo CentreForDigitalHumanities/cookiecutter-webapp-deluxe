@@ -11,7 +11,7 @@ import { CommonModule } from "@angular/common";
     templateUrl: "./dark-mode-toggle.component.html",
     styleUrl: "./dark-mode-toggle.component.scss",
 })
-export class DarkModeToggleComponent implements OnDestroy {
+export class DarkModeToggleComponent {
     faSun = faSun;
     faMoon = faMoon;
     dark$ = this.darkModeService.theme$.pipe(map((theme) => theme === "dark"));
