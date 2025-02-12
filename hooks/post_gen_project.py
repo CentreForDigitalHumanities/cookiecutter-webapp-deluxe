@@ -142,6 +142,9 @@ compile_backend_requirements = Command(
 copy_backreq_to_func = Command(
     'Copy the backend requirements',
     ['cp', 'backend/requirements.txt', 'functional-tests'],
+) if not WINDOWS else Command(
+    'Copy the backend requirements',
+    ['copy', 'backend\\requirements.txt', 'functional-tests\\requirements.txt'],
 )
 
 compile_functest_requirements = Command(
