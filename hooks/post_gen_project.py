@@ -70,8 +70,6 @@ def main(argv):
                 commit = initial_commit()
         remote = add_remote()
     db = create_db()
-    if db:
-        db = grant_db()
     migrate = superuser = False
     if db and backpack:
         migrate = run_migrations()
@@ -95,7 +93,6 @@ def main(argv):
     if not remote: print(add_remote)
     if not db:
         print(create_db)
-        print(grant_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
     print(git_push)
