@@ -2,3 +2,5 @@ create user {{cookiecutter.database_user}} with createdb password '{{cookiecutte
 create database {{cookiecutter.database_name}};
 grant all on database {{cookiecutter.database_name}} to {{cookiecutter.database_user}};
 GRANT ALL ON SCHEMA public to {{cookiecutter.database_user}};
+
+ALTER DATABASE {{cookiecutter.database_name}} OWNER TO {{cookiecutter.database_user}};

@@ -70,8 +70,6 @@ def main(argv):
                 commit = initial_commit()
         remote = add_remote()
     db = create_db()
-    if db:
-        db = grant_db()
     migrate = superuser = False
     if db and backpack:
         migrate = run_migrations()
@@ -95,7 +93,6 @@ def main(argv):
     if not remote: print(add_remote)
     if not db:
         print(create_db)
-        print(grant_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
     print(git_push)
@@ -144,7 +141,10 @@ compile_backend_requirements = Command(
 
 copy_backreq_to_func = Command(
     'Copy the backend requirements',
-    ['cp', op.join('backend', 'requirements.txt'), 'functional-tests'],
+    ['cp', 'backend/requirements.txt', 'functional-tests'],
+) if not WINDOWS else Command(
+    'Copy the backend requirements',
+    ['copy', 'backend\\requirements.txt', 'functional-tests\\requirements.txt'],
 )
 
 compile_functest_requirements = Command(
@@ -180,7 +180,6 @@ add_remote = Command(
 # psql does not properly indicate failure; it always exits with 0.
 # Fortunately, it is one of the last commands.
 create_db = make_create_db_command(PSQL_COMMAND)
-grant_db = make_access_db_command(PSQL_COMMAND)
 
 git_push = Command('', ['git', 'push', '-u', 'origin', 'main', 'develop'])
 
