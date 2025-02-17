@@ -1,6 +1,5 @@
 import { Component, DestroyRef, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from "@services/auth.service";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { UserLogin } from "../models/user";
 import {
     controlErrorMessages$,
@@ -8,10 +7,11 @@ import {
     setErrors,
     updateFormValidity,
 } from "../utils";
-import { ToastService } from "@services/toast.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { map, withLatestFrom } from "rxjs";
+import { AuthService } from "../../services/auth.service";
+import { CommonModule } from "@angular/common";
 
 type LoginForm = {
     [key in keyof UserLogin]: FormControl<string>;
@@ -21,6 +21,8 @@ type LoginForm = {
     selector: "lc-login",
     templateUrl: "./login.component.html",
     styleUrls: ["./login.component.scss"],
+    standalone: true,
+    imports: [CommonModule, RouterModule, ReactiveFormsModule]
 })
 export class LoginComponent implements OnInit {
     public form = new FormGroup<LoginForm>({
@@ -46,7 +48,6 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private toastService: ToastService,
         private router: Router,
         private route: ActivatedRoute,
         private destroyRef: DestroyRef
@@ -59,11 +60,7 @@ export class LoginComponent implements OnInit {
                 takeUntilDestroyed(this.destroyRef)
             )
             .subscribe(([, next]) => {
-                this.toastService.show({
-                    header: "Sign in successful",
-                    body: "You have been successfully signed in.",
-                    type: "success",
-                });
+                alert("You have been successfully signed in.");
                 this.router.navigate([next || "/"]);
             });
 

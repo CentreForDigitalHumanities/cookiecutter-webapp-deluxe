@@ -1,6 +1,10 @@
 import { Component, DestroyRef, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from "@services/auth.service";
+import {
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from "@angular/forms";
 import { UserResponse, UserSettings } from "../models/user";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { filter } from "rxjs";
@@ -10,11 +14,10 @@ import {
     setErrors,
     updateFormValidity,
 } from "../utils";
-import { ToastService } from "@services/toast.service";
 import { usernameValidators } from "../validation";
-import { Apollo } from "apollo-angular";
 import { Router } from "@angular/router";
-import { ModalService } from "@services/modal.service";
+import { AuthService } from "../../services/auth.service";
+import { CommonModule } from "@angular/common";
 
 type UserSettingsForm = {
     [key in keyof UserSettings]: FormControl<UserSettings[key]>;
@@ -24,6 +27,8 @@ type UserSettingsForm = {
     selector: "lc-user-settings",
     templateUrl: "./user-settings.component.html",
     styleUrls: ["./user-settings.component.scss"],
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule],
 })
 export class UserSettingsComponent implements OnInit {
     public form = new FormGroup<UserSettingsForm>({
@@ -57,10 +62,7 @@ export class UserSettingsComponent implements OnInit {
     constructor(
         private router: Router,
         private authService: AuthService,
-        private toastService: ToastService,
-        private modalService: ModalService,
-        private destroyRef: DestroyRef,
-        private apollo: Apollo
+        private destroyRef: DestroyRef
     ) {}
 
     ngOnInit(): void {
@@ -78,32 +80,24 @@ export class UserSettingsComponent implements OnInit {
 
         this.authService.passwordForgotten.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() => {
-                this.toastService.show({
-                    header: "Password reset email sent",
-                    body: "An email has been sent to you with instructions on how to reset your password.",
-                    type: "success",
-                });
-            });
+            .subscribe(() =>
+                alert(
+                    "An email has been sent to you with instructions on how to reset your password."
+                )
+            );
 
         this.authService.deleteUser.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() =>
-                this.toastService.show({
-                    header: "Error deleting account",
-                    body: "An error occurred while deleting your account. Please try again later.",
-                    type: "danger",
-                })
+                alert(
+                    "An error occurred while deleting your account. Please try again later."
+                )
             );
 
         this.authService.deleteUser.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
-                    header: "Account deleted",
-                    body: "Your account has been successfully deleted.",
-                    type: "success",
-                });
+                alert("Your account has been successfully deleted.");
                 this.router.navigate(["/"]);
             });
 
@@ -123,18 +117,13 @@ export class UserSettingsComponent implements OnInit {
     }
 
     public deleteAccount(): void {
-        this.modalService
-            .openConfirmationModal({
-                title: "Delete account",
-                message:
-                    "Are you sure you want to delete your account? This action cannot be undone.",
-            })
-            .then(() => {
-                this.authService.deleteUser.subject.next();
-            })
-            .catch(() => {
-                // Do nothing on cancel / dismissal.
-            });
+        if (
+            confirm(
+                "Are you sure you want to delete your account? This action cannot be undone."
+            )
+        ) {
+            this.authService.deleteUser.subject.next();
+        }
     }
 
     public submit(): void {
@@ -148,20 +137,6 @@ export class UserSettingsComponent implements OnInit {
     }
 
     private onSuccess(user: UserResponse) {
-        this.toastService.show({
-            header: "Settings updated",
-            body: "Your settings have been successfully updated.",
-            type: "success",
-        });
-        this.updateCache(user.id);
-    }
-
-    private updateCache(id: number) {
-        const cache = this.apollo.client.cache;
-        const identified = cache.identify({ __typename: "UserType", id });
-        cache.evict({ id: identified, fieldName: "firstName" });
-        cache.evict({ id: identified, fieldName: "lastName" });
-        cache.evict({ id: identified, fieldName: "fullName" });
-        cache.gc();
+        alert("Your settings have been successfully updated.");
     }
 }

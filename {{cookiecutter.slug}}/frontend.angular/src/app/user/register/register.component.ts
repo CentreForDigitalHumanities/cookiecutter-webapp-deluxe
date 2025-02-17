@@ -1,12 +1,16 @@
 import { Component, DestroyRef, OnInit } from "@angular/core";
 import { UserRegistration } from "../models/user";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from "@angular/forms";
 import {
     usernameValidators,
     passwordValidators,
     identicalPasswordsValidator,
 } from "../validation";
-import { AuthService } from "@services/auth.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
     controlErrorMessages$,
@@ -14,8 +18,9 @@ import {
     setErrors,
     updateFormValidity,
 } from "../utils";
-import { ToastService } from "@services/toast.service";
 import { Router } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
+import { CommonModule } from "@angular/common";
 
 type RegisterForm = {
     [key in keyof UserRegistration]: FormControl<UserRegistration[key]>;
@@ -25,6 +30,8 @@ type RegisterForm = {
     selector: "lc-register",
     templateUrl: "./register.component.html",
     styleUrls: ["./register.component.scss"],
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule],
 })
 export class RegisterComponent implements OnInit {
     public form = new FormGroup<RegisterForm>(
@@ -72,7 +79,6 @@ export class RegisterComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private toastService: ToastService,
         private destroyRef: DestroyRef,
         private router: Router
     ) {}
@@ -85,11 +91,9 @@ export class RegisterComponent implements OnInit {
         this.authService.registration.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
-                    header: "Registration successful",
-                    body: "You have been successfully registered. Please check your email for a confirmation link.",
-                    type: "success",
-                });
+                alert(
+                    "You have been successfully registered. Please check your email for a confirmation link."
+                );
                 this.router.navigate(["/"]);
             });
     }

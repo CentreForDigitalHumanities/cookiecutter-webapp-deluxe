@@ -16,12 +16,11 @@
             "
             [formControl]="form.controls.username"
         />
-        <p
-            *ngFor="let error of usernameErrors$ | async"
-            class="invalid-feedback"
-        >
+        @for (error of usernameErrors$ | async; track $index) {
+        <p class="invalid-feedback">
             {{ error }}
         </p>
+        }
     </div>
     <div class="mb-2">
         <label for="email" class="form-label">Email</label>
@@ -34,9 +33,11 @@
             "
             [formControl]="form.controls.email"
         />
-        <p *ngFor="let error of emailErrors$ | async" class="invalid-feedback">
+        @for (error of emailErrors$ | async; track $index) {
+        <p class="invalid-feedback">
             {{ error }}
         </p>
+        }
     </div>
     <div class="mb-2">
         <label for="password1" class="form-label">Password</label>
@@ -50,12 +51,11 @@
             "
             [formControl]="form.controls.password1"
         />
-        <p
-            *ngFor="let error of password1Errors$ | async"
-            class="invalid-feedback"
-        >
+        @for (error of password1Errors$ | async; track $index) {
+        <p class="invalid-feedback">
             {{ error }}
         </p>
+        }
     </div>
     <div>
         <label for="password2" class="form-label">Confirm Password</label>
@@ -69,27 +69,24 @@
             "
             [formControl]="form.controls.password2"
         />
-        <p
-            *ngFor="let error of password2Errors$ | async"
-            class="invalid-feedback"
-        >
+        @for (error of password2Errors$ | async; track $index) {
+        <p class="invalid-feedback">
             {{ error }}
         </p>
+        }
     </div>
-    <p
-        *ngFor="let error of formErrors$ | async"
-        class="invalid-feedback always-block"
-    >
+    @for (error of formErrors$ | async; track $index) {
+    <p class="invalid-feedback always-block">
         {{ error }}
     </p>
+
+    }
     <button type="submit" class="btn btn-primary my-3">
-        Register
-        <div
-            *ngIf="loading$ | async"
-            class="spinner-border spinner-border-sm"
-            role="status"
-        >
+        Register @if (loading$ | async) {
+        <div class="spinner-border spinner-border-sm" role="status">
             <span class="visually-hidden">Registering...</span>
         </div>
+
+        }
     </button>
 </form>

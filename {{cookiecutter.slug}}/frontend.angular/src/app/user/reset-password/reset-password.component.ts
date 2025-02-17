@@ -1,7 +1,12 @@
 import { Component, DestroyRef, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ResetPassword } from "../models/user";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from "@angular/forms";
 import { identicalPasswordsValidator, passwordValidators } from "../validation";
 import {
     controlErrorMessages$,
@@ -9,11 +14,10 @@ import {
     setErrors,
     updateFormValidity,
 } from "../utils";
-import { combineLatest, map, merge, startWith } from "rxjs";
-import { AuthService } from "@services/auth.service";
+import { combineLatest, map } from "rxjs";
+import { AuthService } from "../../services/auth.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import _ from "underscore";
-import { ToastService } from "@services/toast.service";
+import { CommonModule } from "@angular/common";
 
 type ResetPasswordForm = {
     [key in keyof ResetPassword]: FormControl<ResetPassword[key]>;
@@ -23,6 +27,8 @@ type ResetPasswordForm = {
     selector: "lc-reset-password",
     templateUrl: "./reset-password.component.html",
     styleUrls: ["./reset-password.component.scss"],
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule],
 })
 export class ResetPasswordComponent implements OnInit {
     private uid = this.activatedRoute.snapshot.params["uid"];
@@ -67,14 +73,13 @@ export class ResetPasswordComponent implements OnInit {
         formErrorMessages$(this.form),
         controlErrorMessages$(this.form, "token"),
         controlErrorMessages$(this.form, "uid"),
-    ]).pipe(map((errorLists) => _.flatten(errorLists, 1)));
+    ]).pipe(map((errorLists) => errorLists.flat(1)));
 
     public loading$ = this.authService.resetPassword.loading$;
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private authService: AuthService,
-        private toastService: ToastService,
         private destroyRef: DestroyRef
     ) {}
 
@@ -86,11 +91,7 @@ export class ResetPasswordComponent implements OnInit {
         this.authService.resetPassword.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() =>
-                this.toastService.show({
-                    header: "Password reset",
-                    body: "Your password has been successfully reset.",
-                    type: "success",
-                })
+                alert("Your password has been successfully reset.")
             );
     }
 

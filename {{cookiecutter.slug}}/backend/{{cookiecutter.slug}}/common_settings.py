@@ -73,6 +73,9 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 SITE_ID = 1
 SITE_NAME = "{{cookiecutter.slug}}"
 
+# Remove this setting in production!
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 HOST = "localhost:8000"
 
 REST_AUTH = {

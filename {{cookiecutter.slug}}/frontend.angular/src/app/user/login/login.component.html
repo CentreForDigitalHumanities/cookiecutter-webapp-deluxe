@@ -14,12 +14,11 @@
             "
             [formControl]="form.controls.username"
         />
-        <p
-            *ngFor="let error of usernameErrors$ | async"
-            class="invalid-feedback"
-        >
+        @for (error of usernameErrors$ | async; track $index) {
+        <p class="invalid-feedback">
             {{ error }}
         </p>
+        }
     </div>
     <div class="mb-3">
         <label for="password" class="form-label"> Password </label>
@@ -32,29 +31,25 @@
                 form.controls.password.touched && form.controls.password.invalid
             "
         />
-        <p
-            *ngFor="let error of passwordErrors$ | async"
-            class="invalid-feedback"
-        >
+        @for (error of passwordErrors$ | async; track $index) {
+        <p class="invalid-feedback">
             {{ error }}
         </p>
+        }
     </div>
-    <p
-        *ngFor="let error of formErrors$ | async"
-        class="invalid-feedback always-block"
-    >
+    @for (error of formErrors$ | async; track $index) {
+    <p class="invalid-feedback always-block">
         {{ error }}
     </p>
+    }
     <div class="mb-3">
         <button type="submit" class="btn btn-primary mt-3">
-            Sign in
-            <div
-                *ngIf="loading$ | async"
-                class="spinner-border spinner-border-sm"
-                role="status"
-            >
+            <span>Sign in</span>
+            @if (loading$ | async) {
+            <div class="spinner-border spinner-border-sm" role="status">
                 <span class="visually-hidden">Logging in...</span>
             </div>
+            }
         </button>
     </div>
 </form>
