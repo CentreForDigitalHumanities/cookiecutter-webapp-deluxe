@@ -186,12 +186,17 @@ def merge_json(target, source):
 
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
+    include_authentication = '{{cookiecutter.basic_authentication}}' == "Yes, please!"
     os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
 
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
         override_json('package')
+
+        if include_authentication:
+            print('No authentication for Backbone frontend available yet.')
+
     elif framework == 'angular':
         project_name = '{{cookiecutter.slug}}'.replace('_', '-')
         Command(

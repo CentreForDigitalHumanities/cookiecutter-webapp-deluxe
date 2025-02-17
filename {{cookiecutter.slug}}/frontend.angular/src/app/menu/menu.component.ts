@@ -10,11 +10,12 @@ import {
 import { CommonModule, DOCUMENT } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { faGlobe, faSync } from "@fortawesome/free-solid-svg-icons";
 import { animations, showState } from "../animations";
 import { DarkModeToggleComponent } from "../dark-mode-toggle/dark-mode-toggle.component";
 import { LanguageInfo, LanguageService } from "../services/language.service";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { UserMenuComponent } from "./user-menu/user-menu.component";
 
 @Component({
     animations,
@@ -27,6 +28,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
         RouterLink,
         FontAwesomeModule,
         DarkModeToggleComponent,
+        UserMenuComponent,
     ],
 })
 export class MenuComponent implements OnInit {

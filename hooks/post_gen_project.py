@@ -31,7 +31,7 @@ LOCALIZATIONS = map(
 PSQL_COMMAND = '{{cookiecutter.psql_command}}'
 VIRTUALENV = '{{cookiecutter.virtualenv}}'
 VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'.replace('%PYTHON%', python_path())
-
+INCLUDE_AUTHENTICATION = '{{cookiecutter.basic_authentication}}' == "Yes, please!"
 
 def main(argv):
     print('\nFiles generated. Performing final steps.')
@@ -40,6 +40,11 @@ def main(argv):
     except Exception as exception:
         print(exception)
         print("[ERROR] Activating frontend failed!!")
+
+    if not INCLUDE_AUTHENTICATION:
+        # Remove user app
+        os.remove(op.join('backend', 'user'))
+
     if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
     venv = create_virtualenv()
     pip_tools = backreq = backpack = clone_req = funcreq = funcpack = False
