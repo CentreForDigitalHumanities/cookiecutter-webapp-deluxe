@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { BackendService } from './../services/backend.service';
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { map } from "rxjs";
 
 @Component({
-    selector: '{{cookiecutter.app_prefix}}-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    standalone: true
+    selector: "{{cookiecutter.app_prefix}}-home",
+    templateUrl: "./home.component.html",
+    styleUrls: ["./home.component.scss"],
+    standalone: true,
 })
 export class HomeComponent implements OnInit {
-    hooray?: string;
+    public hooray?: string;
 
-    constructor(private backend: BackendService) { }
+    constructor(private http: HttpClient) {}
 
     ngOnInit(): void {
-        // This is just an example call to /api/example/
-        this.backend.get('example').then(hoorays => {
-            if (hoorays.length) {
-                this.hooray = hoorays[0].message;
-            }
-        });
+        // This call is executed on the server and in the browser.
+        this.http
+            .get<{ message: string }[]>(`/api/example/`)
+            .pipe(map((hoorays) => hoorays[0].message))
+            .subscribe((hooray) => {
+                if (!this.hooray) {
+                    this.hooray = hooray;
+                }
+            });
     }
-
 }
