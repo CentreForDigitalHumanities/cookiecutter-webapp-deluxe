@@ -46,7 +46,11 @@ class Command(object):
         print('{}... '.format(self.description), end='', flush=True)
         log.write('$ {}\n\n'.format(self))
         try:
-            exit_code = subprocess.call(self.command, *self.args, **self.kwargs)
+            # On Windows, we need to run the command through the shell to get
+            # access to commands in PATH.
+            exit_code = subprocess.call(
+                self.command, *self.args, **self.kwargs, shell=WINDOWS
+            )
             if exit_code != 0:
                 print('failed ({}).'.format(exit_code))
                 return False
@@ -76,7 +80,6 @@ def main(argv):
     frontpack = install_frontend_packages()
     db, create_db = prepare_db()
     migrate = superuser = False
-    db, grant_db = access_db(db)
     if db and backpack:
         migrate = run_migrations()
         if migrate:
@@ -94,7 +97,6 @@ def main(argv):
     if not (pip_tools and backpack and frontpack and funcpack): print(install_all_packages)
     if not db:
         print(create_db)
-        print(grant_db)
     if not migrate: print(run_migrations)
     if not superuser: print(create_superuser)
     if not main_branch: print(track_main)
@@ -161,33 +163,12 @@ def prepare_db():
     success = create_command()
     return success, create_command
 
-
-def access_db(created):
-    default_cmd = 'psql'
-    psql_cmd = prompt('psql_command', default_cmd)
-    access_command = make_access_db_command(psql_cmd)
-    if created:
-        success = access_command()
-    else:
-        success = False
-    return success, access_command
-
-
 def make_create_db_command(psql_cmd):
     # psql does not properly indicate failure; it always exits with 0.
     # Fortunately, it is one of the last commands.
     return Command(
         'Create the database',
-        psql_cmd + ' -f ' + op.join('backend', 'create_db.sql'),
-    )
-
-
-def make_access_db_command(psql_cmd):
-    # psql does not properly indicate failure; it always exits with 0.
-    # Fortunately, it is one of the last commands.
-    return Command(
-        'Access the database',
-        psql_cmd + ' -d {{cookiecutter.database_name}} -f ' + op.join('backend', 'access_db.sql'),
+        psql_cmd + ' -f ' + 'backend/create_db.sql',
     )
 
 

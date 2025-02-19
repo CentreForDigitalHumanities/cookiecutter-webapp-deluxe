@@ -1,16 +1,22 @@
-import { Component, LOCALE_ID, Inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { DarkModeToggleComponent } from '../dark-mode-toggle/dark-mode-toggle.component';
-import { LanguageInfo, LanguageService } from '../services/language.service';
-import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    Component,
+    LOCALE_ID,
+    Inject,
+    OnInit
+} from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { CommonModule } from "@angular/common";
+import { RouterLink, RouterModule } from "@angular/router";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { DarkModeToggleComponent } from "../dark-mode-toggle/dark-mode-toggle.component";
+import { LanguageInfo, LanguageService } from "../services/language.service";
+import { NgbCollapseModule, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-    selector: '{{cookiecutter.app_prefix}}-menu',
-    templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss'],
+    selector: "{{cookiecutter.app_prefix}}-menu",
+    templateUrl: "./menu.component.html",
+    styleUrls: ["./menu.component.scss"],
     standalone: true,
     imports: [
         CommonModule,
@@ -32,7 +38,7 @@ export class MenuComponent implements OnInit {
     /**
      * Use the target languages for displaying the respective language names
      */
-    languages?: LanguageInfo['supported'];
+    languages?: LanguageInfo["supported"];
 
     constructor(
         @Inject(LOCALE_ID) private localeId: string,
@@ -40,26 +46,32 @@ export class MenuComponent implements OnInit {
         this.currentLanguage = this.localeId;
     }
 
-    async ngOnInit(): Promise<void> {
+    ngOnInit(): void {
         // allow switching even when the current locale is different
         // this should really only be the case in development:
         // then the instance is only running in a single language
-        const languageInfo = await this.languageService.get();
-        this.currentLanguage = languageInfo.current || this.localeId;
-        this.languages = languageInfo.supported;
+        this.languageService.languageInfo$.pipe().subscribe((languageInfo) => {
+            this.currentLanguage = languageInfo.current || this.localeId;
+            this.languages = languageInfo.supported;
+        });
     }
 
     toggleBurger() {
         this.burgerActive = !this.burgerActive;
     }
 
-    async setLanguage(language: string): Promise<void> {
-        if (this.currentLanguage !== language) {
-            this.loading = true;
-            await this.languageService.set(language);
-            // reload the application to make the server route
-            // to the different language version
-            document.location.reload();
+    setLanguage(language: string): void {
+        if (this.currentLanguage === language) {
+            return;
         }
+        this.loading = true;
+        this.languageService
+            .set(language)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+                // reload the application to make the server route
+                // to the different language version
+                document.location.reload();
+            });
     }
 }
