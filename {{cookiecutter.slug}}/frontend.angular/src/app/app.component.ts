@@ -23,9 +23,7 @@ export class AppComponent {
             this.document.head.append(style);
 
             this.darkModeService.theme$.subscribe(theme => {
-                this.document.documentElement.classList.remove(theme === 'dark' ? 'theme-light' : 'theme-dark');
-                this.document.documentElement.classList.add('theme-' + theme);
-
+                this.document.documentElement.setAttribute('data-bs-theme', theme);
                 style.href = `${theme}.css`;
             });
         });

@@ -13,7 +13,7 @@ import {
 } from "rxjs";
 
 /**
- * Bulma theme
+ * Bootstrap theme
  */
 type Theme = "dark" | "light";
 

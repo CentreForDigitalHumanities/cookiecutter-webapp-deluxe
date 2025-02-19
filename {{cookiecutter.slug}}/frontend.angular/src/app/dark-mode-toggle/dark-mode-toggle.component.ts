@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { map } from "rxjs";
 import { DarkModeService } from "../services/dark-mode.service";
-import { CommonModule } from "@angular/common";
 @Component({
     selector: "{{cookiecutter.app_prefix}}-dark-mode-toggle",
     standalone: true,
