@@ -1,0 +1,7 @@
+FROM python:3.9
+
+WORKDIR /usr/src/app/backend
+COPY requirements.in .
+RUN pip install -U pip pip-tools
+
+CMD pip-compile

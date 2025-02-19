@@ -1,0 +1,47 @@
+FROM node:18 AS bootstrap-1
+
+WORKDIR /usr/src/app
+RUN yarn init -yp && \
+    yarn add "@angular/cli@17" && \
+    yarn ng new {{cookiecutter.npm_slug}} \
+        --prefix={{cookiecutter.app_prefix}} \
+        --ssr \
+        --skip-git=true \
+        --skip-install=true \
+        --package-manager=yarn \
+        --style=scss \
+        --routing=true
+
+WORKDIR /usr/src/app/{{cookiecutter.npm_slug}}
+COPY . .
+
+FROM python:3.9 AS bootstrap-2
+
+WORKDIR /usr/src/app
+COPY --from=bootstrap-1 \
+     /usr/src/app/{{cookiecutter.npm_slug}} frontend/
+
+WORKDIR /usr/src/app/frontend
+RUN python bootstrap/override_json.py package
+
+FROM node:18 AS bootstrap-3
+
+WORKDIR /usr/src/app/frontend
+RUN rm src/favicon.ico .editorconfig && \
+    yarn && \
+    yarn ng add @angular/localize --skip-confirmation
+
+FROM python:3.9 AS bootstrap-4
+
+WORKDIR /usr/src/app/frontend
+RUN python bootstrap/override_json.py angular
+
+FROM node:18 AS bootstrap-5
+
+WORKDIR /usr/src/app/frontend
+RUN yarn ng extract-i18n --output-path locale
+
+FROM python:3.9 AS bootstrap-6
+
+WORKDIR /usr/src/app/frontend
+RUN python bootstrap/finish_localizations.py
