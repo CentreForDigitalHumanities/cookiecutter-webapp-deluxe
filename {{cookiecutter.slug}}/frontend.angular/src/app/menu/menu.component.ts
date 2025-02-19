@@ -1,5 +1,6 @@
 import {
     Component,
+    DestroyRef,
     LOCALE_ID,
     Inject,
     OnInit
@@ -42,6 +43,7 @@ export class MenuComponent implements OnInit {
 
     constructor(
         @Inject(LOCALE_ID) private localeId: string,
+        private destroyRef: DestroyRef,
         private languageService: LanguageService) {
         this.currentLanguage = this.localeId;
     }

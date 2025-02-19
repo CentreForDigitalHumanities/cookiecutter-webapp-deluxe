@@ -17,6 +17,8 @@ import {
  */
 type Theme = "dark" | "light";
 
+const DefaultTheme: Theme = "light";
+
 @Injectable({
     providedIn: "root",
 })
@@ -24,7 +26,7 @@ export class DarkModeService implements OnInit {
     /**
      * Whether the user's system is set to use dark or light mode.
      */
-    private readonly systemTheme$ = new BehaviorSubject<Theme | null>("light");
+    private readonly systemTheme$ = new BehaviorSubject<Theme | null>(null);
 
     /**
      * Did the user override the system settings?
@@ -34,7 +36,7 @@ export class DarkModeService implements OnInit {
     public theme$ = this.user.pipe(
         combineLatestWith(this.systemTheme$),
         distinctUntilChanged(),
-        map(([user, system]) => user ?? system)
+        map(([user, system]) => user ?? system ?? DefaultTheme)
     );
 
     constructor(

@@ -79,9 +79,10 @@ jobs:
         yarn
         yarn django migrate
         # start the backend first for the SSR
-        yarn start-back-p &
+        yarn start-back-p-local &
         sleep 10
         yarn static-p
         find static
         chromedriver --version
+        geckodriver --version
         yarn test
