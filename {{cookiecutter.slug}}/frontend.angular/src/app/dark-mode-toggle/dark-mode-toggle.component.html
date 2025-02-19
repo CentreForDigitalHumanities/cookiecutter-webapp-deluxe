@@ -1,12 +1,16 @@
 <p class="control">
-    @if (dark) {
-    <a class="button" title="Switch to light mode" i18n-title (click)="toggle()">
+    @if ((dark$ | async) === true) {
+    <a
+        class="button"
+        title="Switch to light mode"
+        i18n-title
+        (click)="toggle()"
+    >
         <span class="icon">
             <fa-icon [icon]="faMoon"></fa-icon>
         </span>
     </a>
-    }
-    @else {
+    } @else {
     <a class="button" title="Switch to dark mode" i18n-title (click)="toggle()">
         <span class="icon">
             <fa-icon [icon]="faSun"></fa-icon>

@@ -1,53 +1,44 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
-import { BackendService } from './backend.service';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { catchError, EMPTY, map, Observable } from "rxjs";
 
 export interface LanguageInfo {
     current: string;
     supported: {
-        code: string,
-        name: string
+        code: string;
+        name: string;
     }[];
 }
 
+interface LanguageInfoResponse {
+    current: string;
+    supported: [string, string][];
+}
+
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class LanguageService {
-    baseApiUrl = '/api';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient, private backendService: BackendService) {
-    }
+    public languageInfo$ = this.http
+        .get<LanguageInfoResponse>("/api/i18n/")
+        .pipe(
+            map((response) => ({
+                current: response.current,
+                supported: response.supported.map(([code, name]) => ({
+                    code,
+                    name,
+                })),
+            }))
+        );
 
-    async get(): Promise<LanguageInfo> {
-        const response: {
-            current: string,
-            supported: [string, string][]
-        } = await this.backendService.get('i18n')
-
-        return {
-            current: response.current,
-            supported: response.supported.map(([code, name]) => ({ code, name }))
-        };
-    }
-
-    /***
-     * @throws ValidationErrors
-     */
-    async set(language: string): Promise<void> {
-        const response = lastValueFrom(this.http.post<void>(
-            this.baseApiUrl + '/i18n/', {
-            language
-        }));
-
-        try {
-            return await response;
-        } catch (error) {
-            if (error instanceof HttpErrorResponse) {
+    public set(language: string): Observable<void> {
+        return this.http.post<void>("/api/i18n/", { language }).pipe(
+            catchError((error) => {
                 console.error(error.error);
-            }
-            throw error;
-        }
+                return EMPTY;
+            })
+        );
     }
 }
