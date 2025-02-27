@@ -43,7 +43,9 @@ $ pip install pip-tools
 $ pip-sync
 ```
 
-then, to start the suite with default settings:
+Make sure the chromedriver and geckodriver are installed.
+
+Then start the suite with default settings:
 
 ```console
 $ pytest
