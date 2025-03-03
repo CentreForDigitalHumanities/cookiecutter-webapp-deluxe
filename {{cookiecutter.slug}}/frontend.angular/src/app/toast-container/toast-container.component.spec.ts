@@ -7,9 +7,7 @@ describe("ToastContainerComponent", () => {
     let fixture: ComponentFixture<ToastContainerComponent>;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            declarations: [ToastContainerComponent],
-        });
+        TestBed.configureTestingModule({});
         fixture = TestBed.createComponent(ToastContainerComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

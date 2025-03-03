@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { UserMenuComponent } from "./user-menu.component";
-import { AuthService } from "@services/auth.service";
-import { SharedTestingModule } from "@shared/shared-testing.module";
-import { HttpTestingController } from "@angular/common/http/testing";
-import { UserResponse } from "src/app/user/models/user";
+import { AuthService } from "../../services/auth.service";
+import {
+    HttpClientTestingModule,
+    HttpTestingController,
+} from "@angular/common/http/testing";
+import { UserResponse } from "../../user/models/user";
+import { provideRouter } from "@angular/router";
 
 const fakeUserResponse: UserResponse = {
     id: 1,
@@ -13,7 +16,6 @@ const fakeUserResponse: UserResponse = {
     first_name: "Frodo",
     last_name: "Baggins",
     is_staff: false,
-    is_contributor: true,
 };
 
 const fakeAdminResponse: UserResponse = {
@@ -23,7 +25,6 @@ const fakeAdminResponse: UserResponse = {
     first_name: "Gandalf",
     last_name: "The Grey",
     is_staff: true,
-    is_contributor: false,
 };
 
 describe("UserMenuComponent", () => {
@@ -39,9 +40,8 @@ describe("UserMenuComponent", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [UserMenuComponent],
-            providers: [AuthService],
-            imports: [SharedTestingModule],
+            imports: [HttpClientTestingModule],
+            providers: [AuthService, provideRouter([])],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(UserMenuComponent);

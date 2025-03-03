@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { UserSettingsComponent } from "./user-settings.component";
-import { ToastService } from "@services/toast.service";
-import { AuthService } from "@services/auth.service";
-import { HttpTestingController } from "@angular/common/http/testing";
-import { SharedTestingModule } from "@shared/shared-testing.module";
+import { ToastService } from "../../services/toast.service";
+import { AuthService } from "../../services/auth.service";
+import {
+    HttpClientTestingModule,
+    HttpTestingController,
+} from "@angular/common/http/testing";
 import { User } from "../models/user";
 import { Observable, of } from "rxjs";
 import { Injectable } from "@angular/core";
@@ -33,14 +35,13 @@ describe("UserSettingsComponent", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [UserSettingsComponent],
+            imports: [HttpClientTestingModule],
             providers: [
                 {
                     provide: AuthService,
                     useClass: AuthServiceMock,
                 },
             ],
-            imports: [SharedTestingModule],
         });
         toastService = TestBed.inject(ToastService);
         httpTestingController = TestBed.inject(HttpTestingController);

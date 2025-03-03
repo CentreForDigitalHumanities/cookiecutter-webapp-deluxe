@@ -1,12 +1,15 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { VerifyEmailComponent } from "./verify-email.component";
-import { SharedTestingModule } from "@shared/shared-testing.module";
-import { AuthService } from "@services/auth.service";
-import { ToastService } from "@services/toast.service";
-import { HttpTestingController } from "@angular/common/http/testing";
+import { AuthService } from "../../services/auth.service";
+import { ToastService } from "../../services/toast.service";
+import {
+    HttpClientTestingModule,
+    HttpTestingController,
+} from "@angular/common/http/testing";
 import { By } from "@angular/platform-browser";
 import { toSignal } from "@angular/core/rxjs-interop";
+import { provideRouter } from "@angular/router";
 
 describe("VerifyEmailComponent", () => {
     let component: VerifyEmailComponent;
@@ -16,9 +19,8 @@ describe("VerifyEmailComponent", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [VerifyEmailComponent],
-            providers: [AuthService],
-            imports: [SharedTestingModule],
+            imports: [HttpClientTestingModule],
+            providers: [AuthService, provideRouter([])],
         });
         toastService = TestBed.inject(ToastService);
         httpTestingController = TestBed.inject(HttpTestingController);

@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { LoginComponent } from "./login.component";
-import { AuthService } from "@services/auth.service";
-import { SharedTestingModule } from "@shared/shared-testing.module";
-import { Router } from "@angular/router";
-import { HttpTestingController } from "@angular/common/http/testing";
-import { ToastService } from "@services/toast.service";
+import { AuthService } from "../../services/auth.service";
+import { provideRouter, Router } from "@angular/router";
+import {
+    HttpClientTestingModule,
+    HttpTestingController,
+} from "@angular/common/http/testing";
+import { ToastService } from "../../services/toast.service";
 import { toSignal } from "@angular/core/rxjs-interop";
 
 describe("LoginComponent", () => {
@@ -17,9 +19,8 @@ describe("LoginComponent", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [LoginComponent],
-            providers: [ToastService, AuthService],
-            imports: [SharedTestingModule],
+            imports: [HttpClientTestingModule],
+            providers: [ToastService, AuthService, provideRouter([])],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
         toastService = TestBed.inject(ToastService);

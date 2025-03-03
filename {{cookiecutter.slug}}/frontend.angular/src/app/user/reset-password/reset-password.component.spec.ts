@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ResetPasswordComponent } from "./reset-password.component";
-import { SharedTestingModule } from "@shared/shared-testing.module";
-import { ToastService } from "@services/toast.service";
-import { HttpTestingController } from "@angular/common/http/testing";
+import { ToastService } from "../../services/toast.service";
+import {
+    HttpClientTestingModule,
+    HttpTestingController,
+} from "@angular/common/http/testing";
 import { toSignal } from "@angular/core/rxjs-interop";
+import { provideRouter } from "@angular/router";
 
 describe("ResetPasswordComponent", () => {
     let component: ResetPasswordComponent;
@@ -14,8 +17,8 @@ describe("ResetPasswordComponent", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [ResetPasswordComponent],
-            imports: [SharedTestingModule],
+            imports: [HttpClientTestingModule],
+            providers: [provideRouter([])],
         });
         toastService = TestBed.inject(ToastService);
         httpTestingController = TestBed.inject(HttpTestingController);
