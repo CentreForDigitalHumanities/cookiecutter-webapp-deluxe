@@ -36,7 +36,8 @@ export class DarkModeService implements OnInit {
     public theme$ = this.user.pipe(
         combineLatestWith(this.systemTheme$),
         distinctUntilChanged(),
-        map(([user, system]) => user ?? system ?? DefaultTheme)
+        map(([user, system]) => user ?? system ?? DefaultTheme),
+        distinctUntilChanged()
     );
 
     constructor(

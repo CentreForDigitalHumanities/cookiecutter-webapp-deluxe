@@ -17,7 +17,12 @@ export class AppComponent {
 
     constructor(@Inject(DOCUMENT) private document: Document, private darkModeService: DarkModeService) {
         // Using the DOM API to only render on the browser instead of on the server
+        let head: HTMLHeadElement;
         afterRender(() => {
+            if (head === this.document.head) {
+                // already setup!
+                return;
+            }
             const style = this.document.createElement('link');
             style.rel = 'stylesheet';
             this.document.head.append(style);
