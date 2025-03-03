@@ -10,13 +10,14 @@ import { PasswordForgotten } from "../models/user";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AuthService } from "../../services/auth.service";
 import { CommonModule } from "@angular/common";
+import { ToastService } from "../../services/toast.service";
 
 type PasswordForgottenForm = {
     [key in keyof PasswordForgotten]: FormControl<string>;
 };
 
 @Component({
-    selector: "lc-password-forgotten",
+    selector: "{{cookiecutter.app_prefix}}-password-forgotten",
     templateUrl: "./password-forgotten.component.html",
     styleUrls: ["./password-forgotten.component.scss"],
     standalone: true,
@@ -36,6 +37,7 @@ export class PasswordForgottenComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
+        private toastService: ToastService,
         private destroyRef: DestroyRef
     ) {}
 
@@ -43,18 +45,24 @@ export class PasswordForgottenComponent implements OnInit {
         this.authService.passwordForgotten.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                alert(
-                    "If your email address is known to us, an email has been sent containing a link to a page where you may reset your password."
-                );
+                this.toastService.show({
+                    header: "Password reset request successful",
+                    body: "If your email address is known to us, an email has been sent containing a link to a page where you may reset your password.",
+                    type: "success",
+                    // This is a long message, so we show it for 10 seconds.
+                    delay: 10000,
+                });
             });
 
         this.authService.passwordForgotten.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() =>
-                alert(
-                    "Request to send password reset email failed. Please try again."
-                )
-            );
+            .subscribe(() => {
+                this.toastService.show({
+                    header: "Reset request failed",
+                    body: "Request to send password reset email failed. Please try again.",
+                    type: "danger",
+                });
+            });
     }
 
     public submit(): void {

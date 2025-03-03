@@ -4,11 +4,17 @@ import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
 import { FooterComponent } from './footer/footer.component';
 import { DarkModeService } from './services/dark-mode.service';
+import { ToastContainerComponent } from './toast-container/toast-container.component';
 
 @Component({
     selector: '{{cookiecutter.app_prefix}}-root',
     standalone: true,
-    imports: [RouterOutlet, MenuComponent, FooterComponent],
+    imports: [
+        RouterOutlet,
+        MenuComponent,
+        FooterComponent,
+        ToastContainerComponent
+    ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })

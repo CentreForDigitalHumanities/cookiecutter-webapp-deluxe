@@ -18,13 +18,14 @@ import { combineLatest, map } from "rxjs";
 import { AuthService } from "../../services/auth.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
+import { ToastService } from "../../services/toast.service";
 
 type ResetPasswordForm = {
     [key in keyof ResetPassword]: FormControl<ResetPassword[key]>;
 };
 
 @Component({
-    selector: "lc-reset-password",
+    selector: "{{cookiecutter.app_prefix}}-reset-password",
     templateUrl: "./reset-password.component.html",
     styleUrls: ["./reset-password.component.scss"],
     standalone: true,
@@ -80,6 +81,7 @@ export class ResetPasswordComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private authService: AuthService,
+        private toastService: ToastService,
         private destroyRef: DestroyRef
     ) {}
 
@@ -90,9 +92,13 @@ export class ResetPasswordComponent implements OnInit {
 
         this.authService.resetPassword.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() =>
-                alert("Your password has been successfully reset.")
-            );
+            .subscribe(() => {
+                this.toastService.show({
+                    header: "Password reset",
+                    body: "Your password has been successfully reset.",
+                    type: "success",
+                });
+            });
     }
 
     public submit(): void {

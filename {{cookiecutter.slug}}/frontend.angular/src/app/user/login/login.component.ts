@@ -1,5 +1,10 @@
 import { Component, DestroyRef, OnInit } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import {
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from "@angular/forms";
 import { UserLogin } from "../models/user";
 import {
     controlErrorMessages$,
@@ -12,17 +17,18 @@ import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { map, withLatestFrom } from "rxjs";
 import { AuthService } from "../../services/auth.service";
 import { CommonModule } from "@angular/common";
+import { ToastService } from "../../services/toast.service";
 
 type LoginForm = {
     [key in keyof UserLogin]: FormControl<string>;
 };
 
 @Component({
-    selector: "lc-login",
+    selector: "{{cookiecutter.app_prefix}}-login",
     templateUrl: "./login.component.html",
     styleUrls: ["./login.component.scss"],
     standalone: true,
-    imports: [CommonModule, RouterModule, ReactiveFormsModule]
+    imports: [CommonModule, RouterModule, ReactiveFormsModule],
 })
 export class LoginComponent implements OnInit {
     public form = new FormGroup<LoginForm>({
@@ -48,6 +54,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
+        private toastService: ToastService,
         private router: Router,
         private route: ActivatedRoute,
         private destroyRef: DestroyRef
@@ -60,7 +67,11 @@ export class LoginComponent implements OnInit {
                 takeUntilDestroyed(this.destroyRef)
             )
             .subscribe(([, next]) => {
-                alert("You have been successfully signed in.");
+                this.toastService.show({
+                    header: "Sign in successful",
+                    body: "You have been successfully signed in.",
+                    type: "success",
+                });
                 this.router.navigate([next || "/"]);
             });
 

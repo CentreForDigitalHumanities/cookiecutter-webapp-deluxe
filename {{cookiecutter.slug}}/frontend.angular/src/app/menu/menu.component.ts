@@ -9,12 +9,12 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
 import { RouterLink, RouterModule } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { DarkModeToggleComponent } from "../dark-mode-toggle/dark-mode-toggle.component";
 import { LanguageInfo, LanguageService } from "../services/language.service";
 import { NgbCollapseModule, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { UserMenuComponent } from "./user-menu/user-menu.component";
+import { ToastContainerComponent } from "../toast-container/toast-container.component";
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-menu",
@@ -30,6 +30,7 @@ import { UserMenuComponent } from "./user-menu/user-menu.component";
         RouterModule,
         NgbDropdownModule,
         UserMenuComponent,
+        ToastContainerComponent,
     ]
 })
 export class MenuComponent implements OnInit {

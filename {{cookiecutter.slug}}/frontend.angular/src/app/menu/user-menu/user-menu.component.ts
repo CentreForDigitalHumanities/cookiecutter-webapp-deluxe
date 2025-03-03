@@ -6,12 +6,14 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ToastService } from "../../services/toast.service";
+import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-user-menu",
     templateUrl: "./user-menu.component.html",
     styleUrls: ["./user-menu.component.scss"],
-    imports: [RouterModule, CommonModule, FontAwesomeModule],
+    imports: [RouterModule, CommonModule, FontAwesomeModule, NgbDropdownModule],
     standalone: true,
 })
 export class UserMenuComponent implements OnInit {
@@ -36,6 +38,7 @@ export class UserMenuComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
+        private toastService: ToastService,
         private router: Router,
         private destroyRef: DestroyRef
     ) {}
@@ -44,12 +47,21 @@ export class UserMenuComponent implements OnInit {
         this.authService.logout.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                window.alert("Sign out failed!");
+                this.toastService.show({
+                    header: "Sign out failed",
+                    body: "There was an error signing you out. Please try again.",
+                    type: "danger",
+                });
             });
 
         this.authService.logout.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
+                this.toastService.show({
+                    header: "Sign out successful",
+                    body: "You have been successfully signed out.",
+                    type: "success",
+                });
                 this.router.navigate(["/"]);
             });
     }

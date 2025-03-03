@@ -24,6 +24,7 @@
     "frontend.backbone/gulpfile.ts",
     "frontend.backbone/src/global/hbsHelpers.ts",
     "frontend.angular/src/app/user/*.html",
+    "frontend.angular/src/app/toast-container/*.html",
     "frontend.angular/src/app/menu/user-menu/*.html"
   ]
 }

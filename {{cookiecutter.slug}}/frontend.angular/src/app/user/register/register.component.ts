@@ -20,6 +20,7 @@ import {
 } from "../utils";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
+import { ToastService } from "../../services/toast.service";
 import { CommonModule } from "@angular/common";
 
 type RegisterForm = {
@@ -27,7 +28,7 @@ type RegisterForm = {
 };
 
 @Component({
-    selector: "lc-register",
+    selector: "{{cookiecutter.app_prefix}}-register",
     templateUrl: "./register.component.html",
     styleUrls: ["./register.component.scss"],
     standalone: true,
@@ -79,6 +80,7 @@ export class RegisterComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
+        private toastService: ToastService,
         private destroyRef: DestroyRef,
         private router: Router
     ) {}
@@ -91,9 +93,11 @@ export class RegisterComponent implements OnInit {
         this.authService.registration.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                alert(
-                    "You have been successfully registered. Please check your email for a confirmation link."
-                );
+                this.toastService.show({
+                    header: "Registration successful",
+                    body: "You have been successfully registered. Please check your email for a confirmation link.",
+                    type: "success",
+                });
                 this.router.navigate(["/"]);
             });
     }

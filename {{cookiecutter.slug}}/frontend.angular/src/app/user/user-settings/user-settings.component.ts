@@ -18,13 +18,14 @@ import { usernameValidators } from "../validation";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { CommonModule } from "@angular/common";
+import { ToastService } from "../../services/toast.service";
 
 type UserSettingsForm = {
     [key in keyof UserSettings]: FormControl<UserSettings[key]>;
 };
 
 @Component({
-    selector: "lc-user-settings",
+    selector: "{{cookiecutter.app_prefix}}-user-settings",
     templateUrl: "./user-settings.component.html",
     styleUrls: ["./user-settings.component.scss"],
     standalone: true,
@@ -62,6 +63,7 @@ export class UserSettingsComponent implements OnInit {
     constructor(
         private router: Router,
         private authService: AuthService,
+        private toastService: ToastService,
         private destroyRef: DestroyRef
     ) {}
 
@@ -80,24 +82,32 @@ export class UserSettingsComponent implements OnInit {
 
         this.authService.passwordForgotten.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() =>
-                alert(
-                    "An email has been sent to you with instructions on how to reset your password."
-                )
-            );
+            .subscribe(() => {
+                this.toastService.show({
+                    header: "Password reset email sent",
+                    body: "An email has been sent to you with instructions on how to reset your password.",
+                    type: "success",
+                });
+            });
 
         this.authService.deleteUser.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() =>
-                alert(
-                    "An error occurred while deleting your account. Please try again later."
-                )
-            );
+            .subscribe(() => {
+                this.toastService.show({
+                    header: "Error deleting account",
+                    body: "An error occurred while deleting your account. Please try again later.",
+                    type: "danger",
+                });
+            });
 
         this.authService.deleteUser.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                alert("Your account has been successfully deleted.");
+                this.toastService.show({
+                    header: "Account deleted",
+                    body: "Your account has been successfully deleted.",
+                    type: "success",
+                });
                 this.router.navigate(["/"]);
             });
 
@@ -137,6 +147,10 @@ export class UserSettingsComponent implements OnInit {
     }
 
     private onSuccess(user: UserResponse) {
-        alert("Your settings have been successfully updated.");
+        this.toastService.show({
+            header: "Settings updated",
+            body: "Your settings have been successfully updated.",
+            type: "success",
+        });
     }
 }

@@ -5,9 +5,10 @@ import { map, share } from "rxjs";
 import { KeyInfo } from "../models/user";
 import { AuthService } from "../../services/auth.service";
 import { CommonModule } from "@angular/common";
+import { ToastService } from "../../services/toast.service";
 
 @Component({
-    selector: "lc-verify-email",
+    selector: "{{cookiecutter.app_prefix}}-verify-email",
     templateUrl: "./verify-email.component.html",
     styleUrls: ["./verify-email.component.scss"],
     standalone: true,
@@ -27,6 +28,7 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
+        private toastService: ToastService,
         private destroyRef: DestroyRef
     ) {}
 
@@ -37,17 +39,31 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
                 if (!result) {
                     return;
                 }
-                alert("Failed to verify email address.");
+                this.toastService.show({
+                    header: "Email address verification failed.",
+                    body: "Failed to verify email address.",
+                    type: "danger",
+                });
             });
 
         this.authService.verifyEmail.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() => alert("Failed to verify email address."));
+            .subscribe(() => {
+                this.toastService.show({
+                    header: "Email verification failed",
+                    body: "Failed to verify email address.",
+                    type: "danger",
+                });
+            });
 
         this.authService.verifyEmail.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                alert("Email address has been verified.");
+                this.toastService.show({
+                    header: "Email verified",
+                    body: "Email address has been verified.",
+                    type: "success",
+                });
                 this.router.navigate(["/"]);
             });
     }
