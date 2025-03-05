@@ -232,6 +232,9 @@ def activate_frontend():
             cwd="frontend"
         )()
 
+        if not include_authentication:
+            remove_ng_authentication_files()
+
         override_json('angular')
         Command(
             'Creating localizations',
@@ -268,6 +271,18 @@ def activate_frontend():
         shutil.rmtree(path)
     for path in glob.glob("package.*.json"):
         os.remove(path)
+
+
+def remove_ng_authentication_files():
+    print('Removing authentication files from frontend...')
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'guards'))
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'menu', 'user-menu'))
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'toast-container'))
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'user'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'auth.service.ts'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'auth.service.spec.ts'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'toast.service.ts'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'toast.service.spec.ts'))
 
 
 def override_json(filename):

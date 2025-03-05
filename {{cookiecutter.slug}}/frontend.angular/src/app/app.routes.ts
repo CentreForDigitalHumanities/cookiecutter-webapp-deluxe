@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-{% if cookiecutter.basic_authentication %}
+{%- if cookiecutter.basic_authentication == true -%}
 import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
 import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
@@ -9,14 +9,14 @@ import { PasswordForgottenComponent } from './user/password-forgotten/password-f
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 import { UserSettingsComponent } from './user/user-settings/user-settings.component';
 import { LoggedOnGuard } from './guards/logged-on.guard';
-{% endif %}
+{%- endif -%}
 
 const routes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
     },
-    {% if cookiecutter.basic_authentication %}
+    {%- if cookiecutter.basic_authentication == true -%}
     {
         path: 'login',
         component: LoginComponent,

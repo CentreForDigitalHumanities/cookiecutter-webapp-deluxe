@@ -46,7 +46,7 @@ urlpatterns = [
         namespace='rest_framework',
     )),
     path('api/i18n/', i18n),
-{% if cookiecutter.basic_authentication %}
+{%- if cookiecutter.basic_authentication == true -%}
     path("users/", include("user.urls")),
 {% endif %}
     spa_url,  # catch-all; unknown paths to be handled by a SPA

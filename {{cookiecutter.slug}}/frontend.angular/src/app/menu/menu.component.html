@@ -53,7 +53,9 @@
                         </div>
                     </li>
                 }
+            {%- if cookiecutter.basic_authentication == true -%}
             <{{cookiecutter.app_prefix}}-user-menu />
+            {% endif %}
             </ul>
         </div>
     </div>

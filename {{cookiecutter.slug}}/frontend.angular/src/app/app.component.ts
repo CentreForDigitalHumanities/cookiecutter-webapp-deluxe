@@ -4,7 +4,9 @@ import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
 import { FooterComponent } from './footer/footer.component';
 import { DarkModeService } from './services/dark-mode.service';
+{%- if cookiecutter.basic_authentication == true -%}
 import { ToastContainerComponent } from './toast-container/toast-container.component';
+{% endif %}
 
 @Component({
     selector: '{{cookiecutter.app_prefix}}-root',
@@ -13,7 +15,9 @@ import { ToastContainerComponent } from './toast-container/toast-container.compo
         RouterOutlet,
         MenuComponent,
         FooterComponent,
+        {%- if cookiecutter.basic_authentication == true -%}
         ToastContainerComponent
+        {% endif %}
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'

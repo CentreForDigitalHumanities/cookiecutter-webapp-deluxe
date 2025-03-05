@@ -7,7 +7,7 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'rest_framework',
-{% if cookiecutter.basic_authentication %}
+{%- if cookiecutter.basic_authentication == true -%}
     'django.contrib.sites',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -35,9 +35,9 @@ MIDDLEWARE = [
 {% if cookiecutter.frontend == "backend" %}
     'livereload.middleware.LiveReloadScript',
 {% endif %}
-{% if cookiecutter.basic_authentication %}
+{%- if cookiecutter.basic_authentication == true -%}
     "allauth.account.middleware.AccountMiddleware",
-{% endif %}
+{%- endif -%}
 ]
 
 # Internationalization
@@ -57,7 +57,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-{% if cookiecutter.basic_authentication %}
+{%- if cookiecutter.basic_authentication == true -%}
 # Authentication
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -81,4 +81,4 @@ HOST = "localhost:8000"
 REST_AUTH = {
     "USER_DETAILS_SERIALIZER": "user.serializers.CustomUserDetailsSerializer",
 }
-{% endif %}
+{%- endif -%}

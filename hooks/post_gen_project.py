@@ -1,5 +1,6 @@
 import os
 import os.path as op
+import shutil
 import sys
 import re
 import subprocess
@@ -43,7 +44,11 @@ def main(argv):
 
     if not INCLUDE_AUTHENTICATION:
         # Remove user app
-        os.remove(op.join('backend', 'user'))
+        (
+            os.remove(op.join('backend', 'user')) 
+            if not WINDOWS 
+            else shutil.rmtree(op.join('backend', 'user'))
+        )
 
     if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
     venv = create_virtualenv()
