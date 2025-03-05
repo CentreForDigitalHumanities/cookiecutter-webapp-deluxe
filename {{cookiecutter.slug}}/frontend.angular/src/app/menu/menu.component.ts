@@ -13,7 +13,7 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { DarkModeToggleComponent } from "../dark-mode-toggle/dark-mode-toggle.component";
 import { LanguageInfo, LanguageService } from "../services/language.service";
 import { NgbCollapseModule, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
-{%- if cookiecutter.basic_authentication == true -%}
+{%- if cookiecutter.basic_authentication == "Yes, please!" -%}
 import { UserMenuComponent } from "./user-menu/user-menu.component";
 import { ToastContainerComponent } from "../toast-container/toast-container.component";
 {% endif %}
@@ -31,7 +31,7 @@ import { ToastContainerComponent } from "../toast-container/toast-container.comp
         NgbCollapseModule,
         RouterModule,
         NgbDropdownModule,
-        {%- if cookiecutter.basic_authentication == true -%}
+        {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
         UserMenuComponent,
         ToastContainerComponent,
         {% endif %}
