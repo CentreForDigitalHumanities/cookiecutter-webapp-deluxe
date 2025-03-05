@@ -43,12 +43,13 @@ def main(argv):
         print("[ERROR] Activating frontend failed!!")
 
     if not INCLUDE_AUTHENTICATION:
-        # Remove user app
+        # Remove user app and test fixtures.
         (
             os.remove(op.join('backend', 'user')) 
             if not WINDOWS 
             else shutil.rmtree(op.join('backend', 'user'))
         )
+        os.remove(op.join('backend', 'conftest.py'))
 
     if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
     venv = create_virtualenv()
