@@ -68,8 +68,8 @@ export class LoginComponent implements OnInit {
             )
             .subscribe(([, next]) => {
                 this.toastService.show({
-                    header: "Sign in successful",
-                    body: "You have been successfully signed in.",
+                    header: $localize`Sign in successful`,
+                    body: $localize`You have been successfully signed in.`,
                     type: "success",
                 });
                 this.router.navigate([next || "/"]);

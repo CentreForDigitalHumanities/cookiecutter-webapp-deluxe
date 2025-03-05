@@ -40,8 +40,8 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
                     return;
                 }
                 this.toastService.show({
-                    header: "Email address verification failed.",
-                    body: "Failed to verify email address.",
+                    header: $localize`Email address verification failed.`,
+                    body: $localize`Failed to verify email address.`,
                     type: "danger",
                 });
             });
@@ -50,8 +50,8 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Email verification failed",
-                    body: "Failed to verify email address.",
+                    header: $localize`Email verification failed`,
+                    body: $localize`Failed to verify email address.`,
                     type: "danger",
                 });
             });
@@ -60,8 +60,8 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Email verified",
-                    body: "Email address has been verified.",
+                    header: $localize`Email verified`,
+                    body: $localize`Email address has been verified.`,
                     type: "success",
                 });
                 this.router.navigate(["/"]);

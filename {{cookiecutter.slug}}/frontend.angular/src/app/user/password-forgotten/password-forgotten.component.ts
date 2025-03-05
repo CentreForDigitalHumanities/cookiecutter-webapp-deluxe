@@ -46,8 +46,8 @@ export class PasswordForgottenComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Password reset request successful",
-                    body: "If your email address is known to us, an email has been sent containing a link to a page where you may reset your password.",
+                    header: $localize`Password reset request successful`,
+                    body: $localize`If your email address is known to us, an email has been sent containing a link to a page where you may reset your password.`,
                     type: "success",
                     // This is a long message, so we show it for 10 seconds.
                     delay: 10000,
@@ -58,8 +58,8 @@ export class PasswordForgottenComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Reset request failed",
-                    body: "Request to send password reset email failed. Please try again.",
+                    header: $localize`Reset request failed`,
+                    body: $localize`Request to send password reset email failed. Please try again.`,
                     type: "danger",
                 });
             });

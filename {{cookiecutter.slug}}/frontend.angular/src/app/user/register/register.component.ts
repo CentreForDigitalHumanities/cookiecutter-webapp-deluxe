@@ -94,8 +94,8 @@ export class RegisterComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Registration successful",
-                    body: "You have been successfully registered. Please check your email for a confirmation link.",
+                    header: $localize`Registration successful`,
+                    body: $localize`You have been successfully registered. Please check your email for a confirmation link.`,
                     type: "success",
                 });
                 this.router.navigate(["/"]);

@@ -84,8 +84,8 @@ export class UserSettingsComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Password reset email sent",
-                    body: "An email has been sent to you with instructions on how to reset your password.",
+                    header: $localize`Password reset email sent`,
+                    body: $localize`An email has been sent to you with instructions on how to reset your password.`,
                     type: "success",
                 });
             });
@@ -94,8 +94,8 @@ export class UserSettingsComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Error deleting account",
-                    body: "An error occurred while deleting your account. Please try again later.",
+                    header: $localize`Error deleting account`,
+                    body: $localize`An error occurred while deleting your account. Please try again later.`,
                     type: "danger",
                 });
             });
@@ -104,8 +104,8 @@ export class UserSettingsComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Account deleted",
-                    body: "Your account has been successfully deleted.",
+                    header: $localize`Account deleted`,
+                    body: $localize`Your account has been successfully deleted.`,
                     type: "success",
                 });
                 this.router.navigate(["/"]);
@@ -148,8 +148,8 @@ export class UserSettingsComponent implements OnInit {
 
     private onSuccess(user: UserResponse) {
         this.toastService.show({
-            header: "Settings updated",
-            body: "Your settings have been successfully updated.",
+            header: $localize`Settings updated`,
+            body: $localize`Your settings have been successfully updated.`,
             type: "success",
         });
     }

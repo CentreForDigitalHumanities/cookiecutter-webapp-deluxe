@@ -48,8 +48,8 @@ export class UserMenuComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Sign out failed",
-                    body: "There was an error signing you out. Please try again.",
+                    header: $localize`Sign out failed`,
+                    body: $localize`There was an error signing you out. Please try again.`,
                     type: "danger",
                 });
             });
@@ -58,8 +58,8 @@ export class UserMenuComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Sign out successful",
-                    body: "You have been successfully signed out.",
+                    header: $localize`Sign out successful`,
+                    body: $localize`You have been successfully signed out.`,
                     type: "success",
                 });
                 this.router.navigate(["/"]);

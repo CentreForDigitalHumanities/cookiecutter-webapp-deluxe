@@ -94,8 +94,8 @@ export class ResetPasswordComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.toastService.show({
-                    header: "Password reset",
-                    body: "Your password has been successfully reset.",
+                    header: $localize`Password reset`,
+                    body: $localize`Your password has been successfully reset.`,
                     type: "success",
                 });
             });
