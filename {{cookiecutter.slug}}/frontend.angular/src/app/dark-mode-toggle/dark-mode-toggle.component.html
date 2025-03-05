@@ -1,13 +1,15 @@
 @if ((dark$ | async) === true) {
 <button class="nav-link"
     (click)="toggle()"
-    aria-label="Switch to dark mode">
+    aria-label="Switch to dark mode"
+    i18n-aria-label>
     <fa-icon [icon]="faMoon" aria-hidden="true" />
 </button>
 } @else {
     <button class="nav-link"
     (click)="toggle()"
-    aria-label="Switch to light mode">
+    aria-label="Switch to light mode"
+    i18n-aria-label>
     <fa-icon [icon]="faSun" aria-hidden="true" />
 </button>
 }

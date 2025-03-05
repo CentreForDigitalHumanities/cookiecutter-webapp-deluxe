@@ -2,7 +2,7 @@
     @if (authLoading$ | async) {
     <li class="navbar-text">
         <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading user data...</span>
+            <span class="visually-hidden" i18n>Loading user data...</span>
         </div>
     </li>
     } @if (user$ | async; as user) {
@@ -19,11 +19,13 @@
             aria-labelledby="userDropdown"
             class="dropdown-menu dropdown-menu-end"
         >
-            <a ngbDropdownItem [routerLink]="['/user-settings']">Settings</a>
+            <a ngbDropdownItem [routerLink]="['/user-settings']" i18n
+                >Settings</a
+            >
             @if (user.isStaff) {
-            <a ngbDropdownItem href="/admin/">Administration</a>
+            <a ngbDropdownItem href="/admin/" i18n>Administration</a>
             }
-            <button ngbDropdownItem (click)="logout()">Sign out</button>
+            <button ngbDropdownItem (click)="logout()" i18n>Sign out</button>
         </div>
     </li>
     } @if (showSignIn$ | async) {
@@ -36,6 +38,7 @@
                 linkActive.isActive ? null : { next: currentPath$ | async }
             "
             class="nav-link"
+            i18n
         >
             Sign in
         </a>
@@ -45,6 +48,7 @@
             [routerLink]="['/register']"
             routerLinkActive="active"
             class="nav-link"
+            i18n
         >
             Register
         </a>
@@ -52,7 +56,7 @@
     } @if (logoutLoading$ | async) {
     <li class="d-flex align-items-center">
         <div class="spinner-border spinner-border-sm text-light" role="status">
-            <span class="visually-hidden">Signing out...</span>
+            <span class="visually-hidden" i18n>Signing out...</span>
         </div>
     </li>
     }
