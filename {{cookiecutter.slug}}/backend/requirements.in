@@ -6,3 +6,8 @@ psycopg2
 pytest
 pytest-django
 pytest-xdist
+{% if cookiecutter.basic_authentication == "Yes, please!" %}
+dj_rest_auth
+django-allauth
+requests-oauthlib
+{%- endif -%}

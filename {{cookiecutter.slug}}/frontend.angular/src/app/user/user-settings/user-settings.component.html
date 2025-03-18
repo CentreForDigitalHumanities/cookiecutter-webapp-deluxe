@@ -1,0 +1,90 @@
+<h1 i18n>User settings</h1>
+
+<p i18n>Use the form below to change your name or password.</p>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+    @if (form.controls.username; as control) {
+    <div>
+        <label for="username" class="form-label" i18n>Username</label>
+        <input
+            type="text"
+            id="username"
+            class="form-control"
+            [class.is-invalid]="control.touched && control.invalid"
+            [formControl]="control"
+        />
+        @for (error of usernameErrors$ | async; track $index) {
+        <p class="invalid-feedback">
+            {{ error }}
+        </p>
+        }
+    </div>
+    <div>
+        <label for="first-name" class="form-label" i18n>First name</label>
+        <input
+            type="text"
+            id="first-name"
+            class="form-control"
+            [class.is-invalid]="
+                form.controls.firstName.touched &&
+                form.controls.firstName.invalid
+            "
+            [formControl]="form.controls.firstName"
+        />
+    </div>
+    <div>
+        <label for="last-name" class="form-label" i18n>Last name</label>
+        <input
+            type="text"
+            id="first-name"
+            class="form-control"
+            [class.is-invalid]="
+                form.controls.lastName.touched && form.controls.lastName.invalid
+            "
+            [formControl]="form.controls.lastName"
+        />
+    </div>
+    @for (error of formErrors$ | async; track $index) {
+    <p class="invalid-feedback always-block">
+        {{ error }}
+    </p>
+    }
+    <div
+        class="d-flex flex-wrap justify-content-start align-items-center button-row mt-3"
+    >
+        <button type="submit" class="btn btn-primary">
+            <span i18n>Save changes</span>
+            @if (updateSettingsLoading$ | async) {
+            <div class="spinner-border spinner-border-sm ms-1" role="status">
+                <span class="visually-hidden" i18n>
+                    Saving user settings...
+                </span>
+            </div>
+
+            }
+        </button>
+        <button
+            class="btn btn-primary"
+            type="button"
+            (click)="requestPasswordReset()"
+        >
+            <span i18n>Request new password</span>
+            @if (requestResetLoading$ | async) {
+            <div class="spinner-border spinner-border-sm ms-1" role="status">
+                <span class="visually-hidden" i18n>
+                    Requesting password reset link...
+                </span>
+            </div>
+            }
+        </button>
+        <button class="btn btn-danger" type="button" (click)="deleteAccount()">
+            <span i18n>Delete account</span>
+            @if (deleteUserLoading$ | async) {
+            <div class="spinner-border spinner-border-sm ms-1" role="status">
+                <span class="visually-hidden" i18n>Deleting account...</span>
+            </div>
+            }
+        </button>
+    </div>
+    }
+</form>

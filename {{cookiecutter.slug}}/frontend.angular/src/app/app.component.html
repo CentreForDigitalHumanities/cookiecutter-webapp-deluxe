@@ -1,5 +1,8 @@
 <div class="app">
     <{{cookiecutter.app_prefix}}-menu role="banner" />
+    {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
+    <{{cookiecutter.app_prefix}}-toast-container aria-live="polite" aria-atomic="true" />
+    {% endif %}
     <main class="main-content mt-5 mb-5">
         <div class="container">
             <router-outlet></router-outlet>

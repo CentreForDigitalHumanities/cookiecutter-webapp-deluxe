@@ -1,0 +1,63 @@
+<ul class="navbar-nav">
+    @if (authLoading$ | async) {
+    <li class="navbar-text">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden" i18n>Loading user data...</span>
+        </div>
+    </li>
+    } @if (user$ | async; as user) {
+    <li class="nav-item" ngbDropdown>
+        <button class="nav-link" ngbDropdownToggle id="userDropdown">
+            <span class="icon">
+                <fa-icon [icon]="faUser" />
+            </span>
+            &nbsp;
+            {{ user.username }}
+        </button>
+        <div
+            ngbDropdownMenu
+            aria-labelledby="userDropdown"
+            class="dropdown-menu dropdown-menu-end"
+        >
+            <a ngbDropdownItem [routerLink]="['/user-settings']" i18n
+                >Settings</a
+            >
+            @if (user.isStaff) {
+            <a ngbDropdownItem href="/admin/" i18n>Administration</a>
+            }
+            <button ngbDropdownItem (click)="logout()" i18n>Sign out</button>
+        </div>
+    </li>
+    } @if (showSignIn$ | async) {
+    <li class="nav-item">
+        <a
+            #linkActive="routerLinkActive"
+            [routerLink]="['/login']"
+            routerLinkActive="active"
+            [queryParams]="
+                linkActive.isActive ? null : { next: currentPath$ | async }
+            "
+            class="nav-link"
+            i18n
+        >
+            Sign in
+        </a>
+    </li>
+    <li class="nav-item">
+        <a
+            [routerLink]="['/register']"
+            routerLinkActive="active"
+            class="nav-link"
+            i18n
+        >
+            Register
+        </a>
+    </li>
+    } @if (logoutLoading$ | async) {
+    <li class="d-flex align-items-center">
+        <div class="spinner-border spinner-border-sm text-light" role="status">
+            <span class="visually-hidden" i18n>Signing out...</span>
+        </div>
+    </li>
+    }
+</ul>

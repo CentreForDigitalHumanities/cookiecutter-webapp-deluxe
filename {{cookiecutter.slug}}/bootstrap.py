@@ -186,12 +186,17 @@ def merge_json(target, source):
 
 def activate_frontend():
     framework = '{{cookiecutter.frontend}}'
+    include_authentication = '{{cookiecutter.basic_authentication}}' == "Yes, please!"
     os.rename('package.{{cookiecutter.frontend}}.json', 'package.json')
 
     if framework == 'backbone':
         os.rename('frontend.backbone', 'frontend')
         shutil.move(op.join('frontend', 'proxy.json'), 'proxy.json')
         override_json('package')
+
+        if include_authentication:
+            print('No authentication for Backbone frontend available yet.')
+
     elif framework == 'angular':
         project_name = '{{cookiecutter.slug}}'.replace('_', '-')
         Command(
@@ -226,6 +231,9 @@ def activate_frontend():
             ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],
             cwd="frontend"
         )()
+
+        if not include_authentication:
+            remove_ng_authentication_files()
 
         override_json('angular')
         Command(
@@ -263,6 +271,18 @@ def activate_frontend():
         shutil.rmtree(path)
     for path in glob.glob("package.*.json"):
         os.remove(path)
+
+
+def remove_ng_authentication_files():
+    print('Removing authentication files from frontend...')
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'guards'))
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'menu', 'user-menu'))
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'toast-container'))
+    shutil.rmtree(op.join('frontend', 'src', 'app', 'user'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'auth.service.ts'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'auth.service.spec.ts'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'toast.service.ts'))
+    os.remove(op.join('frontend', 'src', 'app', 'services', 'toast.service.spec.ts'))
 
 
 def override_json(filename):
