@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 
 def merge_json(target, source):
