@@ -27,6 +27,7 @@ RUN python bootstrap/override_json.py package
 FROM node:18 AS bootstrap-3
 
 WORKDIR /usr/src/app/frontend
+COPY --from=bootstrap-2 /usr/src/app/frontend/ .
 RUN rm src/favicon.ico .editorconfig && \
     yarn && \
     yarn ng add @angular/localize --skip-confirmation
@@ -34,14 +35,17 @@ RUN rm src/favicon.ico .editorconfig && \
 FROM python:3.9 AS bootstrap-4
 
 WORKDIR /usr/src/app/frontend
+COPY --from=bootstrap-3 /usr/src/app/frontend/ .
 RUN python bootstrap/override_json.py angular
 
 FROM node:18 AS bootstrap-5
 
 WORKDIR /usr/src/app/frontend
+COPY --from=bootstrap-4 /usr/src/app/frontend/ .
 RUN yarn ng extract-i18n --output-path locale
 
 FROM python:3.9 AS bootstrap-6
 
 WORKDIR /usr/src/app/frontend
+COPY --from=bootstrap-5 /usr/src/app/frontend/ .
 RUN python bootstrap/finish_localizations.py
