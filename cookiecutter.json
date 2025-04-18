@@ -15,6 +15,10 @@
   "frontend": ["angular", "backbone"],
   "frontend_port": "4200",
   "basic_authentication": ["Yes, please!", "No, thank you."],
+  "saml_authentication": [
+    "Yes, please!",
+    "No, thank you."
+  ],
   "backend_port": "8000",
   "psql_command": "psql",
   "virtualenv": ".env",

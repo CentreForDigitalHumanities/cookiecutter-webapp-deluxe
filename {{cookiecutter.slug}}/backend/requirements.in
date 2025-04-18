@@ -11,3 +11,6 @@ dj_rest_auth
 django-allauth
 requests-oauthlib
 {%- endif -%}
+{ if cookiecutter.saml_authentication == "Yes, please!" %}
+cdh-django-core[federated-auth] @ git+https://github.com/CentreForDigitalHumanities/django-shared-core.git@3.2
+{%- endif -%}
