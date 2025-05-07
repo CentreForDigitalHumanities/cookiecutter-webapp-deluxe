@@ -29,7 +29,8 @@ services:
     env_file:
       - ./.env.dev
     command: python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000
-{%- if cookiecutter.saml_authentication == "Yes, please!" -%}
+{% if cookiecutter.saml_authentication == "Yes, please!" %}
+
   test-idp:
     image: ghcr.io/centrefordigitalhumanities/development-idp/development-idp:develop
     ports:
