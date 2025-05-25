@@ -9,6 +9,7 @@
         <input
             type="text"
             id="username"
+            autocomplete="username"
             class="form-control"
             [class.is-invalid]="control.touched && control.invalid"
             [formControl]="control"
@@ -24,6 +25,7 @@
         <input
             type="text"
             id="first-name"
+            autocomplete="given-name"
             class="form-control"
             [class.is-invalid]="
                 form.controls.firstName.touched &&
@@ -36,7 +38,8 @@
         <label for="last-name" class="form-label" i18n>Last name</label>
         <input
             type="text"
-            id="first-name"
+            id="last-name"
+            autocomplete="family-name"
             class="form-control"
             [class.is-invalid]="
                 form.controls.lastName.touched && form.controls.lastName.invalid
