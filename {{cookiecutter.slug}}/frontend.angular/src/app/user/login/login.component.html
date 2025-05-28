@@ -51,6 +51,19 @@
             </div>
             }
         </button>
+{% if cookiecutter.saml_authentication == "Yes, please!" %}
+        <div class="field">
+            <p class="control">
+                Or login with:
+            </p>
+        </div>
+        <div>
+            <a class="box" href='/users/saml2/login/'>
+                <img src="/assets/solis.png" width="40" height="40">
+                <span><strong>Solis ID</strong></span>
+            </a>
+        </div>
+{% endif %}
     </div>
 </form>
 
