@@ -1,7 +1,6 @@
 Django>=4.0.1,<5
 djangorestframework
 django-livereload-server
-django-revproxy>=0.10.0
 psycopg2
 pytest
 pytest-django
@@ -12,5 +11,5 @@ django-allauth
 requests-oauthlib
 {% endif %}
 {% if cookiecutter.saml_authentication == "Yes, please!" %}
-cdh-django-core[federated-auth] @ git+https://github.com/CentreForDigitalHumanities/django-shared-core.git@3.2
+cdh-django-core[federated-auth] @ git+https://github.com/CentreForDigitalHumanities/django-shared-core.git
 {% endif %}

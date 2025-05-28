@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'user',
 {% endif %}
-    'revproxy',
     'example'
 ]
 
