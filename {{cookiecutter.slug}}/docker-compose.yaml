@@ -16,6 +16,9 @@ services:
       - type: bind
         source: ./backend
         target: /backend
+      - type: bind
+        source: ./frontend/build
+        target: /frontend/build
       - static_data:/backend/staticfiles
     environment:
       - PGDATABASE=${SQL_DATABASE}
@@ -24,18 +27,29 @@ services:
       - PGHOST=${SQL_HOST}
       - PGPORT=${SQL_PORT}
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     env_file:
       - ./.env.dev
-    command: python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "127.0.0.1:8000:8000"
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000"
+{% if cookiecutter.frontend == 'angular' %}
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /frontend
+    ports:
+      - 127.0.0.1:4200:4200
+    command: yarn start
+{% endif %}
 {% if cookiecutter.saml_authentication == "Yes, please!" %}
-
   test-idp:
     image: ghcr.io/centrefordigitalhumanities/development-idp/development-idp:develop
     ports:
-      - "7000:7000"
-    command: python manage.py loaddata main/fixtures/initial.json
+      - "127.0.0.1:7000:7000"
 {% endif %}
 
 volumes:
