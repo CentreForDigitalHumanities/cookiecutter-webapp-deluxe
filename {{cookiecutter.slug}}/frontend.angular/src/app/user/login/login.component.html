@@ -8,6 +8,7 @@
         <input
             type="text"
             id="username"
+            autocomplete="username"
             class="form-control"
             [class.is-invalid]="
                 form.controls.username.touched && form.controls.username.invalid
@@ -25,6 +26,7 @@
         <input
             type="password"
             id="password"
+            autocomplete="current-password"
             class="form-control"
             [formControl]="form.controls.password"
             [class.is-invalid]="
