@@ -13,7 +13,7 @@ A boilerplate for full-fledged web applications with [Django][1] backend, [Angul
 
 You need to install *at least* the following software:
 
- - Python 3.8 - 3.10
+ - Python 3.11
  - [Cookiecutter][4] (install using pip in a virtualenv using Python 3)
  - virtualenv
  - Git (if you use this cookiecutter directly from GitHub)
