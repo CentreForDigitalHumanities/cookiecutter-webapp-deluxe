@@ -5,7 +5,7 @@ from os.path import dirname, join
 from cdh.federated_auth.saml.settings import create_saml_config
 
 USER_AUTH_DIR = join(dirname(dirname(__file__)), 'users')
-APP_NAME = {{cookiecutter.slug}}
+APP_NAME = '{{cookiecutter.slug}}'
 
 SAML_CONFIG = create_saml_config(
     base_url='localhost:8000',

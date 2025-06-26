@@ -10,9 +10,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from {{cookiecutter.slug}}.common_settings import *
+{% if cookiecutter.saml_authentication == "Yes, please!" %}
+from {{cookiecutter.slug}}.saml_settings import *
+{% endif %}
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Quick-start development settings - unsuitable for production
