@@ -10,9 +10,9 @@ APP_NAME = '{{cookiecutter.slug}}'
 SAML_CONFIG = create_saml_config(
     base_url='localhost:8000',
     name=APP_NAME,
-    key_file=join(USER_AUTH_DIR, 'saml_test_data/private.key'),
-    cert_file=join(USER_AUTH_DIR, 'saml_test_data/public.cert'),
-    idp_metadata='https://login.uu.nl/nidp/saml2/metadata',
+    key_file=join(USER_AUTH_DIR, 'tests', 'saml', 'sp_certificates', 'private.key'),
+    cert_file=join(USER_AUTH_DIR, 'tests', 'saml', 'sp_certificates', 'public.cert'),
+    idp_metadata='http://test-idp:7000/saml/idp/metadata/',
     contact_given_name='Research Software Lab, Utrecht University Centre for Digital Humanities',
     contact_email='digitalhumanities@uu.nl',
 )

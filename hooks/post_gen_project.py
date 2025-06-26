@@ -55,7 +55,7 @@ def main(argv):
         if not INCLUDE_SAML_AUTH:
             # Remove saml settings and test fixtures.
             os.remove(op.join('backend', APP_NAME, 'saml_settings.py'))
-            shutil.rmtree(op.join('backend', 'user', 'tests', 'saml_test_data'))
+            shutil.rmtree(op.join('backend', 'user', 'tests', 'saml'))
 
     if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
     venv = create_virtualenv()
