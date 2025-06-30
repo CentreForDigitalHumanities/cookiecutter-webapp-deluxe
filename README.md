@@ -203,3 +203,13 @@ If you are going to generate many test projects in quick succession, the followi
    ```
  - If you want database creation to work while using the default `psql_command`, as well as the above cleanup command, make sure to configure PostgreSQL correctly so the client commands are in your `PATH` and you can use peer authentication.
 
+## Deployment
+To deploy a typical app derived from this repository, make a child branch of `template` in the [deployment-rsl repo](https://github.com/CentreForDigitalHumanities/deployment-rsl).
+
+{% if cookiecutter.saml_authentication == "Yes, please!" %}
+### SAML support
+To implement SAML in your application, merge the `saml` branch into your deployment branch.
+
+To set up integration with the UU's identity provider, follow [this guide](https://github.com/CentreForDigitalHumanities/rsl-info/blob/main/How-to/SAML.md)
+
+{% endif %}
