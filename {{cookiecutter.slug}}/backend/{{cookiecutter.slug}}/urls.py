@@ -28,6 +28,12 @@ from example.views import hooray as ExampleView # DELETEME, see below
 
 api_router = routers.DefaultRouter()  # register viewsets with this router
 
+
+if settings.PROXY_FRONTEND:
+    spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)
+else:
+    spa_url = re_path(r'', index)
+
 urlpatterns = [
     path('api/example/', ExampleView), # this is just an example, please delete and utilize router above.
     path('admin', RedirectView.as_view(url='/admin/', permanent=True)),
@@ -44,6 +50,7 @@ urlpatterns = [
     path("users/", include("user.urls")),
 {% endif %}
 {%- if cookiecutter.saml_authentication == "Yes, please!" -%}
-    path("saml/", include('djangosaml2.urls')),
+    path("saml", include('djangosaml2.urls')),
 {% endif %}
+    spa_url,  # catch-all; unknown paths to be handled by a SPA
 ]
