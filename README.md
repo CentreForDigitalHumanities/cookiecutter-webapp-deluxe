@@ -24,7 +24,7 @@ This is the minimum for Cookiecutter to be able to do its work, i.e., generate a
  - [gitflow][5] (by default included with [Git for Windows][6])
  - PostgreSQL >= 10, client, server and C libraries
  - [Visual C++ for Python][7] (Windows only)
- - Node.js >= 12
+ - Node.js >= 20
  - Yarn
 
 After generating a new project with this cookiecutter, you'll find a README in the root of the project that mentions two more dependencies not yet listed above. The post-generation script does not depend on them, but you'll likely need them at some later point while developing or deploying the generated project.
