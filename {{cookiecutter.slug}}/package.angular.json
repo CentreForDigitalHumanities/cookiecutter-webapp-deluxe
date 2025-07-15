@@ -40,6 +40,6 @@
         "stop-back": "lsof -t -i tcp:{{cookiecutter.backend_port}} | xargs kill -9 || echo \"not running\""
     },
     "devDependencies": {
-        "@angular/cli": ">=20"
+        "@angular/cli": ">=19"
     }
 }
