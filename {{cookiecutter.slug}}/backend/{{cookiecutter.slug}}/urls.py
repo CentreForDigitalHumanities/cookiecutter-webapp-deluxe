@@ -50,7 +50,7 @@ urlpatterns = [
     path("users/", include("user.urls")),
 {% endif %}
 {%- if cookiecutter.saml_authentication == "Yes, please!" -%}
-    path("saml", include('djangosaml2.urls')),
+    path("saml/", include('djangosaml2.urls')),
 {% endif %}
     spa_url,  # catch-all; unknown paths to be handled by a SPA
 ]
