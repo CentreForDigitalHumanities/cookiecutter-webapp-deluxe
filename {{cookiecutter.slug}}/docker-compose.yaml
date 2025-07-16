@@ -26,6 +26,9 @@ services:
       - PGPASSWORD={{cookiecutter.slug}}
       - PGHOST=db
       - PGPORT=5432
+      {% if cookiecutter.saml_authentication == "Yes, please!" %}
+      - IDP_ADDRESS=test-idp
+      {% endif %}
     depends_on:
       - db
     ports:
