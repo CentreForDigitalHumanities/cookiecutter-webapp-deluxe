@@ -14,4 +14,4 @@ COPY package.json yarn.lock /frontend/
 # install frontend libraries on container
 RUN yarn
 # add all configuration files
-COPY angular.json tsconfig.app.json karma.conf.js proxy.conf.docker.json /frontend/
+COPY angular.json tsconfig.json tsconfig.app.json tsconfig.spec.json karma.conf.js proxy.conf.docker.json /frontend/
