@@ -29,7 +29,7 @@ services:
     depends_on:
       - db
     ports:
-      - "127.0.0.1:8000:8000"
+      - 127.0.0.1:8000:8000
     command: sh -c "python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000"
 {% if cookiecutter.frontend == 'angular' %}
   frontend:
@@ -53,7 +53,7 @@ services:
   test-idp:
     image: ghcr.io/centrefordigitalhumanities/development-idp/development-idp:develop
     ports:
-      - "7000:7000"
+      - 127.0.0.1:7000:7000
     volumes:
       - type: bind
         source: backend/user/tests/saml/idp_certificates

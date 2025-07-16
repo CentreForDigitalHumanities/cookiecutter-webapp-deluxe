@@ -32,4 +32,7 @@ urlpatterns = [
     # generic routes (login, logout, pw reset etc.)
     path("", include("dj_rest_auth.urls")),
     path("registration/", include("dj_rest_auth.registration.urls")),
+    {%- if cookiecutter.saml_authentication == "Yes, please!" -%}
+    path("saml/", include('djangosaml2.urls')),
+    {% endif %}
 ]
