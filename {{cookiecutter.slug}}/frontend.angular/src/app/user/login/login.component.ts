@@ -19,6 +19,8 @@ import { AuthService } from "../../services/auth.service";
 import { CommonModule } from "@angular/common";
 import { ToastService } from "../../services/toast.service";
 
+import { environment } from '../../../environments/environment';
+
 type LoginForm = {
     [key in keyof UserLogin]: FormControl<string>;
 };
@@ -47,6 +49,8 @@ export class LoginComponent implements OnInit {
     public formErrors$ = formErrorMessages$(this.form);
 
     public loading$ = this.authService.login.loading$;
+
+    public showSamlLogin = environment.showSamlLogin || false;
 
     private nextParam$ = this.route.queryParamMap.pipe(
         map((params) => params.get("next"))

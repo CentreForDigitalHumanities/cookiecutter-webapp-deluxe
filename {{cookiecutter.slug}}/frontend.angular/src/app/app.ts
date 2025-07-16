@@ -1,4 +1,4 @@
-import { Component, Inject, afterRender } from '@angular/core';
+import { Component, Inject, afterEveryRender } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
@@ -19,15 +19,15 @@ import { ToastContainerComponent } from './toast-container/toast-container.compo
         ToastContainerComponent
         {% endif %}
     ],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+    templateUrl: './app.html',
+    styleUrl: './app.scss'
 })
-export class AppComponent {
+export class App {
     title = '{{cookiecutter.project_title}}';
 
     constructor(@Inject(DOCUMENT) private document: Document, private darkModeService: DarkModeService) {
         // Using the DOM API to only render on the browser instead of on the server
-        afterRender(() => {
+        afterEveryRender(() => {
             const style = this.document.createElement('link');
             style.rel = 'stylesheet';
             this.document.head.append(style);

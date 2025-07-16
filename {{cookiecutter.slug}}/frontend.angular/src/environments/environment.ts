@@ -10,6 +10,9 @@ export const environment = {
     buildTime,
     version,
     sourceUrl,
+    {% if cookiecutter.saml_authentication == "Yes, please!" %}
+    showSamlLogin: true
+    {% endif %}
 };
 
 /*
