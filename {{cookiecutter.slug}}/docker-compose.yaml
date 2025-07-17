@@ -57,6 +57,8 @@ services:
     image: ghcr.io/centrefordigitalhumanities/development-idp/development-idp:develop
     ports:
       - 127.0.0.1:7000:7000
+    environment:
+      - DJANGO_ALLOWED_HOSTS=localhost,test-idp,backend
     volumes:
       - type: bind
         source: backend/user/tests/saml/idp_certificates
