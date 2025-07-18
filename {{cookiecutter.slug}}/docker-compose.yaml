@@ -54,12 +54,13 @@ services:
 {% endif %}
 {% if cookiecutter.saml_authentication == "Yes, please!" %}
   test-idp:
-    image: ghcr.io/centrefordigitalhumanities/development-idp/development-idp:develop
+    image: ghcr.io/centrefordigitalhumanities/development-idp/development-idp:latest
     ports:
       - 127.0.0.1:7000:7000
     environment:
       - DJANGO_ALLOWED_HOSTS=localhost,test-idp,backend
     volumes:
+      - idp_db:/app/db
       - type: bind
         source: backend/user/tests/saml/idp_certificates
         target: /app/certificates
@@ -68,4 +69,5 @@ services:
 
 volumes:
   db_data:
+  idp_db:
   static_data:
