@@ -8,6 +8,9 @@ pytest-django
 pytest-xdist
 {% if cookiecutter.basic_authentication == "Yes, please!" %}
 dj_rest_auth
-django-allauth
+django-allauth<65.3
 requests-oauthlib
-{%- endif -%}
+{% endif %}
+{% if cookiecutter.saml_authentication == "Yes, please!" %}
+cdh-django-core[federated-auth] @ git+https://github.com/CentreForDigitalHumanities/django-shared-core.git
+{% endif %}

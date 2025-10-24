@@ -36,8 +36,11 @@ MIDDLEWARE = [
     'livereload.middleware.LiveReloadScript',
 {% endif %}
 {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
-    "allauth.account.middleware.AccountMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
 {%- endif -%}
+{% if cookiecutter.saml_authentication == "Yes, please!" %}
+    'djangosaml2.middleware.SamlSessionMiddleware',
+{% endif %}
 ]
 
 # Internationalization

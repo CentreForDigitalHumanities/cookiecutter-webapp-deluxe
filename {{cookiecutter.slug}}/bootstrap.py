@@ -206,7 +206,7 @@ def activate_frontend():
         Command(
             'Creating project',
             ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
-                '--ssr',
+                '--ssr=false',
                 '--skip-git=true',
                 '--skip-install=true',
                 '--package-manager=yarn',
@@ -217,15 +217,14 @@ def activate_frontend():
         os.rename(project_name, 'frontend')
         shutil.move(op.join('frontend', 'proxy.conf.json'), 'proxy.conf.json')
         override_json('package')
-        Command(
-            'Install frontend dependencies using Yarn',
-            ['yarn'],
-            cwd="frontend"
-        )()
-        # Remove favicon.ico
-        os.remove(os.path.join('frontend', 'src', 'favicon.ico'))
+        Command('Install frontend dependencies using Yarn', ['yarn'], cwd="frontend")()
         # Remove editorconfig
         os.remove(os.path.join('frontend', '.editorconfig'))
+        Command(
+            'yarn add @angular/animations',
+            ['yarn', 'add', '@angular/animations'],
+            cwd="frontend"
+        )()
         Command(
             'ng add @angular/localize',
             ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],

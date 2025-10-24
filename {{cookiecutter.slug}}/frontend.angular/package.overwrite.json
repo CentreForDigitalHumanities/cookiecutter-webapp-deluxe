@@ -8,6 +8,7 @@
         "preserve": "yarn prebuild",
         "serve": "ng serve",
         "start": "yarn serve",
+        "start-docker": "ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.docker.json",
 {% set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
 {%- set code, name = loc.split(':') %}
@@ -20,17 +21,17 @@
         "watch": "ng build --watch"
     },
     "dependencies": {
-        "@fortawesome/angular-fontawesome": "^0.14.1",
+        "@fortawesome/angular-fontawesome": "^3.0.0",
         "@fortawesome/fontawesome-svg-core": "^6.5.2",
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
-        "@ngrx/effects": "^17.2.0",
-        "@ngrx/store": "^17.2.0",
+        "@ngrx/effects": "^20.1.0",
+        "@ngrx/store": "^20.1.0",
         "colors": "^1.4.0",
-        "@ng-bootstrap/ng-bootstrap": "^16.0.0",
+        "@ng-bootstrap/ng-bootstrap": "^19.0.0",
         "@popperjs/core": "^2.11.8",
-        "bootstrap": "^5.3.3"
+        "bootstrap": "^5.3.8"
     },
     "devDependencies": {
-        "ng-extract-i18n-merge": "^2.12.0"
+        "ng-extract-i18n-merge": "^3.1.0"
     }
 }

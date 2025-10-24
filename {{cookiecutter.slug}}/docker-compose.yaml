@@ -1,0 +1,73 @@
+services:
+  db:
+    image: docker.io/postgres:16
+    environment:
+      - POSTGRES_DB={{cookiecutter.slug}}
+      - POSTGRES_USER={{cookiecutter.slug}}
+      - POSTGRES_PASSWORD={{cookiecutter.slug}}
+      - PGHOST=db
+      - PGPORT=5432
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /backend
+      - type: bind
+        source: ./frontend/build
+        target: /frontend/build
+      - static_data:/backend/staticfiles
+    environment:
+      - PGDATABASE={{cookiecutter.slug}}
+      - PGUSER={{cookiecutter.slug}}
+      - PGPASSWORD={{cookiecutter.slug}}
+      - PGHOST=db
+      - PGPORT=5432
+      {% if cookiecutter.saml_authentication == "Yes, please!" %}
+      - IDP_ADDRESS=test-idp
+      {% endif %}
+    depends_on:
+      - db
+    ports:
+      - 127.0.0.1:8000:8000
+    command: sh -c "python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000"
+{% if cookiecutter.frontend == 'angular' %}
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - type: bind
+        source: ./frontend/src
+        target: /frontend/src
+      - type: bind
+        source: ./frontend/build
+        target: /frontend/build
+      - type: bind
+        source: ./frontend/locale
+        target: /frontend/locale
+    ports:
+      - 127.0.0.1:4200:4200
+    command: yarn start-docker
+{% endif %}
+{% if cookiecutter.saml_authentication == "Yes, please!" %}
+  test-idp:
+    image: ghcr.io/centrefordigitalhumanities/development-idp/development-idp:latest
+    ports:
+      - 127.0.0.1:7000:7000
+    environment:
+      - DJANGO_ALLOWED_HOSTS=localhost,test-idp,backend
+    volumes:
+      - idp_db:/app/db
+      - type: bind
+        source: backend/user/tests/saml/idp_certificates
+        target: /app/certificates
+    command: sh -c "python manage.py migrate && python manage.py loaddata main/fixtures/initial.json main/fixtures/admin-user.json  && python manage.py runserver 0.0.0.0:7000"
+{% endif %}
+
+volumes:
+  db_data:
+  idp_db:
+  static_data:

@@ -33,6 +33,8 @@ PSQL_COMMAND = '{{cookiecutter.psql_command}}'
 VIRTUALENV = '{{cookiecutter.virtualenv}}'
 VIRTUALENV_COMMAND = '{{cookiecutter.virtualenv_command}}'.replace('%PYTHON%', python_path())
 INCLUDE_AUTHENTICATION = '{{cookiecutter.basic_authentication}}' == "Yes, please!"
+INCLUDE_SAML_AUTH = '{{cookiecutter.saml_authentication}}' == "Yes, please"
+APP_NAME = '{{cookiecutter.slug}}'
 
 def main(argv):
     print('\nFiles generated. Performing final steps.')
@@ -49,7 +51,11 @@ def main(argv):
             if not WINDOWS 
             else shutil.rmtree(op.join('backend', 'user'))
         )
-        os.remove(op.join('backend', 'conftest.py'))
+
+        if not INCLUDE_SAML_AUTH:
+            # Remove saml settings and test fixtures.
+            os.remove(op.join('backend', APP_NAME, 'saml_settings.py'))
+            shutil.rmtree(op.join('backend', 'user', 'tests', 'saml'))
 
     if '{{cookiecutter.frontend}}' == 'backbone' and not generate_backbone_translations(): return 1
     venv = create_virtualenv()

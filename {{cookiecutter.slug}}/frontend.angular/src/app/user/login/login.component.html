@@ -53,6 +53,19 @@
             </div>
             }
         </button>
+        @if (showSamlLogin) {
+            <div class="field">
+                <p class="control">
+                    Or login with:
+                </p>
+            </div>
+            <div>
+                <a class="box" href='/users/saml/login/'>
+                    <img src="/favicon.svg" width="40" height="40">
+                    <span><strong>Solis ID</strong></span>
+                </a>
+            </div>
+        }
     </div>
 </form>
 
