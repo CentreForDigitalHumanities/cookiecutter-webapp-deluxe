@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { takeUntilDestroyed, toSignal } from "@angular/core/rxjs-interop";
 import { SessionService } from "./session.service";
 import {
@@ -26,15 +26,18 @@ import { encodeUserData, parseUserData } from "../user/utils";
 import { HttpClient } from "@angular/common/http";
 import { HttpVerb, Request } from "../user/Request";
 
-export interface AuthAPIResult {
+export interface AuthApiResult {
     detail: string;
 }
 
 @Injectable({
     providedIn: "root",
 })
-export class AuthService {
-    public login = this.createRequest<UserLogin, AuthAPIResult>(
+export class AuthApi {
+    private sessionService = inject(SessionService);
+    private http = inject(HttpClient);
+
+    public login = this.createRequest<UserLogin, AuthApiResult>(
         this.authRoute("login/"),
         "post"
     );
@@ -44,13 +47,13 @@ export class AuthService {
     );
     public passwordForgotten = this.createRequest<
         PasswordForgotten,
-        AuthAPIResult
+        AuthApiResult
     >(this.authRoute("password/reset/"), "post");
-    public resetPassword = this.createRequest<ResetPassword, AuthAPIResult>(
+    public resetPassword = this.createRequest<ResetPassword, AuthApiResult>(
         this.authRoute("password/reset/confirm/"),
         "post"
     );
-    public verifyEmail = this.createRequest<KeyInfo, AuthAPIResult>(
+    public verifyEmail = this.createRequest<KeyInfo, AuthApiResult>(
         this.authRoute("registration/verify-email/"),
         "post"
     );
@@ -62,11 +65,11 @@ export class AuthService {
         this.authRoute("registration/key-info/"),
         "post"
     );
-    public deleteUser = this.createRequest<void, AuthAPIResult>(
+    public deleteUser = this.createRequest<void, AuthApiResult>(
         this.authRoute("delete/"),
         "delete"
     );
-    public logout = this.createRequest<void, AuthAPIResult>(
+    public logout = this.createRequest<void, AuthApiResult>(
         this.authRoute("logout/"),
         "post"
     );
@@ -101,10 +104,7 @@ export class AuthService {
         map((user) => (user === undefined ? undefined : user !== null))
     );
 
-    constructor(
-        private sessionService: SessionService,
-        private http: HttpClient
-    ) {
+    constructor() {
         this.sessionService.expired
             .pipe(takeUntilDestroyed())
             .subscribe(() => this.logout.subject.next());
@@ -136,7 +136,7 @@ export class AuthService {
         return `/users/${route}`;
     }
 
-    private createRequest<Input, Result extends object | never = AuthAPIResult>(
+    private createRequest<Input, Result extends object | never = AuthApiResult>(
         route: string,
         verb: HttpVerb
     ): Request<Input, Result> {

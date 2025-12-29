@@ -15,7 +15,7 @@ import {
     updateFormValidity,
 } from "../utils";
 import { combineLatest, map } from "rxjs";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
 import { ToastService } from "../../services/toast.service";
@@ -80,10 +80,10 @@ export class ResetPasswordComponent implements OnInit {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private authService: AuthService,
+        private authService: AuthApi,
         private toastService: ToastService,
         private destroyRef: DestroyRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.authService.resetPassword.error$

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { LoginComponent } from "./login.component";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { provideRouter, Router } from "@angular/router";
 import {
     HttpClientTestingModule,
@@ -20,7 +20,7 @@ describe("LoginComponent", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [ToastService, AuthService, provideRouter([])],
+            providers: [ToastService, AuthApi, provideRouter([])],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
         toastService = TestBed.inject(ToastService);

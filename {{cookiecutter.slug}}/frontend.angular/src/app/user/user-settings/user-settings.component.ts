@@ -16,7 +16,7 @@ import {
 } from "../utils";
 import { usernameValidators } from "../validation";
 import { Router } from "@angular/router";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 import { ToastService } from "../../services/toast.service";
 
@@ -62,10 +62,10 @@ export class UserSettingsComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authService: AuthService,
+        private authService: AuthApi,
         private toastService: ToastService,
         private destroyRef: DestroyRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.authService.currentUser$

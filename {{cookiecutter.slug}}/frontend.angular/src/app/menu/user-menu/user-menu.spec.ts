@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
-import { UserMenuComponent } from "./user-menu.component";
-import { AuthService } from "../../services/auth.service";
+import { UserMenu } from "./user-menu";
+import { AuthApi } from "../../services/auth-api";
 import {
     HttpClientTestingModule,
     HttpTestingController,
@@ -27,9 +27,9 @@ const fakeAdminResponse: UserResponse = {
     is_staff: true,
 };
 
-describe("UserMenuComponent", () => {
-    let component: UserMenuComponent;
-    let fixture: ComponentFixture<UserMenuComponent>;
+describe("UserMenu", () => {
+    let component: UserMenu;
+    let fixture: ComponentFixture<UserMenu>;
     let httpTestingController: HttpTestingController;
 
     const spinner = () => fixture.debugElement.query(By.css(".spinner-border"));
@@ -41,10 +41,10 @@ describe("UserMenuComponent", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [AuthService, provideRouter([])],
+            providers: [AuthApi, provideRouter([])],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
-        fixture = TestBed.createComponent(UserMenuComponent);
+        fixture = TestBed.createComponent(UserMenu);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

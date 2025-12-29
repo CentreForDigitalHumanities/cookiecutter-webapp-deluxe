@@ -1,8 +1,8 @@
 import { Component, Inject, afterRender } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { MenuComponent } from './menu/menu.component';
-import { FooterComponent } from './footer/footer.component';
+import { Menu } from './menu/menu';
+import { Footer } from './footer/footer.component';
 import { DarkModeService } from './services/dark-mode.service';
 {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
 import { ToastContainerComponent } from './toast-container/toast-container.component';
@@ -13,8 +13,8 @@ import { ToastContainerComponent } from './toast-container/toast-container.compo
     standalone: true,
     imports: [
         RouterOutlet,
-        MenuComponent,
-        FooterComponent,
+        Menu,
+        Footer,
         {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
         ToastContainerComponent
         {% endif %}

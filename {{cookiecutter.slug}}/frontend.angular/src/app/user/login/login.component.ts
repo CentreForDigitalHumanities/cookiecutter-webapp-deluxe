@@ -15,7 +15,7 @@ import {
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { map, withLatestFrom } from "rxjs";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 import { ToastService } from "../../services/toast.service";
 
@@ -53,12 +53,12 @@ export class LoginComponent implements OnInit {
     );
 
     constructor(
-        private authService: AuthService,
+        private authService: AuthApi,
         private toastService: ToastService,
         private router: Router,
         private route: ActivatedRoute,
         private destroyRef: DestroyRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.authService.login.success$

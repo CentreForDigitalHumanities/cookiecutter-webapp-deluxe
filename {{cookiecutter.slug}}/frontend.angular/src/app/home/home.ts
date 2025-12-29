@@ -6,17 +6,17 @@ import { map } from "rxjs";
     selector: "{{cookiecutter.app_prefix}}-home",
     templateUrl: "./home.component.html",
     styleUrls: ["./home.component.scss"],
-    standalone: true,
 })
-export class HomeComponent implements OnInit {
+export class Home implements OnInit {
+    private http = inject(HttpClient);
+
     public hooray?: string;
 
-    constructor(private http: HttpClient) {}
+    constructor() { }
 
     ngOnInit(): void {
-        // This call is executed on the server and in the browser.
         this.http
-            .get<{ message: string }[]>(`/api/example/`)
+            .get<{ message: string; }[]>(`/api/example/`)
             .pipe(map((hoorays) => hoorays[0].message))
             .subscribe((hooray) => {
                 if (!this.hooray) {

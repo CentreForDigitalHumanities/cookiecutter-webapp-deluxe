@@ -1,6 +1,6 @@
-import { Component, DestroyRef, OnInit } from "@angular/core";
+import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import { filter, map } from "rxjs";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { Router, RouterModule } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
@@ -14,9 +14,13 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
     templateUrl: "./user-menu.component.html",
     styleUrls: ["./user-menu.component.scss"],
     imports: [RouterModule, CommonModule, FontAwesomeModule, NgbDropdownModule],
-    standalone: true,
 })
-export class UserMenuComponent implements OnInit {
+export class UserMenu implements OnInit {
+    private authService = inject(AuthApi);
+    private toastService = inject(ToastService);
+    private router = inject(Router);
+    private destroyRef = inject(DestroyRef);
+
     public authLoading$ = this.authService.currentUser$.pipe(
         map((user) => user === undefined)
     );
@@ -35,13 +39,6 @@ export class UserMenuComponent implements OnInit {
     );
 
     public faUser = faUser;
-
-    constructor(
-        private authService: AuthService,
-        private toastService: ToastService,
-        private router: Router,
-        private destroyRef: DestroyRef
-    ) {}
 
     ngOnInit(): void {
         this.authService.logout.error$

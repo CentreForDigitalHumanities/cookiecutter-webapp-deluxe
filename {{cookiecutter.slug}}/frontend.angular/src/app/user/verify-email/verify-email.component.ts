@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map, share } from "rxjs";
 import { KeyInfo } from "../models/user";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 import { ToastService } from "../../services/toast.service";
 
@@ -27,10 +27,10 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private authService: AuthService,
+        private authService: AuthApi,
         private toastService: ToastService,
         private destroyRef: DestroyRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.authService.keyInfo.error$

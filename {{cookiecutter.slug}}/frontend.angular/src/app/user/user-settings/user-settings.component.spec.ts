@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { UserSettingsComponent } from "./user-settings.component";
 import { ToastService } from "../../services/toast.service";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import {
     HttpClientTestingModule,
     HttpTestingController,
@@ -22,7 +22,7 @@ const fakeUser: User = {
 };
 
 @Injectable({ providedIn: "root" })
-class AuthServiceMock extends AuthService {
+class AuthApiMock extends AuthApi {
     public override currentUser$: Observable<User | null | undefined> =
         of(fakeUser);
 }
@@ -38,8 +38,8 @@ describe("UserSettingsComponent", () => {
             imports: [HttpClientTestingModule],
             providers: [
                 {
-                    provide: AuthService,
-                    useClass: AuthServiceMock,
+                    provide: AuthApi,
+                    useClass: AuthApiMock,
                 },
             ],
         });

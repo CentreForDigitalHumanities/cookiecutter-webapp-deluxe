@@ -8,7 +8,7 @@ import {
 import { controlErrorMessages$, updateFormValidity } from "../utils";
 import { PasswordForgotten } from "../models/user";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 import { ToastService } from "../../services/toast.service";
 
@@ -36,10 +36,10 @@ export class PasswordForgottenComponent implements OnInit {
     public loading$ = this.authService.passwordForgotten.loading$;
 
     constructor(
-        private authService: AuthService,
+        private authService: AuthApi,
         private toastService: ToastService,
         private destroyRef: DestroyRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.authService.passwordForgotten.success$

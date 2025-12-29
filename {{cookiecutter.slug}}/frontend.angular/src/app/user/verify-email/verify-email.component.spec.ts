@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { VerifyEmailComponent } from "./verify-email.component";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { ToastService } from "../../services/toast.service";
 import {
     HttpClientTestingModule,
@@ -20,7 +20,7 @@ describe("VerifyEmailComponent", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [AuthService, provideRouter([])],
+            providers: [AuthApi, provideRouter([])],
         });
         toastService = TestBed.inject(ToastService);
         httpTestingController = TestBed.inject(HttpTestingController);

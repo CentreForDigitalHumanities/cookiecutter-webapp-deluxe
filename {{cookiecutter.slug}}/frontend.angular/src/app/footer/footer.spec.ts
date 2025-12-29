@@ -1,20 +1,20 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HomeComponent } from './home.component';
+import { Footer } from './footer';
 
-describe('HomeComponent', () => {
-    let component: HomeComponent;
-    let fixture: ComponentFixture<HomeComponent>;
+describe('Footer', () => {
+    let component: Footer;
+    let fixture: ComponentFixture<Footer>;
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [HomeComponent, HttpClientTestingModule]
+            imports: [Footer, HttpClientTestingModule]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(HomeComponent);
+        fixture = TestBed.createComponent(Footer);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -42,14 +42,16 @@
                         </button>
                         <div ngbDropdownMenu aria-labelledby="language-dropdown-toggle"
                             class="dropdown-menu dropdown-menu-end">
-                            <button *ngFor="let language of languages"
+                            @for (language of languages) {
+                            <button
                                 ngbDropdownItem
                                 class="navbar-item"
                                 [class.active]="language.code == currentLanguage"
                                 [attr.aria-pressed]="language.code == currentLanguage"
                                 (click)="setLanguage(language.code)">
-                            {{"{{language.name}}"}}
-                        </button>
+                                {{"{{language.name}}"}}
+                            </button>
+                            }
                         </div>
                     </li>
                 }

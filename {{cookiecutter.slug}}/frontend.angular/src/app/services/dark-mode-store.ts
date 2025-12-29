@@ -22,7 +22,7 @@ const DefaultTheme: Theme = "light";
 @Injectable({
     providedIn: "root",
 })
-export class DarkModeService implements OnInit {
+export class DarkModeStore implements OnInit {
     /**
      * Whether the user's system is set to use dark or light mode.
      */
@@ -42,7 +42,7 @@ export class DarkModeService implements OnInit {
     constructor(
         @Inject(DOCUMENT) private document: Document,
         private destroyRef: DestroyRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.observeSystem$()

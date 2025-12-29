@@ -19,7 +19,7 @@ import {
     updateFormValidity,
 } from "../utils";
 import { Router } from "@angular/router";
-import { AuthService } from "../../services/auth.service";
+import { AuthApi } from "../../services/auth-api";
 import { ToastService } from "../../services/toast.service";
 import { CommonModule } from "@angular/common";
 
@@ -79,11 +79,11 @@ export class RegisterComponent implements OnInit {
     public loading$ = this.authService.registration.loading$;
 
     constructor(
-        private authService: AuthService,
+        private authService: AuthApi,
         private toastService: ToastService,
         private destroyRef: DestroyRef,
         private router: Router
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.authService.registration.error$

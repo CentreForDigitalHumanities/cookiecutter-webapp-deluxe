@@ -3,16 +3,16 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { MenuComponent } from './menu.component';
+import { Menu } from './menu';
 
-describe('MenuComponent', () => {
-    let component: MenuComponent;
-    let fixture: ComponentFixture<MenuComponent>;
+describe('Menu', () => {
+    let component: Menu;
+    let fixture: ComponentFixture<Menu>;
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
-                MenuComponent,
+                Menu,
                 NoopAnimationsModule,
                 RouterTestingModule,
                 HttpClientTestingModule]
@@ -20,7 +20,7 @@ describe('MenuComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(MenuComponent);
+        fixture = TestBed.createComponent(Menu);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
