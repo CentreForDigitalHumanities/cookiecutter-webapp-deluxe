@@ -5,7 +5,7 @@
 A boilerplate for full-fledged web applications with [Django][1] backend, [Angular][2] frontend and [Selenium][3] functional tests.
 
 [1]: https://www.djangoproject.com
-[2]: https://angular.io
+[2]: https://angular.dev
 [3]: https://www.selenium.dev/documentation/webdriver/
 
 
@@ -13,7 +13,7 @@ A boilerplate for full-fledged web applications with [Django][1] backend, [Angul
 
 You need to install *at least* the following software:
 
- - Python 3.8 - 3.10
+ - Python 3.10 - 3.13
  - [Cookiecutter][4] (install using pip in a virtualenv using Python 3)
  - virtualenv
  - Git (if you use this cookiecutter directly from GitHub)
@@ -22,9 +22,9 @@ This is the minimum for Cookiecutter to be able to do its work, i.e., generate a
 
  - Git
  - [gitflow][5] (by default included with [Git for Windows][6])
- - PostgreSQL >= 10, client, server and C libraries
+ - PostgreSQL >= 15, client, server and C libraries
  - [Visual C++ for Python][7] (Windows only)
- - Node.js >= 12
+ - Node.js >= 20
  - Yarn
 
 After generating a new project with this cookiecutter, you'll find a README in the root of the project that mentions two more dependencies not yet listed above. The post-generation script does not depend on them, but you'll likely need them at some later point while developing or deploying the generated project.
