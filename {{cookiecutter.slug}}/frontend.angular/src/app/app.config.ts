@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from "@angular/core";
+import { ApplicationConfig, provideZoneChangeDetection, provideBrowserGlobalErrorListeners } from "@angular/core";
 import { APP_BASE_HREF } from "@angular/common";
 import {
     provideHttpClient,
@@ -18,6 +18,7 @@ export const appConfig: ApplicationConfig = {
         provideAnimations(),
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
+        provideBrowserGlobalErrorListeners(),
         provideClientHydration(),
         provideHttpClient(
             withFetch(),
