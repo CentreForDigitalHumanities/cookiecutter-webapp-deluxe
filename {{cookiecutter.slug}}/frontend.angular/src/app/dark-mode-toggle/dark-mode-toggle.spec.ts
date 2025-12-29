@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DarkModeToggle } from './dark-mode-toggle';
 
-describe('DarkModeToggleComponent', () => {
+describe('DarkModeToggle', () => {
   let component: DarkModeToggle;
   let fixture: ComponentFixture<DarkModeToggle>;
 

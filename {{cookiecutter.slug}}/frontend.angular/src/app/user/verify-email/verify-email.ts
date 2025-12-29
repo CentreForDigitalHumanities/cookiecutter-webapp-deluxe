@@ -1,20 +1,25 @@
-import { AfterViewInit, Component, DestroyRef, OnInit } from "@angular/core";
+import { AfterViewInit, Component, DestroyRef, OnInit, inject } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map, share } from "rxjs";
 import { KeyInfo } from "../models/user";
 import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-verify-email",
-    templateUrl: "./verify-email.component.html",
-    styleUrls: ["./verify-email.component.scss"],
-    standalone: true,
+    templateUrl: "./verify-email.html",
+    styleUrls: ["./verify-email.scss"],
     imports: [CommonModule],
 })
-export class VerifyEmailComponent implements OnInit, AfterViewInit {
+export class VerifyEmail implements OnInit, AfterViewInit {
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+    private authService = inject(AuthApi);
+    private toastService = inject(ToastStore);
+    private destroyRef = inject(DestroyRef);
+
     private key: KeyInfo = { key: this.activatedRoute.snapshot.params["key"] };
 
     public userDetails$ = this.authService.keyInfo.result$.pipe(
@@ -23,14 +28,6 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
     );
 
     public loading$ = this.authService.verifyEmail.loading$;
-
-    constructor(
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private authService: AuthApi,
-        private toastService: ToastService,
-        private destroyRef: DestroyRef
-    ) { }
 
     ngOnInit(): void {
         this.authService.keyInfo.error$

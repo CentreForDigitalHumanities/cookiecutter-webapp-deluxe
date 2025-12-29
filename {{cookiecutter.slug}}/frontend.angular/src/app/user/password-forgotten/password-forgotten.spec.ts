@@ -1,26 +1,26 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { PasswordForgottenComponent } from "./password-forgotten.component";
+import { PasswordForgotten } from "./password-forgotten";
 import {
     HttpClientTestingModule,
     HttpTestingController,
 } from "@angular/common/http/testing";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 
-describe("PasswordForgottenComponent", () => {
-    let component: PasswordForgottenComponent;
-    let fixture: ComponentFixture<PasswordForgottenComponent>;
+describe("PasswordForgotten", () => {
+    let component: PasswordForgotten;
+    let fixture: ComponentFixture<PasswordForgotten>;
     let httpTestingController: HttpTestingController;
-    let toastService: ToastService;
+    let toastService: ToastStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
         });
-        fixture = TestBed.createComponent(PasswordForgottenComponent);
+        fixture = TestBed.createComponent(PasswordForgotten);
         httpTestingController = TestBed.inject(HttpTestingController);
-        toastService = TestBed.inject(ToastService);
+        toastService = TestBed.inject(ToastStore);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

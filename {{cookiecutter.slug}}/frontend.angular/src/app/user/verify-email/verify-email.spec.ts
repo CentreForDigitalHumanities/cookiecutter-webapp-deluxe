@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { VerifyEmailComponent } from "./verify-email.component";
+import { VerifyEmail } from "./verify-email";
 import { AuthApi } from "../../services/auth-api";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 import {
     HttpClientTestingModule,
     HttpTestingController,
@@ -11,10 +11,10 @@ import { By } from "@angular/platform-browser";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { provideRouter } from "@angular/router";
 
-describe("VerifyEmailComponent", () => {
-    let component: VerifyEmailComponent;
-    let fixture: ComponentFixture<VerifyEmailComponent>;
-    let toastService: ToastService;
+describe("VerifyEmail", () => {
+    let component: VerifyEmail;
+    let fixture: ComponentFixture<VerifyEmail>;
+    let toastService: ToastStore;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -22,9 +22,9 @@ describe("VerifyEmailComponent", () => {
             imports: [HttpClientTestingModule],
             providers: [AuthApi, provideRouter([])],
         });
-        toastService = TestBed.inject(ToastService);
+        toastService = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
-        fixture = TestBed.createComponent(VerifyEmailComponent);
+        fixture = TestBed.createComponent(VerifyEmail);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

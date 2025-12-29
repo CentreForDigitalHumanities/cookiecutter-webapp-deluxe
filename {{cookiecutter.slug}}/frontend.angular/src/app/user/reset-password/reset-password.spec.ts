@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ResetPasswordComponent } from "./reset-password.component";
-import { ToastService } from "../../services/toast.service";
+import { ResetPassword } from "./reset-password";
+import { ToastStore } from "../../services/toast-store";
 import {
     HttpClientTestingModule,
     HttpTestingController,
@@ -9,10 +9,10 @@ import {
 import { toSignal } from "@angular/core/rxjs-interop";
 import { provideRouter } from "@angular/router";
 
-describe("ResetPasswordComponent", () => {
-    let component: ResetPasswordComponent;
-    let fixture: ComponentFixture<ResetPasswordComponent>;
-    let toastService: ToastService;
+describe("ResetPassword", () => {
+    let component: ResetPassword;
+    let fixture: ComponentFixture<ResetPassword>;
+    let toastService: ToastStore;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -20,9 +20,9 @@ describe("ResetPasswordComponent", () => {
             imports: [HttpClientTestingModule],
             providers: [provideRouter([])],
         });
-        toastService = TestBed.inject(ToastService);
+        toastService = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
-        fixture = TestBed.createComponent(ResetPasswordComponent);
+        fixture = TestBed.createComponent(ResetPassword);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

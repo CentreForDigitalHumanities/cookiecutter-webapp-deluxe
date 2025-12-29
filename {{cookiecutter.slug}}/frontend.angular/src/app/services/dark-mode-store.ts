@@ -1,5 +1,5 @@
-import { DOCUMENT } from "@angular/common";
-import { DestroyRef, Inject, Injectable, OnInit } from "@angular/core";
+import { DOCUMENT, inject } from "@angular/common";
+import { DestroyRef, Injectable, OnInit } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
     BehaviorSubject,
@@ -23,6 +23,9 @@ const DefaultTheme: Theme = "light";
     providedIn: "root",
 })
 export class DarkModeStore implements OnInit {
+    private document = inject(DOCUMENT);
+    private destroyRef = inject(DestroyRef);
+
     /**
      * Whether the user's system is set to use dark or light mode.
      */
@@ -38,11 +41,6 @@ export class DarkModeStore implements OnInit {
         distinctUntilChanged(),
         map(([user, system]) => user ?? system ?? DefaultTheme)
     );
-
-    constructor(
-        @Inject(DOCUMENT) private document: Document,
-        private destroyRef: DestroyRef
-    ) { }
 
     ngOnInit(): void {
         this.observeSystem$()

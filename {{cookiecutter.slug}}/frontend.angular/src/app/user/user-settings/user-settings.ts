@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from "@angular/core";
+import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import {
     FormControl,
     FormGroup,
@@ -18,7 +18,7 @@ import { usernameValidators } from "../validation";
 import { Router } from "@angular/router";
 import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 
 type UserSettingsForm = {
     [key in keyof UserSettings]: FormControl<UserSettings[key]>;
@@ -26,12 +26,16 @@ type UserSettingsForm = {
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-user-settings",
-    templateUrl: "./user-settings.component.html",
-    styleUrls: ["./user-settings.component.scss"],
-    standalone: true,
+    templateUrl: "./user-settings.html",
+    styleUrls: ["./user-settings.scss"],
     imports: [CommonModule, ReactiveFormsModule],
 })
-export class UserSettingsComponent implements OnInit {
+export class UserSettings implements OnInit {
+    private router = inject(Router);
+    private authService = inject(AuthApi);
+    private toastService = inject(ToastStore);
+    private destroyRef = inject(DestroyRef);
+
     public form = new FormGroup<UserSettingsForm>({
         id: new FormControl<number>(-1, {
             nonNullable: true,
@@ -59,13 +63,6 @@ export class UserSettingsComponent implements OnInit {
     public updateSettingsLoading$ = this.authService.updateSettings.loading$;
     public requestResetLoading$ = this.authService.passwordForgotten.loading$;
     public deleteUserLoading$ = this.authService.deleteUser.loading$;
-
-    constructor(
-        private router: Router,
-        private authService: AuthApi,
-        private toastService: ToastService,
-        private destroyRef: DestroyRef
-    ) { }
 
     ngOnInit(): void {
         this.authService.currentUser$

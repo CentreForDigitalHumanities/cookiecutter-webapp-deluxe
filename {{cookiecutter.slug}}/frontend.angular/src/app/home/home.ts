@@ -4,8 +4,8 @@ import { map } from "rxjs";
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-home",
-    templateUrl: "./home.component.html",
-    styleUrls: ["./home.component.scss"],
+    templateUrl: "./home.html",
+    styleUrls: ["./home.scss"],
 })
 export class Home implements OnInit {
     private http = inject(HttpClient);

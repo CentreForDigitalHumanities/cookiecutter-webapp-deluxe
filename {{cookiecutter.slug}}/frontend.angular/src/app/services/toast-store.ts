@@ -26,7 +26,7 @@ export const TOAST_STYLES: Record<ToastType, string> = {
 @Injectable({
     providedIn: "root",
 })
-export class ToastService {
+export class ToastStore {
     public toasts: Toast[] = [];
 
     public show(toastInput: ToastInput): Toast {

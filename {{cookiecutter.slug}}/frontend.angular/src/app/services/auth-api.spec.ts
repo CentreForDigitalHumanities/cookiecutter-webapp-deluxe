@@ -3,7 +3,7 @@ import { TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 
 import { AuthApi } from "./auth-api";
-import { SessionService } from "./session.service";
+import { SessionStore } from "./session-store";
 
 describe("AuthApi", () => {
     let authApi: AuthApi;
@@ -11,7 +11,7 @@ describe("AuthApi", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, RouterTestingModule],
-            providers: [SessionService],
+            providers: [SessionStore],
         });
         authApi = TestBed.inject(AuthApi);
     });

@@ -18,8 +18,8 @@ interface LanguageInfoResponse {
 @Injectable({
     providedIn: "root",
 })
-export class LanguageService {
-    constructor(private http: HttpClient) {}
+export class LanguageStore {
+    private http = inject(HttpClient);
 
     public languageInfo$ = this.http
         .get<LanguageInfoResponse>("/api/i18n/")

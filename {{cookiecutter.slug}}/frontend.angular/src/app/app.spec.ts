@@ -3,31 +3,31 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { AppComponent } from './app.component';
+import { App } from './app';
 
-describe('AppComponent', () => {
+describe('App', () => {
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
-                AppComponent, NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
+                App, NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
         }).compileComponents();
     }));
 
 
     it('should create the app', () => {
-        const fixture = TestBed.createComponent(AppComponent);
+        const fixture = TestBed.createComponent(App);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
 
     it(`should have as title '{{cookiecutter.project_title}}'`, () => {
-        const fixture = TestBed.createComponent(AppComponent);
+        const fixture = TestBed.createComponent(App);
         const app = fixture.debugElement.componentInstance;
         expect(app.title).toEqual(`{{cookiecutter.project_title}}`);
     });
 
     it('should render title', () => {
-        const fixture = TestBed.createComponent(AppComponent);
+        const fixture = TestBed.createComponent(App);
         fixture.detectChanges();
         const compiled = fixture.debugElement.nativeElement;
         expect(compiled.querySelector('.navbar-brand').textContent).toContain('{{cookiecutter.project_title}}');

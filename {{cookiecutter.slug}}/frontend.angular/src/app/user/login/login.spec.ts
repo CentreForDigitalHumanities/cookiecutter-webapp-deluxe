@@ -1,31 +1,31 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { LoginComponent } from "./login.component";
+import { Login } from "./login";
 import { AuthApi } from "../../services/auth-api";
 import { provideRouter, Router } from "@angular/router";
 import {
     HttpClientTestingModule,
     HttpTestingController,
 } from "@angular/common/http/testing";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 import { toSignal } from "@angular/core/rxjs-interop";
 
-describe("LoginComponent", () => {
-    let component: LoginComponent;
-    let fixture: ComponentFixture<LoginComponent>;
-    let toastService: ToastService;
+describe("Login", () => {
+    let component: Login;
+    let fixture: ComponentFixture<Login>;
+    let toastService: ToastStore;
     let router: Router;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [ToastService, AuthApi, provideRouter([])],
+            providers: [ToastStore, AuthApi, provideRouter([])],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
-        toastService = TestBed.inject(ToastService);
+        toastService = TestBed.inject(ToastStore);
         router = TestBed.inject(Router);
-        fixture = TestBed.createComponent(LoginComponent);
+        fixture = TestBed.createComponent(Login);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from "@angular/core";
+import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ResetPassword } from "../models/user";
 import {
@@ -18,7 +18,7 @@ import { combineLatest, map } from "rxjs";
 import { AuthApi } from "../../services/auth-api";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 
 type ResetPasswordForm = {
     [key in keyof ResetPassword]: FormControl<ResetPassword[key]>;
@@ -26,12 +26,16 @@ type ResetPasswordForm = {
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-reset-password",
-    templateUrl: "./reset-password.component.html",
-    styleUrls: ["./reset-password.component.scss"],
-    standalone: true,
+    templateUrl: "./reset-password.html",
+    styleUrls: ["./reset-password.scss"],
     imports: [CommonModule, ReactiveFormsModule],
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPassword implements OnInit {
+    private activatedRoute = inject(ActivatedRoute);
+    private authService = inject(AuthApi);
+    private toastService = inject(ToastStore);
+    private destroyRef = inject(DestroyRef);
+
     private uid = this.activatedRoute.snapshot.params["uid"];
     private token = this.activatedRoute.snapshot.params["token"];
 
@@ -77,13 +81,6 @@ export class ResetPasswordComponent implements OnInit {
     ]).pipe(map((errorLists) => errorLists.flat(1)));
 
     public loading$ = this.authService.resetPassword.loading$;
-
-    constructor(
-        private activatedRoute: ActivatedRoute,
-        private authService: AuthApi,
-        private toastService: ToastService,
-        private destroyRef: DestroyRef
-    ) { }
 
     ngOnInit(): void {
         this.authService.resetPassword.error$

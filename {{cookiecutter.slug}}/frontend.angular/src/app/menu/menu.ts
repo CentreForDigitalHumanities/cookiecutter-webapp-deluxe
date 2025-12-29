@@ -12,17 +12,17 @@ import { RouterLink, RouterModule } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { DarkModeToggle } from "../dark-mode-toggle/dark-mode-toggle";
-import { LanguageInfo, LanguageService } from "../services/language.service";
+import { LanguageInfo, LanguageStore } from "../services/language-store";
 import { NgbCollapseModule, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
-{% - if cookiecutter.basic_authentication == "Yes, please!" -%}
+{%- if cookiecutter.basic_authentication == "Yes, please!" -%}
 import { UserMenu } from "./user-menu/user-menu";
 import { ToastContainer } from "../toast-container/toast-container";
 {% endif %}
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-menu",
-    templateUrl: "./menu.component.html",
-    styleUrls: ["./menu.component.scss"],
+    templateUrl: "./menu.html",
+    styleUrls: ["./menu.scss"],
     imports: [
         CommonModule,
         RouterLink,
@@ -39,10 +39,11 @@ import { ToastContainer } from "../toast-container/toast-container";
 })
 export class Menu implements OnInit {
     private destroyRef = inject(DestroyRef);
-    private languageService = inject(LanguageService);
+    private languageService = inject(LanguageStore);
+    private localeId = inject(LOCALE_ID);
 
     burgerActive = false;
-    currentLanguage: string;
+    currentLanguage = this.localeId;
     loading = false;
 
     faGlobe = faGlobe;
@@ -51,10 +52,6 @@ export class Menu implements OnInit {
      * Use the target languages for displaying the respective language names
      */
     languages?: LanguageInfo["supported"];
-
-    constructor(@Inject(LOCALE_ID) private localeId: string) {
-        this.currentLanguage = this.localeId;
-    }
 
     ngOnInit(): void {
         // allow switching even when the current locale is different

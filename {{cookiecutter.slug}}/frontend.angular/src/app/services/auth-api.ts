@@ -1,6 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { takeUntilDestroyed, toSignal } from "@angular/core/rxjs-interop";
-import { SessionService } from "./session.service";
+import { SessionStore } from "./session-store";
 import {
     catchError,
     map,
@@ -34,7 +34,7 @@ export interface AuthApiResult {
     providedIn: "root",
 })
 export class AuthApi {
-    private sessionService = inject(SessionService);
+    private sessionService = inject(SessionStore);
     private http = inject(HttpClient);
 
     public login = this.createRequest<UserLogin, AuthApiResult>(

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from "@angular/core";
+import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import { UserRegistration } from "../models/user";
 import {
     FormControl,
@@ -20,7 +20,7 @@ import {
 } from "../utils";
 import { Router } from "@angular/router";
 import { AuthApi } from "../../services/auth-api";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 import { CommonModule } from "@angular/common";
 
 type RegisterForm = {
@@ -29,12 +29,16 @@ type RegisterForm = {
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-register",
-    templateUrl: "./register.component.html",
-    styleUrls: ["./register.component.scss"],
-    standalone: true,
+    templateUrl: "./register.html",
+    styleUrls: ["./register.scss"],
     imports: [CommonModule, ReactiveFormsModule],
 })
-export class RegisterComponent implements OnInit {
+export class Register implements OnInit {
+    private authService = inject(AuthApi);
+    private toastService = inject(ToastStore);
+    private destroyRef = inject(DestroyRef);
+    private router = inject(Router);
+
     public form = new FormGroup<RegisterForm>(
         {
             username: new FormControl<string>("", {
@@ -78,12 +82,6 @@ export class RegisterComponent implements OnInit {
 
     public loading$ = this.authService.registration.loading$;
 
-    constructor(
-        private authService: AuthApi,
-        private toastService: ToastService,
-        private destroyRef: DestroyRef,
-        private router: Router
-    ) { }
 
     ngOnInit(): void {
         this.authService.registration.error$

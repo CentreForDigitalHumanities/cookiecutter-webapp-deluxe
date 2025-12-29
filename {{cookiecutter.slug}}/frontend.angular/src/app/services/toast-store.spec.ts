@@ -1,17 +1,17 @@
 import { TestBed } from "@angular/core/testing";
 
-import { TOAST_STYLES, ToastInput, ToastService } from "./toast.service";
+import { TOAST_STYLES, ToastInput, ToastStore } from "./toast-store";
 
-describe("ToastService", () => {
-    let service: ToastService;
+describe("ToastStore", () => {
+    let store: ToastStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(ToastService);
+        store = TestBed.inject(ToastStore);
     });
 
     it("should be created", () => {
-        expect(service).toBeTruthy();
+        expect(store).toBeTruthy();
     });
 
     it("should show a toast", () => {
@@ -22,16 +22,16 @@ describe("ToastService", () => {
             delay: 3000,
         };
 
-        const toast = service.show(toastInput);
+        const toast = store.show(toastInput);
 
-        expect(service.toasts.length).toBe(1);
-        expect(service.toasts[0]).toEqual({
+        expect(store.toasts.length).toBe(1);
+        expect(store.toasts[0]).toEqual({
             className: TOAST_STYLES["success"],
             header: "Test Header",
             body: "Test Body",
             delay: 3000,
         });
-        expect(toast).toEqual(service.toasts[0]);
+        expect(toast).toEqual(store.toasts[0]);
     });
 
     it("should remove a toast", () => {
@@ -42,10 +42,10 @@ describe("ToastService", () => {
             delay: 5000,
         };
 
-        const toast = service.show(toastInput);
-        service.remove(toast);
+        const toast = store.show(toastInput);
+        store.remove(toast);
 
-        expect(service.toasts.length).toBe(0);
+        expect(store.toasts.length).toBe(0);
     });
 
     it("should clear all toasts", () => {
@@ -63,10 +63,10 @@ describe("ToastService", () => {
             delay: 4000,
         };
 
-        service.show(toastInput1);
-        service.show(toastInput2);
-        service.clear();
+        store.show(toastInput1);
+        store.show(toastInput2);
+        store.clear();
 
-        expect(service.toasts.length).toBe(0);
+        expect(store.toasts.length).toBe(0);
     });
 });

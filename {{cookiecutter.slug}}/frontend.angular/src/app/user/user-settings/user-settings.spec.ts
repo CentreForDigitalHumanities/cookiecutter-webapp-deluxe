@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { UserSettingsComponent } from "./user-settings.component";
-import { ToastService } from "../../services/toast.service";
+import { UserSettings } from "./user-settings";
+import { ToastStore } from "../../services/toast-store";
 import { AuthApi } from "../../services/auth-api";
 import {
     HttpClientTestingModule,
@@ -27,10 +27,10 @@ class AuthApiMock extends AuthApi {
         of(fakeUser);
 }
 
-describe("UserSettingsComponent", () => {
-    let component: UserSettingsComponent;
-    let fixture: ComponentFixture<UserSettingsComponent>;
-    let toastService: ToastService;
+describe("UserSettings", () => {
+    let component: UserSettings;
+    let fixture: ComponentFixture<UserSettings>;
+    let toastService: ToastStore;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -43,9 +43,9 @@ describe("UserSettingsComponent", () => {
                 },
             ],
         });
-        toastService = TestBed.inject(ToastService);
+        toastService = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
-        fixture = TestBed.createComponent(UserSettingsComponent);
+        fixture = TestBed.createComponent(UserSettings);
         component = fixture.componentInstance;
         fixture.detectChanges();
 

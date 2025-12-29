@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from "@angular/core";
+import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import {
     FormControl,
     FormGroup,
@@ -17,7 +17,7 @@ import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { map, withLatestFrom } from "rxjs";
 import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 
 type LoginForm = {
     [key in keyof UserLogin]: FormControl<string>;
@@ -25,12 +25,17 @@ type LoginForm = {
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-login",
-    templateUrl: "./login.component.html",
-    styleUrls: ["./login.component.scss"],
-    standalone: true,
+    templateUrl: "./login.html",
+    styleUrls: ["./login.scss"],
     imports: [CommonModule, RouterModule, ReactiveFormsModule],
 })
-export class LoginComponent implements OnInit {
+export class Login implements OnInit {
+    private authService = inject(AuthApi);
+    private toastService = inject(ToastStore);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private destroyRef = inject(DestroyRef);
+
     public form = new FormGroup<LoginForm>({
         username: new FormControl<string>("", {
             nonNullable: true,
@@ -51,14 +56,6 @@ export class LoginComponent implements OnInit {
     private nextParam$ = this.route.queryParamMap.pipe(
         map((params) => params.get("next"))
     );
-
-    constructor(
-        private authService: AuthApi,
-        private toastService: ToastService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private destroyRef: DestroyRef
-    ) { }
 
     ngOnInit(): void {
         this.authService.login.success$

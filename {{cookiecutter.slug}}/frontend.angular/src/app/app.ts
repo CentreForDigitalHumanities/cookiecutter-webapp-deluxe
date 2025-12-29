@@ -1,38 +1,40 @@
-import { Component, Inject, afterRender } from '@angular/core';
+import { Component, afterRender, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Menu } from './menu/menu';
-import { Footer } from './footer/footer.component';
-import { DarkModeService } from './services/dark-mode.service';
+import { Footer } from './footer/footer';
 {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
-import { ToastContainerComponent } from './toast-container/toast-container.component';
+import { ToastContainer } from './toast-container/toast-container';
+import { DarkModeStore } from './services/dark-mode-store';
 {% endif %}
 
 @Component({
     selector: '{{cookiecutter.app_prefix}}-root',
-    standalone: true,
     imports: [
         RouterOutlet,
         Menu,
         Footer,
         {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
-        ToastContainerComponent
+        ToastContainer
         {% endif %}
     ],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+    templateUrl: './app.html',
+    styleUrl: './app.scss'
 })
-export class AppComponent {
-    title = '{{cookiecutter.project_title}}';
+export class App {
+    private darkModeStore = inject(DarkModeStore);
+    private document = inject(DOCUMENT);
 
-    constructor(@Inject(DOCUMENT) private document: Document, private darkModeService: DarkModeService) {
+    private readonly title = '{{cookiecutter.project_title}}';
+
+    constructor() {
         // Using the DOM API to only render on the browser instead of on the server
         afterRender(() => {
             const style = this.document.createElement('link');
             style.rel = 'stylesheet';
             this.document.head.append(style);
 
-            this.darkModeService.theme$.subscribe(theme => {
+            this.darkModeStore.theme$.subscribe(theme => {
                 this.document.documentElement.setAttribute('data-bs-theme', theme);
                 style.href = `${theme}.css`;
             });

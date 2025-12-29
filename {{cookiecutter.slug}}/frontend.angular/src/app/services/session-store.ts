@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 @Injectable({
     providedIn: "root",
 })
-export class SessionService {
+export class SessionStore {
     private sessionExpiredSubject = new Subject<void>();
     public expired = this.sessionExpiredSubject.asObservable();
 

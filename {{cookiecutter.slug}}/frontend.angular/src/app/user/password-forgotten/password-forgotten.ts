@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from "@angular/core";
+import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import {
     FormControl,
     FormGroup,
@@ -10,7 +10,7 @@ import { PasswordForgotten } from "../models/user";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 
 type PasswordForgottenForm = {
     [key in keyof PasswordForgotten]: FormControl<string>;
@@ -18,12 +18,15 @@ type PasswordForgottenForm = {
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-password-forgotten",
-    templateUrl: "./password-forgotten.component.html",
-    styleUrls: ["./password-forgotten.component.scss"],
-    standalone: true,
+    templateUrl: "./password-forgotten.html",
+    styleUrls: ["./password-forgotten.scss"],
     imports: [CommonModule, ReactiveFormsModule],
 })
-export class PasswordForgottenComponent implements OnInit {
+export class PasswordForgotten implements OnInit {
+    private authService = inject(AuthApi);
+    private toastService = inject(ToastStore);
+    private destroyRef = inject(DestroyRef);
+
     form = new FormGroup<PasswordForgottenForm>({
         email: new FormControl<string>("", {
             nonNullable: true,
@@ -34,12 +37,6 @@ export class PasswordForgottenComponent implements OnInit {
     public emailErrors$ = controlErrorMessages$(this.form, "email");
 
     public loading$ = this.authService.passwordForgotten.loading$;
-
-    constructor(
-        private authService: AuthApi,
-        private toastService: ToastService,
-        private destroyRef: DestroyRef
-    ) { }
 
     ngOnInit(): void {
         this.authService.passwordForgotten.success$

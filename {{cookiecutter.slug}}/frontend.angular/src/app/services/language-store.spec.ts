@@ -1,19 +1,19 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { LanguageService } from './language.service';
+import { LanguageStore } from './language-store';
 
-describe('LanguageService', () => {
-    let service: LanguageService;
+describe('LanguageStore', () => {
+    let store: LanguageStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule]
         });
-        service = TestBed.inject(LanguageService);
+        store = TestBed.inject(LanguageStore);
     });
 
     it('should be created', () => {
-        expect(service).toBeTruthy();
+        expect(store).toBeTruthy();
     });
 });

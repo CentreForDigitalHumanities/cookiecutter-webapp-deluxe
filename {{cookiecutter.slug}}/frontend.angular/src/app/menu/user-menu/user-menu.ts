@@ -6,18 +6,18 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CommonModule } from "@angular/common";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-user-menu",
-    templateUrl: "./user-menu.component.html",
-    styleUrls: ["./user-menu.component.scss"],
+    templateUrl: "./user-menu.html",
+    styleUrls: ["./user-menu.scss"],
     imports: [RouterModule, CommonModule, FontAwesomeModule, NgbDropdownModule],
 })
 export class UserMenu implements OnInit {
     private authService = inject(AuthApi);
-    private toastService = inject(ToastService);
+    private toastService = inject(ToastStore);
     private router = inject(Router);
     private destroyRef = inject(DestroyRef);
 

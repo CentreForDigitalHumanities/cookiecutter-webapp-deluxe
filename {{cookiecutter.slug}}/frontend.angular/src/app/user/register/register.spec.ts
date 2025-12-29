@@ -1,28 +1,28 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { RegisterComponent } from "./register.component";
+import { Register } from "./register";
 import {
     HttpClientTestingModule,
     HttpTestingController,
 } from "@angular/common/http/testing";
 import { Router } from "@angular/router";
-import { ToastService } from "../../services/toast.service";
+import { ToastStore } from "../../services/toast-store";
 import { toSignal } from "@angular/core/rxjs-interop";
 
-describe("RegisterComponent", () => {
-    let component: RegisterComponent;
-    let fixture: ComponentFixture<RegisterComponent>;
+describe("Register", () => {
+    let component: Register;
+    let fixture: ComponentFixture<Register>;
     let httpTestingController: HttpTestingController;
     let router: Router;
-    let toastService: ToastService;
+    let toastService: ToastStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
-        toastService = TestBed.inject(ToastService);
+        toastService = TestBed.inject(ToastStore);
         router = TestBed.inject(Router);
-        fixture = TestBed.createComponent(RegisterComponent);
+        fixture = TestBed.createComponent(Register);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
