@@ -76,13 +76,13 @@
                                     "maximumError": "4kb"
                                 }
                             ],
-                            "outputHashing": "all",
+                            "outputHashing": "all"
                         },
                         "development": {
                             "optimization": false,
                             "extractLicenses": false,
-                            "sourceMap": true,
-                        }
+                            "sourceMap": true
+                        },
                         {% set comma = joiner(",") %}
                         {%- for loc in localizations %}
                         {%- set code, name = loc.split(':') %}
@@ -123,7 +123,7 @@
                     }
                 },
                 "extract-i18n": {
-                  "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
+                  "builder": "@angular/build:extract-i18n",
                   "options": {
                     "buildTarget": "{{project_name}}:build",
                     "format": "xlf",
