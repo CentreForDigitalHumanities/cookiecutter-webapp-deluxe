@@ -16,10 +16,10 @@ import {
     UserRegistration,
     UserResponse,
     UserLogin,
-    PasswordForgotten,
-    ResetPassword,
+    PasswordForgottenData,
+    ResetPasswordData,
     KeyInfo,
-    UserSettings,
+    UserSettingsData,
     KeyInfoResult,
 } from "../user/models/user";
 import { encodeUserData, parseUserData } from "../user/utils";
@@ -46,10 +46,10 @@ export class AuthApi {
         "post"
     );
     public passwordForgotten = this.createRequest<
-        PasswordForgotten,
+        PasswordForgottenData,
         AuthApiResult
     >(this.authRoute("password/reset/"), "post");
-    public resetPassword = this.createRequest<ResetPassword, AuthApiResult>(
+    public resetPassword = this.createRequest<ResetPasswordData, AuthApiResult>(
         this.authRoute("password/reset/confirm/"),
         "post"
     );
@@ -58,7 +58,7 @@ export class AuthApi {
         "post"
     );
     public updateSettings = this.createRequest<
-        Partial<UserSettings>,
+        Partial<UserSettingsData>,
         UserResponse
     >(this.authRoute("user/"), "patch");
     public keyInfo = this.createRequest<KeyInfo, KeyInfoResult>(
@@ -124,7 +124,7 @@ export class AuthApi {
      * @param userSettings - The user settings to be submitted.
      * @returns void
      */
-    public newUserSettings(userSettings: UserSettings): void {
+    public newUserSettings(userSettings: UserSettingsData): void {
         if (userSettings.username === this.currentUserName()) {
             delete userSettings.username;
         }

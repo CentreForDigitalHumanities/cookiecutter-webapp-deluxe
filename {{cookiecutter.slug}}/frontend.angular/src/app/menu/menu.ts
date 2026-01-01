@@ -31,10 +31,11 @@ import { ToastContainer } from "../toast-container/toast-container";
         NgbCollapseModule,
         RouterModule,
         NgbDropdownModule,
-        {% - if cookiecutter.basic_authentication == "Yes, please!" -%}
+        {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
+
         UserMenu,
-    ToastContainer,
-    {% endif %}
+        ToastContainer,
+        {% endif %}
     ]
 })
 export class Menu implements OnInit {

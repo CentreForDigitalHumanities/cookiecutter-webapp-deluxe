@@ -42,7 +42,7 @@
                         </button>
                         <div ngbDropdownMenu aria-labelledby="language-dropdown-toggle"
                             class="dropdown-menu dropdown-menu-end">
-                            @for (language of languages) {
+                            @for (language of languages; track language.code) {
                             <button
                                 ngbDropdownItem
                                 class="navbar-item"

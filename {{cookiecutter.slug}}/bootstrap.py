@@ -222,8 +222,9 @@ def activate_frontend():
             ['yarn'],
             cwd="frontend"
         )()
-        # Remove favicon.ico
-        os.remove(os.path.join('frontend', 'src', 'favicon.ico'))
+        # Remove favicon files
+        os.remove(os.path.join('frontend', 'src', 'favicon.png'))
+        os.remove(os.path.join('frontend', 'src', 'favicon.svg'))
         # Remove editorconfig
         os.remove(os.path.join('frontend', '.editorconfig'))
         Command(

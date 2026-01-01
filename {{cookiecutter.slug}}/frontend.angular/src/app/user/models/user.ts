@@ -15,7 +15,7 @@ export class User {
         public firstName: string,
         public lastName: string,
         public isStaff: boolean
-    ) {}
+    ) { }
 }
 
 export interface UserRegistration {
@@ -30,14 +30,14 @@ export interface UserLogin {
     password: string;
 }
 
-export interface ResetPassword {
+export interface ResetPasswordData {
     uid: string;
     token: string;
     new_password1: string;
     new_password2: string;
 }
 
-export interface PasswordForgotten {
+export interface PasswordForgottenData {
     email: string;
 }
 
@@ -51,7 +51,7 @@ export interface KeyInfo {
 }
 
 // Dj-rest-auth does not let you update your email address, but we need it to request the password reset form.
-export type UserSettings = Pick<
+export type UserSettingsData = Pick<
     User,
     "id" | "email" | "firstName" | "lastName"
 > & {

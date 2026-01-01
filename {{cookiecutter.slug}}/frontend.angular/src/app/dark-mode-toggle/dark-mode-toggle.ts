@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { map } from "rxjs";
-import { DarkModeService } from "../services/dark-mode.service";
+import { DarkModeStore } from "../services/dark-mode-store";
 
 
 @Component({
@@ -13,15 +13,15 @@ import { DarkModeService } from "../services/dark-mode.service";
     styleUrl: "./dark-mode-toggle.scss",
 })
 export class DarkModeToggle {
-    private darkModeService = inject(DarkModeService);
+    private darkModeStore = inject(DarkModeStore);
 
     faSun = faSun;
     faMoon = faMoon;
-    dark$ = this.darkModeService.theme$.pipe(map((theme) => theme === "dark"));
+    dark$ = this.darkModeStore.theme$.pipe(map((theme) => theme === "dark"));
 
     constructor() { }
 
     toggle() {
-        this.darkModeService.toggle();
+        this.darkModeStore.toggle();
     }
 }

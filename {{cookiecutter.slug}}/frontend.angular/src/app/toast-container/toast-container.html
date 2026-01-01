@@ -5,7 +5,7 @@
     [header]="toast.header"
     [autohide]="true"
     [delay]="toast.delay"
-    (hidden)="toastService.remove(toast)"
+    (hidden)="removeToast(toast)"
 >
     {{ toast.body }}
 </ngb-toast>

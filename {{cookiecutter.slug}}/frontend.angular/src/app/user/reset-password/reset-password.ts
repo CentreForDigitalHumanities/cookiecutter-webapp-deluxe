@@ -1,6 +1,6 @@
 import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { ResetPassword } from "../models/user";
+import { ResetPasswordData } from "../models/user";
 import {
     FormControl,
     FormGroup,
@@ -21,7 +21,7 @@ import { CommonModule } from "@angular/common";
 import { ToastStore } from "../../services/toast-store";
 
 type ResetPasswordForm = {
-    [key in keyof ResetPassword]: FormControl<ResetPassword[key]>;
+    [key in keyof ResetPasswordData]: FormControl<ResetPasswordData[key]>;
 };
 
 @Component({
@@ -57,7 +57,7 @@ export class ResetPassword implements OnInit {
             }),
         },
         {
-            validators: identicalPasswordsValidator<keyof ResetPassword>(
+            validators: identicalPasswordsValidator<keyof ResetPasswordData>(
                 "new_password1",
                 "new_password2"
             ),

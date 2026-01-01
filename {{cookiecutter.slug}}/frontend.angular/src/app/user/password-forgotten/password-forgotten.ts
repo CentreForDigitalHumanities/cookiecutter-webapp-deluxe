@@ -6,14 +6,14 @@ import {
     Validators,
 } from "@angular/forms";
 import { controlErrorMessages$, updateFormValidity } from "../utils";
-import { PasswordForgotten } from "../models/user";
+import { PasswordForgottenData } from "../models/user";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 import { ToastStore } from "../../services/toast-store";
 
 type PasswordForgottenForm = {
-    [key in keyof PasswordForgotten]: FormControl<string>;
+    [key in keyof PasswordForgottenData]: FormControl<string>;
 };
 
 @Component({

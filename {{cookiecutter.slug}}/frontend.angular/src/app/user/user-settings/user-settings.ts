@@ -5,7 +5,7 @@ import {
     ReactiveFormsModule,
     Validators,
 } from "@angular/forms";
-import { UserResponse, UserSettings } from "../models/user";
+import { UserResponse, UserSettingsData } from "../models/user";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { filter } from "rxjs";
 import {
@@ -21,7 +21,7 @@ import { CommonModule } from "@angular/common";
 import { ToastStore } from "../../services/toast-store";
 
 type UserSettingsForm = {
-    [key in keyof UserSettings]: FormControl<UserSettings[key]>;
+    [key in keyof UserSettingsData]: FormControl<UserSettingsData[key]>;
 };
 
 @Component({
