@@ -34,7 +34,7 @@ export interface AuthApiResult {
     providedIn: "root",
 })
 export class AuthApi {
-    private sessionService = inject(SessionStore);
+    private sessionStore = inject(SessionStore);
     private http = inject(HttpClient);
 
     public login = this.createRequest<UserLogin, AuthApiResult>(
@@ -105,7 +105,7 @@ export class AuthApi {
     );
 
     constructor() {
-        this.sessionService.expired
+        this.sessionStore.expired
             .pipe(takeUntilDestroyed())
             .subscribe(() => this.logout.subject.next());
     }

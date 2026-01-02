@@ -9,7 +9,7 @@ describe("PasswordForgotten", () => {
     let component: PasswordForgotten;
     let fixture: ComponentFixture<PasswordForgotten>;
     let httpTestingController: HttpTestingController;
-    let toastService: ToastStore;
+    let toastStore: ToastStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -17,7 +17,7 @@ describe("PasswordForgotten", () => {
         });
         fixture = TestBed.createComponent(PasswordForgotten);
         httpTestingController = TestBed.inject(HttpTestingController);
-        toastService = TestBed.inject(ToastStore);
+        toastStore = TestBed.inject(ToastStore);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
@@ -61,6 +61,6 @@ describe("PasswordForgotten", () => {
         req.flush({ detail: "Password reset e-mail has been sent." });
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
     });
 });

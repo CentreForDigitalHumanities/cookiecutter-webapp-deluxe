@@ -6,17 +6,17 @@ import { ToastStore } from "../services/toast-store";
 import { isPlatformBrowser } from "@angular/common";
 
 export const LoggedOnGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
-    const authService = inject(AuthApi);
-    const toastService = inject(ToastStore);
+    const authApi = inject(AuthApi);
+    const toastStore = inject(ToastStore);
     const platformId = inject(PLATFORM_ID);
     const router = inject(Router);
 
-    return authService.currentUser$.pipe(
+    return authApi.currentUser$.pipe(
         filter((user) => user !== undefined),
         map((user) => {
             if (user === null) {
                 if (isPlatformBrowser(platformId)) {
-                    toastService.show({
+                    toastStore.show({
                         header: $localize`Not signed in`,
                         body: $localize`You must be signed in to view this page.`,
                         type: "danger",

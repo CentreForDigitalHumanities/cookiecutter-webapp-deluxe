@@ -32,8 +32,8 @@ type UserSettingsForm = {
 })
 export class UserSettings implements OnInit {
     private router = inject(Router);
-    private authService = inject(AuthApi);
-    private toastService = inject(ToastStore);
+    private authApi = inject(AuthApi);
+    private toastStore = inject(ToastStore);
     private destroyRef = inject(DestroyRef);
 
     public form = new FormGroup<UserSettingsForm>({
@@ -60,12 +60,12 @@ export class UserSettings implements OnInit {
     public usernameErrors$ = controlErrorMessages$(this.form, "username");
     public formErrors$ = formErrorMessages$(this.form);
 
-    public updateSettingsLoading$ = this.authService.updateSettings.loading$;
-    public requestResetLoading$ = this.authService.passwordForgotten.loading$;
-    public deleteUserLoading$ = this.authService.deleteUser.loading$;
+    public updateSettingsLoading$ = this.authApi.updateSettings.loading$;
+    public requestResetLoading$ = this.authApi.passwordForgotten.loading$;
+    public deleteUserLoading$ = this.authApi.deleteUser.loading$;
 
     ngOnInit(): void {
-        this.authService.currentUser$
+        this.authApi.currentUser$
             .pipe(
                 filter((user) => !!user),
                 takeUntilDestroyed(this.destroyRef)
@@ -77,30 +77,30 @@ export class UserSettings implements OnInit {
                 this.form.patchValue(user);
             });
 
-        this.authService.passwordForgotten.success$
+        this.authApi.passwordForgotten.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Password reset email sent`,
                     body: $localize`An email has been sent to you with instructions on how to reset your password.`,
                     type: "success",
                 });
             });
 
-        this.authService.deleteUser.error$
+        this.authApi.deleteUser.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Error deleting account`,
                     body: $localize`An error occurred while deleting your account. Please try again later.`,
                     type: "danger",
                 });
             });
 
-        this.authService.deleteUser.success$
+        this.authApi.deleteUser.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Account deleted`,
                     body: $localize`Your account has been successfully deleted.`,
                     type: "success",
@@ -108,17 +108,17 @@ export class UserSettings implements OnInit {
                 this.router.navigate(["/"]);
             });
 
-        this.authService.updateSettings.error$
+        this.authApi.updateSettings.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((result) => setErrors(result.error, this.form));
 
-        this.authService.updateSettings.success$
+        this.authApi.updateSettings.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(this.onSuccess.bind(this));
     }
 
     public requestPasswordReset(): void {
-        this.authService.passwordForgotten.subject.next({
+        this.authApi.passwordForgotten.subject.next({
             email: this.form.getRawValue().email,
         });
     }
@@ -129,7 +129,7 @@ export class UserSettings implements OnInit {
                 "Are you sure you want to delete your account? This action cannot be undone."
             )
         ) {
-            this.authService.deleteUser.subject.next();
+            this.authApi.deleteUser.subject.next();
         }
     }
 
@@ -140,11 +140,11 @@ export class UserSettings implements OnInit {
             return;
         }
         const userSettings = this.form.getRawValue();
-        this.authService.newUserSettings(userSettings);
+        this.authApi.newUserSettings(userSettings);
     }
 
     private onSuccess(user: UserResponse) {
-        this.toastService.show({
+        this.toastStore.show({
             header: $localize`Settings updated`,
             body: $localize`Your settings have been successfully updated.`,
             type: "success",

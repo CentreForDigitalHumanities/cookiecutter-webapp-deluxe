@@ -11,14 +11,14 @@ import { ToastStore } from "../../services/toast-store";
 describe("VerifyEmail", () => {
     let component: VerifyEmail;
     let fixture: ComponentFixture<VerifyEmail>;
-    let toastService: ToastStore;
+    let toastStore: ToastStore;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [AuthApi, provideRouter([]), provideHttpClientTesting()],
         });
-        toastService = TestBed.inject(ToastStore);
+        toastStore = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(VerifyEmail);
         component = fixture.componentInstance;
@@ -39,7 +39,7 @@ describe("VerifyEmail", () => {
             statusText: "Bad request",
         });
 
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
 
         fixture.detectChanges();
         const element = fixture.debugElement;
@@ -59,8 +59,8 @@ describe("VerifyEmail", () => {
         );
         req.flush({ detail: "ok" });
 
-        expect(toastService.toasts.length).toBe(1);
-        expect(toastService.toasts[0].header).toBe("Email verified");
+        expect(toastStore.toasts.length).toBe(1);
+        expect(toastStore.toasts[0].header).toBe("Email verified");
         expect(loading()).toBe(false);
     });
 
@@ -82,8 +82,8 @@ describe("VerifyEmail", () => {
             { status: 404, statusText: "Not Found" }
         );
 
-        expect(toastService.toasts.length).toBe(1);
-        expect(toastService.toasts[0].header).toBe("Email verification failed");
+        expect(toastStore.toasts.length).toBe(1);
+        expect(toastStore.toasts[0].header).toBe("Email verification failed");
         expect(loading()).toBe(false);
     });
 });

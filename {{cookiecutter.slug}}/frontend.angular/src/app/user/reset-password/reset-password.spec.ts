@@ -9,14 +9,14 @@ import { ToastStore } from "../../services/toast-store";
 describe("ResetPassword", () => {
     let component: ResetPassword;
     let fixture: ComponentFixture<ResetPassword>;
-    let toastService: ToastStore;
+    let toastStore: ToastStore;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [provideRouter([]), provideHttpClientTesting()],
         });
-        toastService = TestBed.inject(ToastStore);
+        toastStore = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(ResetPassword);
         component = fixture.componentInstance;
@@ -136,6 +136,6 @@ describe("ResetPassword", () => {
         });
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
     });
 });

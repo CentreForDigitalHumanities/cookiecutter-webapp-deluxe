@@ -10,7 +10,7 @@ import { ToastStore } from "../../services/toast-store";
 describe("Login", () => {
     let component: Login;
     let fixture: ComponentFixture<Login>;
-    let toastService: ToastStore;
+    let toastStore: ToastStore;
     let router: Router;
     let httpTestingController: HttpTestingController;
 
@@ -24,7 +24,7 @@ describe("Login", () => {
             ],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
-        toastService = TestBed.inject(ToastStore);
+        toastStore = TestBed.inject(ToastStore);
         router = TestBed.inject(Router);
         fixture = TestBed.createComponent(Login);
         component = fixture.componentInstance;
@@ -83,7 +83,7 @@ describe("Login", () => {
         req.flush({ key: "abcdefghijklmnopqrstuvwxyz" });
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
         expect(routerSpy).toHaveBeenCalledWith(["/"]);
     });
 });

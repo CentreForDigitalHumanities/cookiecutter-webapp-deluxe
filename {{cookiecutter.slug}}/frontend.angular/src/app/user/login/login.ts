@@ -30,8 +30,8 @@ type LoginForm = {
     imports: [CommonModule, RouterModule, ReactiveFormsModule],
 })
 export class Login implements OnInit {
-    private authService = inject(AuthApi);
-    private toastService = inject(ToastStore);
+    private authApi = inject(AuthApi);
+    private toastStore = inject(ToastStore);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
     private destroyRef = inject(DestroyRef);
@@ -51,20 +51,20 @@ export class Login implements OnInit {
     public passwordErrors$ = controlErrorMessages$(this.form, "password");
     public formErrors$ = formErrorMessages$(this.form);
 
-    public loading$ = this.authService.login.loading$;
+    public loading$ = this.authApi.login.loading$;
 
     private nextParam$ = this.route.queryParamMap.pipe(
         map((params) => params.get("next"))
     );
 
     ngOnInit(): void {
-        this.authService.login.success$
+        this.authApi.login.success$
             .pipe(
                 withLatestFrom(this.nextParam$),
                 takeUntilDestroyed(this.destroyRef)
             )
             .subscribe(([, next]) => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Sign in successful`,
                     body: $localize`You have been successfully signed in.`,
                     type: "success",
@@ -72,7 +72,7 @@ export class Login implements OnInit {
                 this.router.navigate([next || "/"]);
             });
 
-        this.authService.login.error$
+        this.authApi.login.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((result) => setErrors(result.error, this.form));
     }
@@ -83,6 +83,6 @@ export class Login implements OnInit {
         if (!this.form.valid) {
             return;
         }
-        this.authService.login.subject.next(this.form.getRawValue());
+        this.authApi.login.subject.next(this.form.getRawValue());
     }
 }

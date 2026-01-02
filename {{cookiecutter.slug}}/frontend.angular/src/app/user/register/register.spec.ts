@@ -11,14 +11,14 @@ describe("Register", () => {
     let fixture: ComponentFixture<Register>;
     let httpTestingController: HttpTestingController;
     let router: Router;
-    let toastService: ToastStore;
+    let toastStore: ToastStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [provideHttpClientTesting()],
         });
         httpTestingController = TestBed.inject(HttpTestingController);
-        toastService = TestBed.inject(ToastStore);
+        toastStore = TestBed.inject(ToastStore);
         router = TestBed.inject(Router);
         fixture = TestBed.createComponent(Register);
         component = fixture.componentInstance;
@@ -117,7 +117,7 @@ describe("Register", () => {
         req.flush(null);
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
         expect(routerSpy).toHaveBeenCalledWith(["/"]);
     });
 
@@ -142,7 +142,7 @@ describe("Register", () => {
         );
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(0);
+        expect(toastStore.toasts.length).toBe(0);
         expect(routerSpy).not.toHaveBeenCalled();
         expect(component.form.controls.username.errors).toEqual({
             invalid: "A user with that username already exists.",

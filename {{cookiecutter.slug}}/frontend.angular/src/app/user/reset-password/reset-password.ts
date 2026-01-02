@@ -32,8 +32,8 @@ type ResetPasswordForm = {
 })
 export class ResetPassword implements OnInit {
     private activatedRoute = inject(ActivatedRoute);
-    private authService = inject(AuthApi);
-    private toastService = inject(ToastStore);
+    private authApi = inject(AuthApi);
+    private toastStore = inject(ToastStore);
     private destroyRef = inject(DestroyRef);
 
     private uid = this.activatedRoute.snapshot.params["uid"];
@@ -80,17 +80,17 @@ export class ResetPassword implements OnInit {
         controlErrorMessages$(this.form, "uid"),
     ]).pipe(map((errorLists) => errorLists.flat(1)));
 
-    public loading$ = this.authService.resetPassword.loading$;
+    public loading$ = this.authApi.resetPassword.loading$;
 
     ngOnInit(): void {
-        this.authService.resetPassword.error$
+        this.authApi.resetPassword.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((result) => setErrors(result.error, this.form));
 
-        this.authService.resetPassword.success$
+        this.authApi.resetPassword.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Password reset`,
                     body: $localize`Your password has been successfully reset.`,
                     type: "success",
@@ -104,6 +104,6 @@ export class ResetPassword implements OnInit {
         if (!this.form.valid) {
             return;
         }
-        this.authService.resetPassword.subject.next(this.form.getRawValue());
+        this.authApi.resetPassword.subject.next(this.form.getRawValue());
     }
 }

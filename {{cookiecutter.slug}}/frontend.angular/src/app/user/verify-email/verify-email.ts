@@ -16,47 +16,47 @@ import { ToastStore } from "../../services/toast-store";
 export class VerifyEmail implements OnInit, AfterViewInit {
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
-    private authService = inject(AuthApi);
-    private toastService = inject(ToastStore);
+    private authApi = inject(AuthApi);
+    private toastStore = inject(ToastStore);
     private destroyRef = inject(DestroyRef);
 
     private key: KeyInfo = { key: this.activatedRoute.snapshot.params["key"] };
 
-    public userDetails$ = this.authService.keyInfo.result$.pipe(
+    public userDetails$ = this.authApi.keyInfo.result$.pipe(
         map((results) => ("error" in results ? null : results)),
         share()
     );
 
-    public loading$ = this.authService.verifyEmail.loading$;
+    public loading$ = this.authApi.verifyEmail.loading$;
 
     ngOnInit(): void {
-        this.authService.keyInfo.error$
+        this.authApi.keyInfo.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((result) => {
                 if (!result) {
                     return;
                 }
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Email address verification failed.`,
                     body: $localize`Failed to verify email address.`,
                     type: "danger",
                 });
             });
 
-        this.authService.verifyEmail.error$
+        this.authApi.verifyEmail.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Email verification failed`,
                     body: $localize`Failed to verify email address.`,
                     type: "danger",
                 });
             });
 
-        this.authService.verifyEmail.success$
+        this.authApi.verifyEmail.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Email verified`,
                     body: $localize`Email address has been verified.`,
                     type: "success",
@@ -68,10 +68,10 @@ export class VerifyEmail implements OnInit, AfterViewInit {
     // We are subscribing to results of this call in the template, so we should
     // only start listening after the view has been initialized.
     ngAfterViewInit(): void {
-        this.authService.keyInfo.subject.next(this.key);
+        this.authApi.keyInfo.subject.next(this.key);
     }
 
     public confirm(): void {
-        this.authService.verifyEmail.subject.next(this.key);
+        this.authApi.verifyEmail.subject.next(this.key);
     }
 }

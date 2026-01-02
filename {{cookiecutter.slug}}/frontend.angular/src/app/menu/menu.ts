@@ -37,7 +37,7 @@ import { UserMenu } from "./user-menu/user-menu";
 })
 export class Menu implements OnInit {
     private destroyRef = inject(DestroyRef);
-    private languageService = inject(LanguageStore);
+    private languageStore = inject(LanguageStore);
     private localeId = inject(LOCALE_ID);
 
     burgerActive = false;
@@ -55,7 +55,7 @@ export class Menu implements OnInit {
         // allow switching even when the current locale is different
         // this should really only be the case in development:
         // then the instance is only running in a single language
-        this.languageService.languageInfo$.pipe(
+        this.languageStore.languageInfo$.pipe(
             takeUntilDestroyed(this.destroyRef)
         ).subscribe((languageInfo) => {
             this.currentLanguage = languageInfo.current || this.localeId;
@@ -72,7 +72,7 @@ export class Menu implements OnInit {
             return;
         }
         this.loading = true;
-        this.languageService
+        this.languageStore
             .set(language)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {

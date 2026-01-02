@@ -34,8 +34,8 @@ type RegisterForm = {
     imports: [CommonModule, ReactiveFormsModule],
 })
 export class Register implements OnInit {
-    private authService = inject(AuthApi);
-    private toastService = inject(ToastStore);
+    private authApi = inject(AuthApi);
+    private toastStore = inject(ToastStore);
     private destroyRef = inject(DestroyRef);
     private router = inject(Router);
 
@@ -80,18 +80,18 @@ export class Register implements OnInit {
     );
     public formErrors$ = formErrorMessages$(this.form);
 
-    public loading$ = this.authService.registration.loading$;
+    public loading$ = this.authApi.registration.loading$;
 
 
     ngOnInit(): void {
-        this.authService.registration.error$
+        this.authApi.registration.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((result) => setErrors(result.error, this.form));
 
-        this.authService.registration.success$
+        this.authApi.registration.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Registration successful`,
                     body: $localize`You have been successfully registered. Please check your email for a confirmation link.`,
                     type: "success",
@@ -106,6 +106,6 @@ export class Register implements OnInit {
         if (!this.form.valid) {
             return;
         }
-        this.authService.registration.subject.next(this.form.getRawValue());
+        this.authApi.registration.subject.next(this.form.getRawValue());
     }
 }

@@ -16,22 +16,22 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
     imports: [RouterModule, CommonModule, FontAwesomeModule, NgbDropdownModule],
 })
 export class UserMenu implements OnInit {
-    private authService = inject(AuthApi);
-    private toastService = inject(ToastStore);
+    private authApi = inject(AuthApi);
+    private toastStore = inject(ToastStore);
     private router = inject(Router);
     private destroyRef = inject(DestroyRef);
 
-    public authLoading$ = this.authService.currentUser$.pipe(
+    public authLoading$ = this.authApi.currentUser$.pipe(
         map((user) => user === undefined)
     );
 
-    public user$ = this.authService.currentUser$;
+    public user$ = this.authApi.currentUser$;
 
-    public showSignIn$ = this.authService.currentUser$.pipe(
+    public showSignIn$ = this.authApi.currentUser$.pipe(
         map((user) => user === null)
     );
 
-    public logoutLoading$ = this.authService.logout.loading$;
+    public logoutLoading$ = this.authApi.logout.loading$;
 
     public currentPath$ = this.router.routerState.root.url.pipe(
         map((url) => url.pop() ?? null),
@@ -41,20 +41,20 @@ export class UserMenu implements OnInit {
     public faUser = faUser;
 
     ngOnInit(): void {
-        this.authService.logout.error$
+        this.authApi.logout.error$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Sign out failed`,
                     body: $localize`There was an error signing you out. Please try again.`,
                     type: "danger",
                 });
             });
 
-        this.authService.logout.success$
+        this.authApi.logout.success$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
-                this.toastService.show({
+                this.toastStore.show({
                     header: $localize`Sign out successful`,
                     body: $localize`You have been successfully signed out.`,
                     type: "success",
@@ -64,6 +64,6 @@ export class UserMenu implements OnInit {
     }
 
     public logout(): void {
-        this.authService.logout.subject.next();
+        this.authApi.logout.subject.next();
     }
 }

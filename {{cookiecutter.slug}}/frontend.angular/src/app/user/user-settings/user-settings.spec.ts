@@ -27,7 +27,7 @@ class AuthApiMock extends AuthApi {
 describe("UserSettings", () => {
     let component: UserSettings;
     let fixture: ComponentFixture<UserSettings>;
-    let toastService: ToastStore;
+    let toastStore: ToastStore;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -40,13 +40,13 @@ describe("UserSettings", () => {
                 provideHttpClientTesting(),
             ],
         });
-        toastService = TestBed.inject(ToastStore);
+        toastStore = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(UserSettings);
         component = fixture.componentInstance;
         fixture.detectChanges();
 
-        // Initial request to get the user data in AuthService
+        // Initial request to get the user data in AuthApi
         httpTestingController.expectOne("/users/user/").flush(fakeUser);
     });
 
@@ -123,7 +123,7 @@ describe("UserSettings", () => {
         });
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
     });
 
     it("should handle a user settings update", () => {
@@ -147,7 +147,7 @@ describe("UserSettings", () => {
         });
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
         expect(component.form.controls.firstName.value).toBe("Bilbo");
     });
 
@@ -172,7 +172,7 @@ describe("UserSettings", () => {
         });
 
         expect(loading()).toBe(false);
-        expect(toastService.toasts.length).toBe(1);
+        expect(toastStore.toasts.length).toBe(1);
         expect(component.form.controls.username?.value).toBe("Samwise");
     });
 
