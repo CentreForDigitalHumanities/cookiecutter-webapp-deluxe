@@ -1,15 +1,12 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { By } from "@angular/platform-browser";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { provideRouter } from "@angular/router";
 
 import { VerifyEmail } from "./verify-email";
 import { AuthApi } from "../../services/auth-api";
 import { ToastStore } from "../../services/toast-store";
-import {
-    HttpClientTestingModule,
-    HttpTestingController,
-} from "@angular/common/http/testing";
-import { By } from "@angular/platform-browser";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { provideRouter } from "@angular/router";
 
 describe("VerifyEmail", () => {
     let component: VerifyEmail;
@@ -19,8 +16,7 @@ describe("VerifyEmail", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [AuthApi, provideRouter([])],
+            providers: [AuthApi, provideRouter([]), provideHttpClientTesting()],
         });
         toastService = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
@@ -56,7 +52,7 @@ describe("VerifyEmail", () => {
         );
 
         component.confirm();
-        expect(loading()).toBeTrue();
+        expect(loading()).toBe(true);
 
         const req = httpTestingController.expectOne(
             "/users/registration/verify-email/"
@@ -65,7 +61,7 @@ describe("VerifyEmail", () => {
 
         expect(toastService.toasts.length).toBe(1);
         expect(toastService.toasts[0].header).toBe("Email verified");
-        expect(loading()).toBeFalse();
+        expect(loading()).toBe(false);
     });
 
     it("should handle a failed email verification", () => {
@@ -74,7 +70,7 @@ describe("VerifyEmail", () => {
         );
 
         component.confirm();
-        expect(loading()).toBeTrue();
+        expect(loading()).toBe(true);
 
         const req = httpTestingController.expectOne(
             "/users/registration/verify-email/"
@@ -88,6 +84,6 @@ describe("VerifyEmail", () => {
 
         expect(toastService.toasts.length).toBe(1);
         expect(toastService.toasts[0].header).toBe("Email verification failed");
-        expect(loading()).toBeFalse();
+        expect(loading()).toBe(false);
     });
 });

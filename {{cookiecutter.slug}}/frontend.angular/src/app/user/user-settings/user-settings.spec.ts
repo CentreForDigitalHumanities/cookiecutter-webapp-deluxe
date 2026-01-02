@@ -1,16 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { Injectable } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { Observable, of } from "rxjs";
 
 import { UserSettings } from "./user-settings";
 import { ToastStore } from "../../services/toast-store";
 import { AuthApi } from "../../services/auth-api";
-import {
-    HttpClientTestingModule,
-    HttpTestingController,
-} from "@angular/common/http/testing";
 import { User } from "../models/user";
-import { Observable, of } from "rxjs";
-import { Injectable } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
 
 const fakeUser: User = {
     id: 1,
@@ -35,12 +32,12 @@ describe("UserSettings", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             providers: [
                 {
                     provide: AuthApi,
                     useClass: AuthApiMock,
                 },
+                provideHttpClientTesting(),
             ],
         });
         toastService = TestBed.inject(ToastStore);
@@ -73,7 +70,7 @@ describe("UserSettings", () => {
 
         httpTestingController.expectNone("/users/user/");
 
-        expect(component.form.controls.username?.invalid).toBeTrue();
+        expect(component.form.controls.username?.invalid).toBe(true);
         expect(component.form.controls.username?.errors).toEqual({
             required: true,
         });
@@ -85,7 +82,7 @@ describe("UserSettings", () => {
 
         httpTestingController.expectNone("/users/user/");
 
-        expect(component.form.controls.username?.invalid).toBeTrue();
+        expect(component.form.controls.username?.invalid).toBe(true);
         expect(component.form.controls.username?.errors).toEqual({
             minlength: { requiredLength: 3, actualLength: 2 },
         });
@@ -106,7 +103,7 @@ describe("UserSettings", () => {
             }
         );
 
-        expect(component.form.invalid).toBeTrue();
+        expect(component.form.invalid).toBe(true);
         expect(component.form.controls.username?.errors).toEqual({
             invalid: "A user with that username already exists.",
         });
@@ -118,14 +115,14 @@ describe("UserSettings", () => {
         );
 
         component.requestPasswordReset();
-        expect(loading()).toBeTrue();
+        expect(loading()).toBe(true);
 
         const req = httpTestingController.expectOne("/users/password/reset/");
         req.flush({
             detail: "Password reset e-mail has been sent.",
         });
 
-        expect(loading()).toBeFalse();
+        expect(loading()).toBe(false);
         expect(toastService.toasts.length).toBe(1);
     });
 
@@ -137,7 +134,7 @@ describe("UserSettings", () => {
         component.form.controls.firstName.setValue("Bilbo");
 
         component.submit();
-        expect(loading()).toBeTrue();
+        expect(loading()).toBe(true);
 
         const req = httpTestingController.expectOne("/users/user/");
         req.flush({
@@ -149,7 +146,7 @@ describe("UserSettings", () => {
             is_staff: false,
         });
 
-        expect(loading()).toBeFalse();
+        expect(loading()).toBe(false);
         expect(toastService.toasts.length).toBe(1);
         expect(component.form.controls.firstName.value).toBe("Bilbo");
     });
@@ -162,7 +159,7 @@ describe("UserSettings", () => {
         component.form.controls.username?.setValue("Samwise");
 
         component.submit();
-        expect(loading()).toBeTrue();
+        expect(loading()).toBe(true);
 
         const req = httpTestingController.expectOne("/users/user/");
         req.flush({
@@ -174,7 +171,7 @@ describe("UserSettings", () => {
             is_staff: false,
         });
 
-        expect(loading()).toBeFalse();
+        expect(loading()).toBe(false);
         expect(toastService.toasts.length).toBe(1);
         expect(component.form.controls.username?.value).toBe("Samwise");
     });
@@ -185,7 +182,7 @@ describe("UserSettings", () => {
         );
 
         component.submit();
-        expect(loading()).toBeTrue();
+        expect(loading()).toBe(true);
 
         const req = httpTestingController.expectOne("/users/user/").request;
         expect(req.method).toBe("PATCH");

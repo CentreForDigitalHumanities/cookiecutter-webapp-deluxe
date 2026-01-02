@@ -1,11 +1,8 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 import { PasswordForgotten } from "./password-forgotten";
-import {
-    HttpClientTestingModule,
-    HttpTestingController,
-} from "@angular/common/http/testing";
-import { toSignal } from "@angular/core/rxjs-interop";
 import { ToastStore } from "../../services/toast-store";
 
 describe("PasswordForgotten", () => {
@@ -16,7 +13,7 @@ describe("PasswordForgotten", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            providers: [provideHttpClientTesting()],
         });
         fixture = TestBed.createComponent(PasswordForgotten);
         httpTestingController = TestBed.inject(HttpTestingController);
@@ -34,7 +31,7 @@ describe("PasswordForgotten", () => {
 
         httpTestingController.expectNone("/users/password/reset/");
 
-        expect(component.form.controls.email.invalid).toBeTrue();
+        expect(component.form.controls.email.invalid).toBe(true);
         expect(component.form.controls.email.errors).toEqual({
             required: true,
         });
@@ -46,7 +43,7 @@ describe("PasswordForgotten", () => {
 
         httpTestingController.expectNone("/users/password/reset/");
 
-        expect(component.form.invalid).toBeTrue();
+        expect(component.form.invalid).toBe(true);
         expect(component.form.controls.email.errors).toEqual({ email: true });
     });
 
@@ -58,12 +55,12 @@ describe("PasswordForgotten", () => {
         );
 
         component.submit();
-        expect(loading()).toBeTrue();
+        expect(loading()).toBe(true);
 
         const req = httpTestingController.expectOne("/users/password/reset/");
         req.flush({ detail: "Password reset e-mail has been sent." });
 
-        expect(loading()).toBeFalse();
+        expect(loading()).toBe(false);
         expect(toastService.toasts.length).toBe(1);
     });
 });

@@ -1,16 +1,16 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+
 import { Home } from './home';
 
 describe('Home', () => {
     let component: Home;
     let fixture: ComponentFixture<Home>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach((() => {
         TestBed.configureTestingModule({
-            imports: [Home, HttpClientTestingModule]
-        })
-            .compileComponents();
+            providers: [provideHttpClientTesting()],
+        });
     }));
 
     beforeEach(() => {

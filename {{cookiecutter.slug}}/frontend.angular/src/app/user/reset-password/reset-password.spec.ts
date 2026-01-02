@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { provideRouter } from "@angular/router";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 import { ResetPassword } from "./reset-password";
 import { ToastStore } from "../../services/toast-store";
-import {
-    HttpClientTestingModule,
-    HttpTestingController,
-} from "@angular/common/http/testing";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { provideRouter } from "@angular/router";
 
 describe("ResetPassword", () => {
     let component: ResetPassword;
@@ -17,8 +14,7 @@ describe("ResetPassword", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [provideRouter([])],
+            providers: [provideRouter([]), provideHttpClientTesting()],
         });
         toastService = TestBed.inject(ToastStore);
         httpTestingController = TestBed.inject(HttpTestingController);
@@ -33,11 +29,11 @@ describe("ResetPassword", () => {
 
     it("should check missing input", () => {
         component.submit();
-        expect(component.form.controls.new_password1.invalid).toBeTrue();
+        expect(component.form.controls.new_password1.invalid).toBe(true);
         expect(component.form.controls.new_password1.errors).toEqual({
             required: true,
         });
-        expect(component.form.controls.new_password2.invalid).toBeTrue();
+        expect(component.form.controls.new_password2.invalid).toBe(true);
         expect(component.form.controls.new_password2.errors).toEqual({
             required: true,
         });
@@ -65,7 +61,7 @@ describe("ResetPassword", () => {
             }
         );
 
-        expect(component.form.invalid).toBeTrue();
+        expect(component.form.invalid).toBe(true);
         expect(component.form.controls.uid.errors).toEqual({
             invalid: "Invalid value",
         });
@@ -93,7 +89,7 @@ describe("ResetPassword", () => {
             }
         );
 
-        expect(component.form.invalid).toBeTrue();
+        expect(component.form.invalid).toBe(true);
         expect(component.form.controls.token.errors).toEqual({
             invalid: "Invalid value",
         });
@@ -110,7 +106,7 @@ describe("ResetPassword", () => {
 
         httpTestingController.expectNone("/users/password/reset/confirm/");
 
-        expect(component.form.invalid).toBeTrue();
+        expect(component.form.invalid).toBe(true);
         expect(component.form.errors).toEqual({
             passwords: true,
         });
@@ -129,8 +125,8 @@ describe("ResetPassword", () => {
         );
 
         component.submit();
-        expect(loading()).toBeTrue();
-        expect(component.form.valid).toBeTrue();
+        expect(loading()).toBe(true);
+        expect(component.form.valid).toBe(true);
 
         const req = httpTestingController.expectOne(
             "/users/password/reset/confirm/"
@@ -139,7 +135,7 @@ describe("ResetPassword", () => {
             detail: "Password has been reset with the new password.",
         });
 
-        expect(loading()).toBeFalse();
+        expect(loading()).toBe(false);
         expect(toastService.toasts.length).toBe(1);
     });
 });

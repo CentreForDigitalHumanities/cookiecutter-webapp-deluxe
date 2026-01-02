@@ -1,17 +1,14 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { App } from './app';
 
 describe('App', () => {
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                App, NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule]
-        }).compileComponents();
-    }));
+            providers: [provideRouter([])],
+        });
+    });
 
 
     it('should create the app', () => {
