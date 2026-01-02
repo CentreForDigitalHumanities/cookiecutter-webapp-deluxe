@@ -1,25 +1,16 @@
-import { Component, OnInit, inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs";
+import { Component, computed } from "@angular/core";
+import { httpResource } from "@angular/common/http";
 
 @Component({
-    selector: "{{cookiecutter.app_prefix}}-home",
+    selector: "dh-home",
     templateUrl: "./home.html",
     styleUrl: "./home.scss",
 })
-export class Home implements OnInit {
-    private http = inject(HttpClient);
+export class Home {
+    private hooraySource = httpResource<{ message: string; }[]>(() => '/api/example/');
 
-    public hooray?: string;
-
-    ngOnInit(): void {
-        this.http
-            .get<{ message: string; }[]>(`/api/example/`)
-            .pipe(map((hoorays) => hoorays[0].message))
-            .subscribe((hooray) => {
-                if (!this.hooray) {
-                    this.hooray = hooray;
-                }
-            });
-    }
+    public hooray = computed(() => {
+        const hoorayResult = this.hooraySource.value();
+        return hoorayResult ? hoorayResult[0].message : '';
+    });
 }
