@@ -2,7 +2,7 @@
     data-bs-theme="dark">
     <div class="container-fluid">
         <div class="navbar-brand" i18n>
-                {{cookiecutter.project_title}}
+            {{cookiecutter.project_title}}
         </div>
 
         <button class="navbar-toggler" type="button"
@@ -57,7 +57,7 @@
                 }
             {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
             <{{cookiecutter.app_prefix}}-user-menu />
-            {% endif %}
+            {%- endif %}
             </ul>
         </div>
     </div>

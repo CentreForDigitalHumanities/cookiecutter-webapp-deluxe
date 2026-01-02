@@ -1,3 +1,5 @@
+@let currentPath = currentPath$ | async;
+
 <ul class="navbar-nav">
     @if (authLoading$ | async) {
     <li class="navbar-text">
@@ -35,7 +37,7 @@
             [routerLink]="['/login']"
             routerLinkActive="active"
             [queryParams]="
-                linkActive.isActive ? null : { next: currentPath$ | async }
+                linkActive.isActive ? null : { next: currentPath }
             "
             class="nav-link"
             i18n
