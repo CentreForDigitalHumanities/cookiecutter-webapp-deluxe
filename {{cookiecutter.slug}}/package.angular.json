@@ -40,6 +40,7 @@
         "stop-back": "lsof -t -i tcp:{{cookiecutter.backend_port}} | xargs kill -9 || echo \"not running\""
     },
     "dependencies": {
+        "@angular/animations": "^21.0.0",
         "@angular/common": "^21.0.0",
         "@angular/compiler": "^21.0.0",
         "@angular/core": "^21.0.0",

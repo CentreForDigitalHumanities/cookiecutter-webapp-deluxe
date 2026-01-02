@@ -16,7 +16,6 @@ import { LanguageInfo, LanguageStore } from "../services/language-store";
 import { NgbCollapseModule, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
 import { UserMenu } from "./user-menu/user-menu";
-import { ToastContainer } from "../toast-container/toast-container";
 {% endif %}
 
 @Component({
@@ -31,10 +30,8 @@ import { ToastContainer } from "../toast-container/toast-container";
         NgbCollapseModule,
         RouterModule,
         NgbDropdownModule,
-        {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
-
+        {% if cookiecutter.basic_authentication == "Yes, please!" -%}
         UserMenu,
-        ToastContainer,
         {% endif %}
     ]
 })

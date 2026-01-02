@@ -127,18 +127,7 @@
                   "options": {
                     "buildTarget": "{{project_name}}:build",
                     "format": "xlf",
-                    "outputPath": "locale",
-                    "includeContext": true,
-                    "targetFiles": [
-                        {% set comma = joiner(",") %}
-                        {%- for loc in localizations %}
-                        {%- set code, name = loc.split(':') %}
-                        {%- if cookiecutter.default_localization != code -%}
-                        {{ comma() }}
-                        "messages.{{code}}.xlf"
-                        {% endif %}
-                        {%- endfor %}
-                    ]
+                    "outputPath": "locale"
                   }
                 },
                 "test": {
