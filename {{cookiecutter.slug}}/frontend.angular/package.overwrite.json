@@ -31,6 +31,6 @@
         "bootstrap": "^5.3.3"
     },
     "devDependencies": {
-        "ng-extract-i18n-merge": "^3.2.1",
+        "ng-extract-i18n-merge": "^3.2.1"
     }
 }
