@@ -5,14 +5,12 @@ import { map } from "rxjs";
 @Component({
     selector: "{{cookiecutter.app_prefix}}-home",
     templateUrl: "./home.html",
-    styleUrls: ["./home.scss"],
+    styleUrl: "./home.scss",
 })
 export class Home implements OnInit {
     private http = inject(HttpClient);
 
     public hooray?: string;
-
-    constructor() { }
 
     ngOnInit(): void {
         this.http

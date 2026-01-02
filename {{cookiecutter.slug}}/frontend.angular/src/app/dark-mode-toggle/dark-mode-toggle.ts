@@ -19,9 +19,7 @@ export class DarkModeToggle {
     faMoon = faMoon;
     dark$ = this.darkModeStore.theme$.pipe(map((theme) => theme === "dark"));
 
-    constructor() { }
-
-    toggle() {
+    toggle(): void {
         this.darkModeStore.toggle();
     }
 }

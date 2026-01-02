@@ -19,7 +19,7 @@ type PasswordForgottenForm = {
 @Component({
     selector: "{{cookiecutter.app_prefix}}-password-forgotten",
     templateUrl: "./password-forgotten.html",
-    styleUrls: ["./password-forgotten.scss"],
+    styleUrl: "./password-forgotten.scss",
     imports: [CommonModule, ReactiveFormsModule],
 })
 export class PasswordForgotten implements OnInit {

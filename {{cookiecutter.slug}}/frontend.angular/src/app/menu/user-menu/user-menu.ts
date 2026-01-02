@@ -12,7 +12,7 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 @Component({
     selector: "{{cookiecutter.app_prefix}}-user-menu",
     templateUrl: "./user-menu.html",
-    styleUrls: ["./user-menu.scss"],
+    styleUrl: "./user-menu.scss",
     imports: [RouterModule, CommonModule, FontAwesomeModule, NgbDropdownModule],
 })
 export class UserMenu implements OnInit {

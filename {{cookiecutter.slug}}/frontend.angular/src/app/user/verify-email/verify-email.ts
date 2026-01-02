@@ -10,7 +10,7 @@ import { ToastStore } from "../../services/toast-store";
 @Component({
     selector: "{{cookiecutter.app_prefix}}-verify-email",
     templateUrl: "./verify-email.html",
-    styleUrls: ["./verify-email.scss"],
+    styleUrl: "./verify-email.scss",
     imports: [CommonModule],
 })
 export class VerifyEmail implements OnInit, AfterViewInit {

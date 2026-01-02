@@ -27,7 +27,7 @@ type ResetPasswordForm = {
 @Component({
     selector: "{{cookiecutter.app_prefix}}-reset-password",
     templateUrl: "./reset-password.html",
-    styleUrls: ["./reset-password.scss"],
+    styleUrl: "./reset-password.scss",
     imports: [CommonModule, ReactiveFormsModule],
 })
 export class ResetPassword implements OnInit {

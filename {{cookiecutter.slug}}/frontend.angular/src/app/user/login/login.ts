@@ -26,7 +26,7 @@ type LoginForm = {
 @Component({
     selector: "{{cookiecutter.app_prefix}}-login",
     templateUrl: "./login.html",
-    styleUrls: ["./login.scss"],
+    styleUrl: "./login.scss",
     imports: [CommonModule, RouterModule, ReactiveFormsModule],
 })
 export class Login implements OnInit {

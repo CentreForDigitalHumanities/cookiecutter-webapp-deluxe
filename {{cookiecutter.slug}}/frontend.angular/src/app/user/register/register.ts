@@ -30,7 +30,7 @@ type RegisterForm = {
 @Component({
     selector: "{{cookiecutter.app_prefix}}-register",
     templateUrl: "./register.html",
-    styleUrls: ["./register.scss"],
+    styleUrl: "./register.scss",
     imports: [CommonModule, ReactiveFormsModule],
 })
 export class Register implements OnInit {

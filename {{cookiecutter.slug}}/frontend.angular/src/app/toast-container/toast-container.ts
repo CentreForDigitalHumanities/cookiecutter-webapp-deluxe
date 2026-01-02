@@ -5,7 +5,7 @@ import { NgbToastModule } from "@ng-bootstrap/ng-bootstrap";
 @Component({
     selector: "{{cookiecutter.app_prefix}}-toast-container",
     templateUrl: "./toast-container.html",
-    styleUrls: ["./toast-container.scss"],
+    styleUrl: "./toast-container.scss",
     imports: [NgbToastModule]
 })
 export class ToastContainer {

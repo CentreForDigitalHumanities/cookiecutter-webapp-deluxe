@@ -27,7 +27,7 @@ type UserSettingsForm = {
 @Component({
     selector: "{{cookiecutter.app_prefix}}-user-settings",
     templateUrl: "./user-settings.html",
-    styleUrls: ["./user-settings.scss"],
+    styleUrl: "./user-settings.scss",
     imports: [CommonModule, ReactiveFormsModule],
 })
 export class UserSettings implements OnInit {

@@ -21,7 +21,7 @@ import { UserMenu } from "./user-menu/user-menu";
 @Component({
     selector: "{{cookiecutter.app_prefix}}-menu",
     templateUrl: "./menu.html",
-    styleUrls: ["./menu.scss"],
+    styleUrl: "./menu.scss",
     imports: [
         CommonModule,
         RouterLink,
