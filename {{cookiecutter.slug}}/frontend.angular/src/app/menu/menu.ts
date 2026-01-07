@@ -14,9 +14,10 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { DarkModeToggle } from "../dark-mode-toggle/dark-mode-toggle";
 import { LanguageInfo, LanguageStore } from "../services/language-store";
 import { NgbCollapseModule, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
-{%- if cookiecutter.basic_authentication == "Yes, please!" -%}
+{% if cookiecutter.basic_authentication == "Yes, please!" -%}
 import { UserMenu } from "./user-menu/user-menu";
-{% endif %}
+{%- endif %}
+
 
 @Component({
     selector: "{{cookiecutter.app_prefix}}-menu",
@@ -32,7 +33,7 @@ import { UserMenu } from "./user-menu/user-menu";
         NgbDropdownModule,
         {% if cookiecutter.basic_authentication == "Yes, please!" -%}
         UserMenu,
-        {% endif %}
+        {%- endif %}
     ]
 })
 export class Menu implements OnInit {

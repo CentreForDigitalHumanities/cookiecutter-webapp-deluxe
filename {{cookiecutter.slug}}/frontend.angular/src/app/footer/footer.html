@@ -1,15 +1,19 @@
+{% raw -%}
 @let env = environment();
+{%- endraw %}
 <div class="is-hidden-print bg-body-tertiary p-5">
     <div class="container">
         <div class="row">
             <div class="col-lg">
                 <p class="lead" i18n>{{cookiecutter.project_title}}</p>
+                {% raw -%}
                 <p>
                     <a [href]="env.sourceUrl" target="_blank" i18n>Source code</a>&nbsp;<ng-container i18n>(BSD 3-Clause License)</ng-container>
                 </p>
                 <p>
                     <em><ng-container i18n>Version: </ng-container><span>{{env.version}}</span>&nbsp;(<span [title]="env.buildTime">{{ buildTime() }})</span></em>
                 </p>
+                {%- endraw %}
             </div>
             <div class="col-lg-auto">
                 <a class="centre-logo"

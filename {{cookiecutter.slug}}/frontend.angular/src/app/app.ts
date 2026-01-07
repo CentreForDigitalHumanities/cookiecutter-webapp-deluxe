@@ -3,8 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Menu } from './menu/menu';
 import { Footer } from './footer/footer';
-{%- if cookiecutter.basic_authentication == "Yes, please!" -%}
-
+{% if cookiecutter.basic_authentication == "Yes, please!" -%}
 import { ToastContainer } from './toast-container/toast-container';
 import { DarkModeStore } from './services/dark-mode-store';
 {% endif %}
@@ -15,10 +14,9 @@ import { DarkModeStore } from './services/dark-mode-store';
         RouterOutlet,
         Menu,
         Footer,
-        {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
-
+        {% if cookiecutter.basic_authentication == "Yes, please!" -%}
         ToastContainer
-        {% endif %}
+        {%- endif %}
     ],
     templateUrl: './app.html',
     styleUrl: './app.scss'

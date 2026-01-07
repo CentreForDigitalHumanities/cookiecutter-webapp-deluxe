@@ -55,9 +55,9 @@
                         </div>
                     </li>
                 }
-            {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
-            <{{cookiecutter.app_prefix}}-user-menu />
-            {%- endif %}
+            {%- if cookiecutter.basic_authentication == "Yes, please!" %}
+                <{{cookiecutter.app_prefix}}-user-menu />
+            {% endif -%}
             </ul>
         </div>
     </div>
