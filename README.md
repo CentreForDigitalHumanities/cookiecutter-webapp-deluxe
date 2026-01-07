@@ -132,7 +132,7 @@ The post-generation script needs to know the path to your virtualenv, but you ar
 
 The command that will generate the virtualenv in the location that you provided in the previous parameter. This command will run with the root of the generated project as its working directory. It is important that you can run this command as yourself, i.e., without `sudo`.
 
-The virtualenv must have Python version >= 3.8, <= 3.10. If your virtualenv-creating command uses a different version by default, make sure to add an option to rectify this. The most commonly used command, `virtualenv`, has the `-p` option, so you can for example append `-p python3.10`.
+The virtualenv must have Python version 3.10+. If your virtualenv-creating command uses a different version by default, make sure to add an option to rectify this. The most commonly used command, `virtualenv`, has the `-p` option, so you can for example append `-p python3.9`.
 
 
 ### Post-generation script
