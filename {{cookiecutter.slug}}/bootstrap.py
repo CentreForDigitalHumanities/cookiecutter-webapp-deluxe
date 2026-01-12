@@ -206,6 +206,7 @@ def activate_frontend():
         Command(
             'Creating project',
             ['yarn', 'ng', 'new', project_name, '--prefix={{cookiecutter.app_prefix}}',
+                '--ssr=false',
                 '--skip-git=true',
                 '--skip-install=true',
                 '--package-manager=yarn',
@@ -226,6 +227,11 @@ def activate_frontend():
         os.remove(os.path.join('frontend', 'src', 'favicon.svg'))
         # Remove editorconfig
         os.remove(os.path.join('frontend', '.editorconfig'))
+        Command(
+            'yarn add @angular/animations',
+            ['yarn', 'add', '@angular/animations'],
+            cwd="frontend"
+        )()
         Command(
             'ng add @angular/localize',
             ['yarn', 'ng', 'add', '@angular/localize', '--skip-confirmation'],
