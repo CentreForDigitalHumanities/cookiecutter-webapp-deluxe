@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     # cf. https://github.com/iMerica/dj-rest-auth/pull/110.
     'allauth.socialaccount',
     'user',
-{% endif %}
+{%- endif %}
     'revproxy',
     'example'
 ]
@@ -32,23 +32,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-{% if cookiecutter.frontend == "backend" %}
+{%- if cookiecutter.frontend == "backend" %}
     'livereload.middleware.LiveReloadScript',
 {% endif %}
-{%- if cookiecutter.basic_authentication == "Yes, please!" -%}
+{%- if cookiecutter.basic_authentication == "Yes, please!" %}
     "allauth.account.middleware.AccountMiddleware",
-{%- endif -%}
+{% endif -%}
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 LANGUAGES = [
-{% set localizations = cookiecutter.localizations.split(',') %}
+{%- set localizations = cookiecutter.localizations.split(',') %}
 {%- for loc in localizations %}
 {%- set code, name = loc.split(':') %}
     ('{{code}}', '{{name}}'),
 {%- endfor %}
 ]
+
 LANGUAGE_CODE = '{{cookiecutter.default_localization}}'
 
 TIME_ZONE = 'Europe/Amsterdam'
@@ -57,7 +58,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-{%- if cookiecutter.basic_authentication == "Yes, please!" -%}
+{% if cookiecutter.basic_authentication == "Yes, please!" -%}
 # Authentication
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [

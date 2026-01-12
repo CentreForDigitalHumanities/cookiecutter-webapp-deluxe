@@ -3,12 +3,12 @@
         "target": "http://127.0.0.1:{{cookiecutter.backend_port}}",
         "secure": false
     },
-    {%- if cookiecutter.basic_authentication == "Yes, please!" -%}
+    {% if cookiecutter.basic_authentication == "Yes, please!" -%}
     "/users": {
         "target": "http://127.0.0.1:8000",
         "secure": false
     },
-    {% endif %}
+    {%- endif %}
     "/admin": {
         "target": "http://127.0.0.1:{{cookiecutter.backend_port}}",
         "secure": false

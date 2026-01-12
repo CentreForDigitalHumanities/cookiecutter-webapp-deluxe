@@ -14,4 +14,7 @@ def index(request: HttpRequest):
     if not location:
         location = finders.find(path.join(language, "index.html"))
 
-    return HttpResponse(content=open(location))
+    try:
+        return HttpResponse(content=open(location))
+    except Exception as err:
+        raise Exception(f"Problem loading {location}") from err
