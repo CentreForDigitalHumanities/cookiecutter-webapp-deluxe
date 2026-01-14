@@ -1,0 +1,15 @@
+{% extends "account/email/base_message.txt" %}
+{% load account %}
+{% load i18n %}
+
+{% comment %}
+This overrides the original found at allauth/templates/account/email/email_confirmation_message.txt.
+
+The original wording may be taken to suggest that someone else (not the user)
+created an account for the person receiving the email. The updated wording here
+clarifies that the user themselves created the account and avoids potential
+impersonation concerns.
+{% endcomment %}
+{% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}You're receiving this email because someone used your email address to register an account with the name "{{ user_display}}" on {{ site_domain }}.
+
+If this was you and you wish to confirm your email address, go to {{ activate_url }}{% endblocktrans %}{% endautoescape %}{% endblock content %}
