@@ -26,6 +26,6 @@
     "frontend.angular/src/app/user/*.html",
     "frontend.angular/src/app/toast-container/*.html",
     "frontend.angular/src/app/menu/user-menu/*.html",
-    "backend/user/templates/accounts/email/email_confirmation_message.txt"
+    "backend/user/templates/account/email/email_confirmation_message.txt"
   ]
 }
