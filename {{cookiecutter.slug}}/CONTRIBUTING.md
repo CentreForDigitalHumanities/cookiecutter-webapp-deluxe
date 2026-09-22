@@ -7,11 +7,11 @@ This document contains basic documentation for developing {{cookiecutter.project
 You need to install the following software:
 
  - PostgreSQL >= 10, client, server and C libraries
- - Python >= 3.8, <= 3.10
+ - Python >= 3.12, < 3.14
  - virtualenv
  - WSGI-compatible webserver (deployment only)
  - [Visual C++ for Python][1] (Windows only)
- - Node.js >= 14.20.0
+ - Node.js >= 22
  - Yarn
  - [WebDriver][2] for at least one browser (only for functional testing)
 
